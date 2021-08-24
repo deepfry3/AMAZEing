@@ -32,5 +32,5 @@ public class PlayerController : MonoBehaviour
 	{
         // Apply rotation from input
         m_TransformComponent.Rotate(m_MovementAngles);
-	}
+	}//if
 }
