@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
 	private void FixedUpdate()
 	{
         // Apply rotation from input
-         m_Rigidbody.AddTorque(100.0f * m_InputVector);
+        m_Rigidbody.AddTorque(100.0f * m_InputVector);
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0.0f, transform.eulerAngles.z);
 	}
 }
