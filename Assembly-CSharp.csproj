@@ -58,13 +58,10 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
+    <Compile Include="Assets\Scripts\MazeLRController.cs" />
+    <Compile Include="Assets\Scripts\MazeUDController.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Temp\Simple_Player_Movement.cs" />
-    <Compile Include="Assets\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\Maze Generation\Maze_Gen.cs" />
-    <Compile Include="Assets\Scripts\Maze Generation\Grid_Node.cs" />
-    <Compile Include="Assets\Scripts\MazeUDController.cs" />
-    <Compile Include="Assets\Scripts\MazeLRController.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
