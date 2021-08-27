@@ -41,7 +41,7 @@ public class MazeUDController : MonoBehaviour
 		m_InputVector = Vector3.zero;
 		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
 			m_InputVector.x += 1.0f;
-		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.DownArrow))
+		if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
 			m_InputVector.x -= 1.0f;
 	}
 
