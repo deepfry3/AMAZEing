@@ -12,11 +12,14 @@ public class MazeLRController : MonoBehaviour
 	#region Variables
 	// Public variables
 	public GameObject m_UDMaze = null;						// UD Maze to get up-down movements from
+	public GameObject m_Handle = null;						// Physical handle to visually rotate
 
 	// Private variables
-	private Transform m_UDMazeTransform;					// Transform component of the UD Maze
-	private Rigidbody m_Rigidbody;                          // Rigidbody of the LR Maze
-	private Vector3 m_InputVector = Vector3.zero;           // Left-right input stored as a Vector3
+	private Rigidbody m_Rigidbody;							// Rigidbody of the LR Maze
+	private Transform m_Transform;							// Cached Transform component
+	private Transform m_UDMazeTransform;					// Cached Transform component of the UD Maze
+	private Transform m_HandleTransform;					// Cached Transform component of the Handle
+	private Vector3 m_InputVector = Vector3.zero;			// Left-right input stored as a Vector3
 	#endregion
 
 	#region Functions
@@ -28,8 +31,10 @@ public class MazeLRController : MonoBehaviour
 		m_Rigidbody.centerOfMass = Vector3.zero;
 		m_Rigidbody.inertiaTensorRotation = Quaternion.identity;
 
-		// Get Transform component of UD Maze (prevents GetComponent internally being called each update)
+		// Cache Transform components to prevent GetComponent being called each Update
+		m_Transform = transform;
 		m_UDMazeTransform = m_UDMaze.transform;
+		m_HandleTransform = m_Handle.transform;
 	}
 
 	// Called every frame - Updates input vector according to key-press
@@ -54,7 +59,10 @@ public class MazeLRController : MonoBehaviour
 	void LateUpdate()
 	{
 		// Manually set transform angles, resetting y axis to zero
-		transform.eulerAngles = new Vector3(m_UDMazeTransform.eulerAngles.x, 0.0f, transform.eulerAngles.z);
+		m_Transform.rotation = Quaternion.Euler(m_UDMazeTransform.eulerAngles.x, 0.0f, m_Transform.eulerAngles.z);
+
+		// Visually update handle rotation
+		m_HandleTransform.rotation = Quaternion.Euler(8.0f * m_Transform.eulerAngles.z, m_HandleTransform.eulerAngles.y, m_HandleTransform.eulerAngles.z);
 	}
 	#endregion
 }

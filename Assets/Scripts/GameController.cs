@@ -23,6 +23,24 @@ public class GameController : MonoBehaviour
 	// Called every frame - updates the time remaining counter
 	void Update()
 	{
+		// Process clicks on GUI buttons
+		if (Input.GetMouseButtonDown(0))
+		{
+			RaycastHit hit;
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			if (Physics.Raycast(ray, out hit, 100.0f))
+			{
+				if (hit.transform != null)
+				{
+					if (hit.transform.gameObject.name == "MainMenuButton")
+						Debug.Log("Clicked 'Main Menu'");
+					if (hit.transform.gameObject.name == "RestartButton")
+						Debug.Log("Clicked 'Restart'");
+				}
+			}
+		}
+
+
 		// Update time counter
 		m_TimeRemaining += Time.deltaTime;
 		float minutes = Mathf.FloorToInt(m_TimeRemaining / 60.0f);
