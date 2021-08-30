@@ -56,7 +56,6 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@8.2.0\Runtime\Data\UniversalRenderPipelineAsset.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@8.2.0\Runtime\ScriptableRendererFeature.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@8.2.0\Runtime\Passes\DepthOnlyPass.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@8.2.0\Runtime\SampleCount.cs" />
@@ -93,6 +92,7 @@
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@8.2.0\Runtime\Passes\MainLightShadowCasterPass.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@8.2.0\Runtime\External\LibTessDotNet\PriorityQueue.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@8.2.0\Runtime\Overrides\FilmGrain.cs" />
+    <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@8.2.0\Runtime\Data\UniversalRenderPipelineAsset.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@8.2.0\Runtime\ShaderData.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@8.2.0\Runtime\Passes\ScriptableRenderPass.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@8.2.0\Runtime\ShaderUtils.cs" />
