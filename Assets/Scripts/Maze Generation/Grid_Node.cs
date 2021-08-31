@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+// Worked on by:
+//	Declan Doller
+//
 public class Grid_Node
 {
+	// Its position, scale and grid position
 	Vector3 m_Position = Vector3.zero;
 	Vector3 m_Scale = Vector3.zero;
 	Vector2 m_GridPos;
+
+	// If the node is visited and what connections are there
 	bool m_Visited = false;
 	public bool[] m_IsConnectedNeighbour = new bool[4] { false, false, false, false };
 
@@ -41,76 +48,6 @@ public class Grid_Node
 	public void ConnectToNeighbour(int index)
 	{
 		m_IsConnectedNeighbour[index] = true;
-	}
-
-	public void UnconnectSelfFromNeighbour(Grid_Node neighbour, int neighbourIndex)
-	{
-		int outIndex;
-		switch(neighbourIndex)
-		{
-			case 0:
-				outIndex = 3;
-				break;
-
-			case 1:
-				outIndex = 2;
-				break;
-
-			case 2:
-				outIndex = 1;
-				break;
-
-			case 3:
-				outIndex = 0;
-				break;
-
-			default:
-				outIndex = 10;
-				break;
-		}
-
-		neighbour.UnconnectNeighbour(outIndex);
-	}
-
-	public void unvisit()
-	{
-		m_Visited = false;
-	}
-	public void UnconnectNeighbour(int index)
-	{
-		if (index == 10)
-		{
-
-		}
-
-		else
-		{
-			m_IsConnectedNeighbour[index] = false;
-		}
-	}
-
-	public void ConnectNeighbourToSelf(Grid_Node neighbour, int neighbourIndex)
-	{
-		switch (neighbourIndex)
-		{
-			case 0:
-				neighbourIndex = 3;
-				break;
-
-			case 1:
-				neighbourIndex = 2;
-				break;
-
-			case 2:
-				neighbourIndex = 1;
-				break;
-
-			case 3:
-				neighbourIndex = 0;
-				break;
-		}
-
-		neighbour.ConnectedToNeighbour(neighbourIndex);
 	}
 
 	// Checks if the node is connected to a neighbour
