@@ -3,44 +3,60 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Reference https://www.algosome.com/articles/maze-generation-depth-first.html
+
+// Worked on by:
+//	Declan Doller
+//
+
 public class Maze_Gen : MonoBehaviour
 {
+	// The Bard to be parented to and the floor use for dimentions
 	public GameObject m_Board;
 	public GameObject m_Floor;
-	public GameObject m_Wall;
 
+	// The wall prefab
+	public GameObject wall;
+
+	// Always will have 4 possible neighbours
 	int neighbourCount = 4;
+
+	// Size to be determined by the size of the floor
 	public int gridHeight;
 	public int gridWidth;
+	float floorHeight;
 
-	int wallSize = 1;
-	float floorHeight = 0.5f;
-
+	// Set Path width
 	float pathWidth = 1.5f;
 	float pathHeight = 1.5f;
 	float pathTallness = 2.0f;
-
-	float nodeWidth = 0.5f;
-	float nodeTallness = 2.0f;
-
-
 	float wallWidth = 1.5f;
-	float wallHeight = 2.0f;
 
+	// Stack for the depth first Gen path
 	Stack<Grid_Node> m_Path;
 
+	// Starting point
 	Vector3 m_Start = Vector3.zero;
-	public Grid_Node[,] m_Grid;
-	public GameObject wall;
 
+	// The 2D grid array
+	public Grid_Node[,] m_Grid;
+
+	// On start
 	private void Start()
 	{
 		m_Path = new Stack<Grid_Node>();
+
+		// Setting the Dimensioons of the array
 		gridWidth = (int)((m_Floor.transform.localScale.x / (pathWidth + wallWidth)));
 		gridHeight = (int)((m_Floor.transform.localScale.z / (pathWidth + wallWidth)));
+		floorHeight = m_Floor.transform.localScale.y;
 		m_Grid = new Grid_Node[gridWidth, gridHeight];
+
+		// Generates the maze
 		CreateGrid();
-		Generate(m_Grid[0, 0]);
+		int randX, randY;
+		randX = Random.Range(0, gridWidth);
+		randY = Random.Range(0, gridHeight);
+		Generate(m_Grid[randX, randY]);
 		InstantiateMaze();
 	}
 
@@ -51,14 +67,17 @@ public class Maze_Gen : MonoBehaviour
 		{
 			for (int y = 0; y < gridHeight; y++)
 			{
+				// Creates Gridnodes for each element of the 2d array
 				m_Grid[x, y] = new Grid_Node();
 
+				// Sets the scale
 				Vector3 pathScale;
 				pathScale.x = pathWidth;
 				pathScale.y = pathTallness;
 				pathScale.z = pathHeight;
 				m_Grid[x, y].SetScale(pathScale);
 
+				// Sets the position
 				Vector3 position;
 				position.x = (m_Start.x + x - (gridWidth / 2)) * (pathWidth + wallWidth);
 				position.y = floorHeight + (floorHeight / 2.0f);
@@ -66,11 +85,11 @@ public class Maze_Gen : MonoBehaviour
 				position = position + m_Start;
 				m_Grid[x, y].SetPosition(position);
 
+				// Gives it it's owen grid position
 				Vector2 gridPos = new Vector2(x, y);
 				m_Grid[x, y].SetGridPos(gridPos);
 			}
 		}
-
 	}
 
 	// Returns the Neighbour at an index
@@ -97,6 +116,7 @@ public class Maze_Gen : MonoBehaviour
 				case 3: ++y; break;
 			}
 
+			// Returns null if the neighbour doesn't exist
 			float minX, maxX;
 			minX = 0;
 			maxX = gridWidth;
@@ -120,103 +140,79 @@ public class Maze_Gen : MonoBehaviour
 		}
 	}
 
-	// The code that Generates the path for the maze
+	// Generates the maze
 	private void Generate(Grid_Node node)
 	{
-		Grid_Node[] neighbour = new Grid_Node[4];
+		// The possible  neighbours
+		Grid_Node[] neighbour = new Grid_Node[neighbourCount];
 
 		// Selected start node, added to stack and marked as visited
 		m_Path.Push(node);
 
+		// continues while the nodes are 
 		while (m_Path.Count != 0)
 		{
 			node.SetVisited();
 			node = m_Path.Peek();
 
+			bool[] chosenNeighbour = new bool[4] { false, false, false, false };
+			bool neighbourFound = false;
+			bool randFound = false;
+			int rand;
+			int chosenIndex;
+
 			// Gathers all the neighbours
 			for (int i = 0; i < neighbourCount; i++)
 			{
 				neighbour[i] = GetNeighbour(node, i);
-			}
-
-			bool neighbourFound = false;
-
-			// Selects a neighbour that hasn't been visited 
-			for (int i = 0; i < neighbourCount; i++)
-			{
-				if (neighbour[i] != null && !neighbour[i].IsVisited())
+				
+				// Doesnt bother searching through these neighbours
+				if (neighbour[i] == null)
 				{
-					node.ConnectToNeighbour(i);
-					node = neighbour[i];
-					int reverseIndex = ReverseIndex(i);
-					node.ConnectToNeighbour(reverseIndex);
-					m_Path.Push(node);
-					neighbourFound = true;
-					break;
+					chosenNeighbour[i] = true;
 				}
 			}
 
+			// Random Neighbour isn't found
+			while (!randFound)
+			{
+				// Random number between 0 and 3
+				rand = Random.Range(0, 4);
 
+				// All neighbours have been searched
+				if (chosenNeighbour[0] == true && chosenNeighbour[1] == true && chosenNeighbour[2] == true && chosenNeighbour[3])
+				{
+					neighbourFound = false;
+					randFound = true;
+				}
+
+				// The neighbour hasnt been chosen
+				else if (chosenNeighbour[rand] == false)
+				{
+					chosenNeighbour[rand] = true;
+					chosenIndex = rand;
+
+					// The neighbour hasn't been visiten before
+					if (!neighbour[chosenIndex].IsVisited())
+					{
+						node.ConnectToNeighbour(chosenIndex);
+						node = neighbour[chosenIndex];
+						int reverseIndex = ReverseIndex(chosenIndex);
+						node.ConnectToNeighbour(reverseIndex);
+						m_Path.Push(node);
+						neighbourFound = true;
+						randFound = true;
+					}
+				}
+			}
+
+			// No neighbour has been found that hasn't been visited
 			if (!neighbourFound)
 			{
 				m_Path.Pop();
 			}
-			//int[] Num = new int[4] {0, 1, 2, 10};
-			//bool randFound = false;
-			//int rand = 10;
-
-			//while (randFound == false)
-			//{
-			//	rand = Random.Range(0, 4);
-
-			//	for (int i = 0; i < Num.Length; i++)
-			//	{
-			//		if (rand == Num[i])
-			//		{
-			//			Num[i] = 10;
-			//			randFound = true;
-			//			break;
-			//		}
-			//	}
-			//}
-
-			//while (randFound == false)
-			//{
-
-			//do
-			//{
-			//	rand = Random.Range(0, 4);
-			//	//randFound = true;
-			//	//Num[i] = 10;
-			//	//break;
-			//	if (neighbour[rand] != null && !neighbour[rand].IsVisited())
-			//	{
-			//		lastPos = rand;
-			//		Debug.Log("rand found" + rand);
-			//		node.ConnectToNeighbour(rand);
-			//		node = neighbour[rand];
-			//		int reverseIndex = ReverseIndex(rand);
-			//		node.ConnectToNeighbour(reverseIndex);
-			//		m_Path.Push(node);
-			//		neighbourFound = true;
-
-			//	//	break;
-			//	}
-
-			//	//}
-			//} while (rand == lastPos);
-
-			// while all neighbours have been visited 
-			
 		}
 	}
-	//}
-
-	//for (int i = 0, i < neighbour.Length; i++)
-	//{
-
-
-
 
 	// Spawns maze
 	private void InstantiateMaze()
@@ -225,62 +221,63 @@ public class Maze_Gen : MonoBehaviour
 		Grid_Node node;
 		Grid_Node neighbour;
 
+		// Goes through all nodes
 		for (int x = 0; x < gridWidth; x++)
 		{
 			for (int y = 0; y < gridHeight; y++)
 			{
 				node = m_Grid[x, y];
-
+				
+				// Draws a wall if the neighbour isn't connected
 				for (int i = 0; i < neighbourCount; i++)
 				{
 					neighbour = GetNeighbour(node, i);
 
 					if (!node.ConnectedToNeighbour(i) && neighbour != null)
 					{
-
+						neighbour.ConnectedToNeighbour(ReverseIndex(i));
 						Vector3 pos = Vector3.zero;
+						
+						GameObject b = Instantiate(wall);
+						b.transform.parent = m_Board.transform;
 
+						// Determins if the wall is verticle or horizontal
 						switch (i)
 						{
 							// The upper neighbour
 							case 0:
-								wall.transform.position = HorizontalPosition(node, neighbour);
-								wall.transform.localScale = HorizontalScale();
+								b.transform.position = HorizontalPosition(node, neighbour);
+								b.transform.localScale = HorizontalScale();
 								break;
 
 							// The left neighbour
 							case 1:
-								wall.transform.position = VerticalPosition(node, neighbour);
-								wall.transform.localScale = VerticalScale();
+								b.transform.position = VerticalPosition(node, neighbour);
+								b.transform.localScale = VerticalScale();
 								break;
 
 							// The right neighbour
 							case 2:
-								wall.transform.position = VerticalPosition(node, neighbour);
-								wall.transform.localScale = VerticalScale();
+								b.transform.position = VerticalPosition(node, neighbour);
+								b.transform.localScale = VerticalScale();
 
 								break;
 
 							// The bottom neighbour
 							case 3:
-								wall.transform.position = HorizontalPosition(node, neighbour);
-								wall.transform.localScale = HorizontalScale();
+								b.transform.position = HorizontalPosition(node, neighbour);
+								b.transform.localScale = HorizontalScale();
 								break;
 						}
 						 
-						
-						GameObject b = Instantiate(wall);
-						b.transform.parent = m_Board.transform;
-
-						// For debug sake
+						// For debug sake Generates a the actual node if it's not visited
 						if (!node.IsVisited())
 						{
-							wall.transform.position = node.GetPosition();
-							wall.transform.localScale = node.GetScale();
 							GameObject a = Instantiate(wall);
 							a.transform.parent = m_Board.transform;
+							a.transform.position = node.GetPosition();
+							a.transform.localScale = node.GetScale();
 						}
-
 					}
 				}
 			}
@@ -330,7 +327,7 @@ public class Maze_Gen : MonoBehaviour
 		return scale;
 	}
 
-
+	// Returns the reverse of the neighbour index 
 	public int ReverseIndex(int reverseIndex)
 	{
 		switch (reverseIndex)
@@ -353,6 +350,4 @@ public class Maze_Gen : MonoBehaviour
 		}
 		return reverseIndex;
 	}
-
-
 }
