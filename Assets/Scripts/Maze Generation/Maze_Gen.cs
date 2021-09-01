@@ -10,29 +10,41 @@ using UnityEngine;
 
 public class Maze_Gen : MonoBehaviour
 {
-	// The Bard to be parented to and the floor use for dimentions
+	// The Board to be parented to and the floor use for dimentions
+	// Bard is the parent object the transforms will use
 	public GameObject m_Board;
 	public GameObject m_Floor;
 
-	// The wall prefab
-	public GameObject wall;
+	// The wall, ball and gem prefabs
+	public GameObject wallPrefab;
+	public GameObject ballPrefab;
+	public GameObject gemPrefab;
+
+	private GameObject m_Maze;
+	private GameController m_GameController;
 
 	// Always will have 4 possible neighbours
-	int neighbourCount = 4;
+	private const int neighbourCount = 4;
 
 	// Size to be determined by the size of the floor
-	public int gridHeight;
-	public int gridWidth;
-	float floorHeight;
+	private float gridHeight;
+	private float gridWidth;
+	private float floorHeight;
+
+	private int nodeCountX;
+	private int nodeCountY;
 
 	// Set Path width
-	float pathWidth = 1.5f;
-	float pathHeight = 1.5f;
-	float pathTallness = 2.0f;
-	float wallWidth = 1.5f;
+	private float pathWidth = 1.5f;
+	private float pathHeight = 1.5f;
+	private float pathTallness = 2.0f;
+	private float wallWidth = 1.5f;
 
 	// Stack for the depth first Gen path
 	Stack<Grid_Node> m_Path;
+
+	Grid_Node m_StartNode;
+	Grid_Node m_EndNode;
 
 	// Starting point
 	Vector3 m_Start = Vector3.zero;
@@ -40,22 +52,36 @@ public class Maze_Gen : MonoBehaviour
 	// The 2D grid array
 	public Grid_Node[,] m_Grid;
 
+	private int m_GemCount;
+
 	// On start
 	private void Start()
 	{
+		m_Maze = GameObject.FindGameObjectWithTag("Maze");
+		if (m_Maze != null)
+		{
+			m_GameController = m_Maze.GetComponent<GameController>();
+		}
+
 		m_Path = new Stack<Grid_Node>();
 
 		// Setting the Dimensioons of the array
-		gridWidth = (int)((m_Floor.transform.localScale.x / (pathWidth + wallWidth)));
-		gridHeight = (int)((m_Floor.transform.localScale.z / (pathWidth + wallWidth)));
+		gridWidth = (m_Board.transform.localScale.x * m_Floor.transform.localScale.x);
+		gridHeight = (m_Board.transform.localScale.z * m_Floor.transform.localScale.z);
+		nodeCountX = (int)(gridWidth / (pathWidth + wallWidth));
+		nodeCountY = (int)(gridHeight / (pathWidth + wallWidth));
+
 		floorHeight = m_Floor.transform.localScale.y;
-		m_Grid = new Grid_Node[gridWidth, gridHeight];
+		m_Grid = new Grid_Node[nodeCountX, nodeCountY];
 
 		// Generates the maze
 		CreateGrid();
 		int randX, randY;
-		randX = Random.Range(0, gridWidth);
-		randY = Random.Range(0, gridHeight);
+		randX = Random.Range(0, nodeCountX);
+		randY = Random.Range(0, nodeCountY);
+
+		m_GemCount = Random.Range(1, 4);
+		m_GameController.SetGemCount(m_GemCount);
 		Generate(m_Grid[randX, randY]);
 		InstantiateMaze();
 	}
@@ -63,9 +89,9 @@ public class Maze_Gen : MonoBehaviour
 	// Creates the grid
 	private void CreateGrid()
 	{
-		for (int x = 0; x < gridWidth; x++)
+		for (int x = 0; x < nodeCountX; x++)
 		{
-			for (int y = 0; y < gridHeight; y++)
+			for (int y = 0; y < nodeCountY; y++)
 			{
 				// Creates Gridnodes for each element of the 2d array
 				m_Grid[x, y] = new Grid_Node();
@@ -79,9 +105,10 @@ public class Maze_Gen : MonoBehaviour
 
 				// Sets the position
 				Vector3 position;
-				position.x = (m_Start.x + x - (gridWidth / 2)) * (pathWidth + wallWidth);
-				position.y = floorHeight + (floorHeight / 2.0f);
-				position.z = (m_Start.z + y - gridHeight / 2) * (pathHeight + wallWidth);
+				position.x = (m_Start.x - (gridWidth / 2)) + ((x +1) * (pathWidth + wallWidth));
+				position.y = m_Floor.transform.position.y + floorHeight + (floorHeight / 2.0f);
+				position.z = (m_Start.z - (gridHeight / 2)) + ((y + 0.5f)* (pathHeight + wallWidth));
+
 				position = position + m_Start;
 				m_Grid[x, y].SetPosition(position);
 
@@ -119,11 +146,11 @@ public class Maze_Gen : MonoBehaviour
 			// Returns null if the neighbour doesn't exist
 			float minX, maxX;
 			minX = 0;
-			maxX = gridWidth;
+			maxX = nodeCountX;
 
 			float minY, maxY;
 			minY = 0;
-			maxY = gridHeight;
+			maxY = nodeCountY;
 
 			if (x < minX || x >= maxX)
 				return null;
@@ -143,6 +170,14 @@ public class Maze_Gen : MonoBehaviour
 	// Generates the maze
 	private void Generate(Grid_Node node)
 	{
+		// sets the start and end nodes
+		m_StartNode = node;
+
+		int randX, randY;
+		randX = Random.Range(0, nodeCountX);
+		randY = Random.Range(0, nodeCountY);
+		m_EndNode = m_Grid[randX, randY];
+
 		// The possible  neighbours
 		Grid_Node[] neighbour = new Grid_Node[neighbourCount];
 
@@ -222,12 +257,13 @@ public class Maze_Gen : MonoBehaviour
 		Grid_Node neighbour;
 
 		// Goes through all nodes
-		for (int x = 0; x < gridWidth; x++)
+		for (int x = 0; x < nodeCountX; x++)
 		{
-			for (int y = 0; y < gridHeight; y++)
+			for (int y = 0; y < nodeCountY; y++)
 			{
 				node = m_Grid[x, y];
-				
+				node.SetVisited();
+
 				// Draws a wall if the neighbour isn't connected
 				for (int i = 0; i < neighbourCount; i++)
 				{
@@ -235,10 +271,10 @@ public class Maze_Gen : MonoBehaviour
 
 					if (!node.ConnectedToNeighbour(i) && neighbour != null)
 					{
-						neighbour.ConnectedToNeighbour(ReverseIndex(i));
+						neighbour.ConnectToNeighbour(ReverseIndex(i));
 						Vector3 pos = Vector3.zero;
 						
-						GameObject b = Instantiate(wall);
+						GameObject b = Instantiate(wallPrefab);
 						b.transform.parent = m_Board.transform;
 
 						// Determins if the wall is verticle or horizontal
@@ -273,7 +309,7 @@ public class Maze_Gen : MonoBehaviour
 						// For debug sake Generates a the actual node if it's not visited
 						if (!node.IsVisited())
 						{
-							GameObject a = Instantiate(wall);
+							GameObject a = Instantiate(wallPrefab);
 							a.transform.parent = m_Board.transform;
 							a.transform.position = node.GetPosition();
 							a.transform.localScale = node.GetScale();
@@ -281,6 +317,21 @@ public class Maze_Gen : MonoBehaviour
 					}
 				}
 			}
+		}
+
+		GameObject ball = Instantiate(ballPrefab);
+		Vector3 Offset = new Vector3(0, 5, 0);
+		ball.transform.position = (m_StartNode.GetPosition() + Offset);
+
+		for (int i = 0; i < m_GemCount; i ++)
+		{
+			int randX, randY;
+			randX = Random.Range(0, nodeCountX);
+			randY = Random.Range(0, nodeCountY);
+			GameObject gem = Instantiate(gemPrefab);
+			gem.transform.position = m_Grid[randX, randY].GetPosition();
+			gem.transform.parent = m_Board.transform;
+			Debug.Log("Spawned Gem");
 		}
 	}
 
@@ -309,9 +360,9 @@ public class Maze_Gen : MonoBehaviour
 	public Vector3 HorizontalScale()
 	{
 		Vector3 scale;
-		scale.x = 3.0f;
-		scale.y = 2.0f;
-		scale.z = 0.5f;
+		scale.x = 3.0f / m_Board.transform.localScale.x;
+		scale.y = 2.0f / m_Board.transform.localScale.y;
+		scale.z = 0.5f / m_Board.transform.localScale.z;
 
 		return scale;
 	}
@@ -320,9 +371,9 @@ public class Maze_Gen : MonoBehaviour
 	public Vector3 VerticalScale()
 	{
 		Vector3 scale;
-		scale.x = 0.5f;
-		scale.y = 2.0f;
-		scale.z = 3.0f;
+		scale.x = 0.5f / m_Board.transform.localScale.x;
+		scale.y = 2.0f / m_Board.transform.localScale.y;
+		scale.z = 3.0f / m_Board.transform.localScale.z;
 
 		return scale;
 	}
@@ -350,4 +401,18 @@ public class Maze_Gen : MonoBehaviour
 		}
 		return reverseIndex;
 	}
+
+	// Returns the start node
+	public Grid_Node GetStartNode()
+	{
+		return m_StartNode;
+	}
+
+	// Returns the Final node
+	public Grid_Node GetEndNode()
+	{
+		return m_EndNode;
+	}
+
+
 }
