@@ -56,17 +56,18 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\MazeGeneration.cs" />
     <Compile Include="Assets\Scripts\Maze Generation\Grid_Node.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
     <Compile Include="Assets\Scripts\MazeLRController.cs" />
     <Compile Include="Assets\Scripts\MazeUDController.cs" />
     <Compile Include="Assets\AurynSky\Gems Ultimate Pack\Scripts\AnimationScript.cs" />
+    <Compile Include="Assets\Scripts\Sound and Art\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Gem.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Temp\Simple_Player_Movement.cs" />
     <Compile Include="Assets\Scripts\Maze Generation\Maze_Gen.cs" />
-    <Compile Include="Assets\Scripts\Sound and Art\SoundManager.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
