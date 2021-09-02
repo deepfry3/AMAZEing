@@ -228,8 +228,9 @@ public class MazeGeneration : MonoBehaviour
 
 			// Create gem and set position based on the node's position
 			GameObject gem = Instantiate(m_GemPrefab);
+			Vector3 gemSpawnOffset = new Vector3(0.0f, 1.0f, 0.0f);
 			gem.transform.parent = m_Board.transform;
-			gem.transform.localPosition = m_MazeGrid[x, y].Position;
+			gem.transform.localPosition = m_MazeGrid[x, y].Position + gemSpawnOffset;
 		}
 	}
 

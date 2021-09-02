@@ -18,9 +18,8 @@ public class GameController : MonoBehaviour
 	// Private variables
 	private float m_TimeRemaining = 0;                  // Time taken during gameplay
 
-	private int m_GemCount = 0;                         // The count of the gems
-	private int m_GemTotal = 0;
-
+	private int m_Gemscollected = 0;                         
+	
 	// Static
 	public static int GemCount = 0;
 	private SoundManager m_Sound;                       // The Sound manager
@@ -62,20 +61,20 @@ public class GameController : MonoBehaviour
 		m_TimeCounter.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 
 		// Update Gem counter
-		m_GemCounter.text = ("" + m_GemCount + " / " + m_GemTotal);
+		m_GemCounter.text = ("" + m_Gemscollected + " / " + GemCount);
 	}
 
 	// Adds gems to the gem counter
 	public void AddGem()
 	{
-		m_GemCount++;
+		m_Gemscollected++;
 		m_Sound.PlayGemCollected();
 	}
 	
 	// Sets the total amount of gems 
 	public void SetGemCount(int count)
 	{
-		m_GemTotal = count;
+		GemCount = count;
 	}
 
 	// Runs when the maze has been completed

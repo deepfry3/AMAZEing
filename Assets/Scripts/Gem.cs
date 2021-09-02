@@ -7,14 +7,13 @@ using UnityEngine;
 //
 public class Gem : MonoBehaviour
 { 
-    private SphereCollider m_Collider;
+
     private GameObject m_Maze;
     private GameController m_GameController;
 
     // Start is called before the first frame update
     void Start()
     {
-        m_Collider = GetComponent<SphereCollider>();
         m_Maze = GameObject.FindGameObjectWithTag("Maze");
         if(m_Maze != null)
 		{
