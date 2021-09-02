@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.28462127, g: 0.37120965, b: 0.49880528, a: 1}
+  m_IndirectSpecularColor: {r: 0.2846214, g: 0.37120992, b: 0.498806, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -379,6 +379,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
+--- !u!1 &136831563 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3709348213615687650, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
+  m_PrefabInstance: {fileID: 136831562}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &294671225
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1699,7 +1704,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.75
+      value: 12.72
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1894,6 +1899,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1634500782}
   - component: {fileID: 1634500781}
+  - component: {fileID: 1634500783}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1929,6 +1935,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1634500783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634500780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e66bb9092e579c46831c66defb5602c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Board: {fileID: 656763704}
+  m_Floor: {fileID: 136831563}
+  m_WallPrefab: {fileID: 3578675055094522216, guid: 8f80e70a4d2644449a545916f3644065, type: 3}
+  m_BallPrefab: {fileID: 3364666516046432939, guid: 74a3ab7a1c3eb4745aaf448ebd95465a, type: 3}
+  m_GemPrefab: {fileID: 7157106576974346405, guid: be25cd019d5a3524db9cd4ede02c5f9a, type: 3}
+  m_GridWidth: 5
+  m_GridHeight: 4
+  m_MinGemCount: 1
+  m_MaxGemCount: 3
 --- !u!1 &1651437565
 GameObject:
   m_ObjectHideFlags: 0
@@ -2616,6 +2643,10 @@ PrefabInstance:
     - target: {fileID: 3364666516046432939, guid: 74a3ab7a1c3eb4745aaf448ebd95465a, type: 3}
       propertyPath: m_Name
       value: Ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 3364666516046432939, guid: 74a3ab7a1c3eb4745aaf448ebd95465a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3364666516046432943, guid: 74a3ab7a1c3eb4745aaf448ebd95465a, type: 3}
       propertyPath: m_LocalPosition.x

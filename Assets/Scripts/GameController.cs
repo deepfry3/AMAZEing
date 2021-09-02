@@ -21,7 +21,8 @@ public class GameController : MonoBehaviour
 	private int m_GemCount = 0;                         // The count of the gems
 	private int m_GemTotal = 0;
 
-	
+	// Static
+	public static int GemCount = 0;
 	#endregion
 
 	#region Functions
