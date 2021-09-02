@@ -105,9 +105,9 @@ public class Maze_Gen : MonoBehaviour
 
 				// Sets the position
 				Vector3 position;
-				position.x = (m_Start.x - (gridWidth / 2)) + ((x +1) * (pathWidth + wallWidth));
+				position.x = (m_Start.x - (gridWidth / 2)) + ((x + 1) * (pathWidth + wallWidth));
 				position.y = m_Floor.transform.position.y + floorHeight + (floorHeight / 2.0f);
-				position.z = (m_Start.z - (gridHeight / 2)) + ((y + 0.5f)* (pathHeight + wallWidth));
+				position.z = (m_Start.z - (gridHeight / 2)) + ((y + 0.5f) * (pathHeight + wallWidth));
 
 				position = position + m_Start;
 				m_Grid[x, y].SetPosition(position);
@@ -200,7 +200,7 @@ public class Maze_Gen : MonoBehaviour
 			for (int i = 0; i < neighbourCount; i++)
 			{
 				neighbour[i] = GetNeighbour(node, i);
-				
+
 				// Doesnt bother searching through these neighbours
 				if (neighbour[i] == null)
 				{
@@ -273,7 +273,7 @@ public class Maze_Gen : MonoBehaviour
 					{
 						neighbour.ConnectToNeighbour(ReverseIndex(i));
 						Vector3 pos = Vector3.zero;
-						
+
 						GameObject b = Instantiate(wallPrefab);
 						b.transform.parent = m_Board.transform;
 
@@ -305,7 +305,7 @@ public class Maze_Gen : MonoBehaviour
 								b.transform.localScale = HorizontalScale();
 								break;
 						}
-						 
+
 						// For debug sake Generates a the actual node if it's not visited
 						if (!node.IsVisited())
 						{
@@ -323,7 +323,7 @@ public class Maze_Gen : MonoBehaviour
 		Vector3 Offset = new Vector3(0, 5, 0);
 		ball.transform.position = (m_StartNode.GetPosition() + Offset);
 
-		for (int i = 0; i < m_GemCount; i ++)
+		for (int i = 0; i < m_GemCount; i++)
 		{
 			int randX, randY;
 			randX = Random.Range(0, nodeCountX);
