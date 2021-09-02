@@ -2397,7 +2397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_GemCollected: {fileID: 1413902047}
-  m_BackroundNoise: {fileID: 0}
+  m_BackroundNoise: {fileID: 981997140}
 --- !u!82 &1413902047
 AudioSource:
   m_ObjectHideFlags: 0
