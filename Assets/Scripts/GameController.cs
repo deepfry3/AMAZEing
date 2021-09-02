@@ -23,9 +23,17 @@ public class GameController : MonoBehaviour
 
 	// Static
 	public static int GemCount = 0;
+	private SoundManager m_Sound;                       // The Sound manager
 	#endregion
 
 	#region Functions
+
+	void Start()
+	{
+		m_Sound = GetComponent<SoundManager>();
+		StartGame();
+	}
+
 	// Called every frame - updates the time remaining counter
 	void Update()
 	{
@@ -61,7 +69,7 @@ public class GameController : MonoBehaviour
 	public void AddGem()
 	{
 		m_GemCount++;
-		// Play Sound here
+		m_Sound.PlayGemCollected();
 	}
 	
 	// Sets the total amount of gems 
@@ -81,5 +89,14 @@ public class GameController : MonoBehaviour
 	{
 		// generate maze
 	}
+
+	// Starts the game
+	private void StartGame()
+	{
+		m_Sound.SetMusicVolume(0.5f);
+		m_Sound.SetGemVolume(1.0f);
+		m_Sound.PlayBackroundMusic();
+	}
+
 	#endregion
 }
