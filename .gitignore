@@ -8,5 +8,4 @@
 
 # File types
 *.sln
-
-
+*.csproj
