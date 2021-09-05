@@ -7,7 +7,6 @@ using UnityEngine;
 //
 public class Gem : MonoBehaviour
 { 
-
     private GameObject m_Maze;
     private GameController m_GameController;
 
@@ -20,6 +19,7 @@ public class Gem : MonoBehaviour
             m_GameController = m_Maze.GetComponent<GameController>();
 		}
     }
+    
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -28,7 +28,8 @@ public class Gem : MonoBehaviour
         if(other.tag == "Ball")
 		{
             m_GameController.AddGem();
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
 		}
 	}
 }
