@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
 {
 	#region Variables
 	// Public variables
+	public GameObject m_DanceGuyPrefab;					// Prefab for the dance animation
 	public TextMeshPro m_TimeCounter = null;			// TMP object that displays time to player
 	public TextMeshPro m_GemCounter = null;             // TMP object that displays gem count to player
 
@@ -23,6 +24,7 @@ public class GameController : MonoBehaviour
 	// Static
 	public static int GemCount = 0;
 	private SoundManager m_Sound;                       // The Sound manager
+	private MazeGeneration m_MazeGen;					// The maze generator
 	#endregion
 
 	#region Functions
@@ -30,6 +32,7 @@ public class GameController : MonoBehaviour
 	void Start()
 	{
 		m_Sound = GetComponent<SoundManager>();
+		m_MazeGen = GetComponent<MazeGeneration>();
 		StartGame();
 	}
 
@@ -48,11 +51,20 @@ public class GameController : MonoBehaviour
 					if (hit.transform.gameObject.name == "MainMenuButton")
 						Debug.Log("Clicked 'Main Menu'");
 					if (hit.transform.gameObject.name == "RestartButton")
+					{
 						Debug.Log("Clicked 'Restart'");
+						RestartMaze();
+					}
 				}
 			}
 		}
-
+		
+		// All the gems have been collected
+		if (m_Gemscollected == GemCount)
+		{
+			m_Gemscollected = 0;
+			OnAllGemsCollected();
+		}
 
 		// Update time counter
 		m_TimeRemaining += Time.deltaTime;
@@ -77,24 +89,41 @@ public class GameController : MonoBehaviour
 		GemCount = count;
 	}
 
+	// Runs when all gems are collected
+	public void OnAllGemsCollected()
+	{
+		m_MazeGen.Generate();
+	}
+
 	// Runs when the maze has been completed
 	public void OnComplete()
 	{
 		// do stuff
 	}
 
-	// Generated the maze
-	public void GenerateMaze()
-	{
-		// generate maze
-	}
-
 	// Starts the game
 	private void StartGame()
 	{
-		m_Sound.SetMusicVolume(0.5f);
+		Instantiate(m_DanceGuyPrefab);
+		m_MazeGen.Generate();
+		m_Sound.SetMusicVolume(0.3f);
 		m_Sound.SetGemVolume(1.0f);
 		m_Sound.PlayBackroundMusic();
+	}
+
+	// Restarts the maze
+	private void RestartMaze()
+	{
+		m_Gemscollected = 0;
+		m_TimeRemaining = 0;
+		m_MazeGen.RestartMaze();
+	}
+
+	public void OnFinish()
+	{
+		m_Gemscollected = 0;
+		m_TimeRemaining = 0;
+		m_MazeGen.RestartMaze();
 	}
 
 	#endregion

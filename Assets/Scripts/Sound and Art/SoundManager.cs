@@ -14,8 +14,8 @@ public class SoundManager : MonoBehaviour
     private GameObject m_Camera;
 
     // From 0.0f - 1.0f
-    private float m_MusicVolume = 1.0f;
-    private float m_GemVolume = 1.0f;
+    private float m_MusicVolume = 0.0f;
+    private float m_GemVolume = 0.0f;
 
     private bool m_VolumeChange = false;
 
@@ -31,8 +31,9 @@ public class SoundManager : MonoBehaviour
         m_GemCollected = GetComponent<AudioSource>();
     }
 
-    // Updates at a fixed time
-	private void FixedUpdate()
+    // Updates at a 
+
+	void update()
 	{
 		if(m_VolumeChange)
 		{
