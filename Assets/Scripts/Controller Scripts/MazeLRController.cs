@@ -42,9 +42,9 @@ public class MazeLRController : MonoBehaviour
 	{
 		// Get input from W/S keys or U/D arrows and store in vector
 		m_InputVector = Vector3.zero;
-		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+		if (InputController.Instance.Left)
 			m_InputVector.z += 1.0f;
-		if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+		if (InputController.Instance.Right)
 			m_InputVector.z -= 1.0f;
 	}
 

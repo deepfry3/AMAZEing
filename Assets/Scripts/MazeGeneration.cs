@@ -109,7 +109,7 @@ public class MazeGeneration : MonoBehaviour
 		m_IsGenerated = true;
 
 		// Set random amount of gems to create, then create maze
-		GameController.GemCount = Random.Range((int)m_MinGemCount, (int)m_MaxGemCount);
+		GameController.m_GemCount = Random.Range((int)m_MinGemCount, (int)m_MaxGemCount);
 		GenerateMaze();
 		InstantiateMaze();
 	}
@@ -260,7 +260,7 @@ public class MazeGeneration : MonoBehaviour
 		m_Ball = ball;
 
 		// Instantiate Gems
-		for (int i = 0; i < GameController.GemCount; i++)
+		for (int i = 0; i < GameController.m_GemCount; i++)
 		{
 			// Randomly generate gem position on the maze grid
 			int x = Random.Range(0, (int)m_GridWidth);
@@ -274,15 +274,12 @@ public class MazeGeneration : MonoBehaviour
 			m_Gems.Add(gem);
 		}
 
-		int X = Random.Range(0, (int)m_GridWidth);
-		int Y = Random.Range(0, (int)m_GridHeight);
-		// Create gem and set position based on the node's position
+		// Instantiate flag
 		GameObject flag = Instantiate(m_FlagPrefab);
 		Vector3 flagSpawnOffset = new Vector3(0.0f, -0.5f, 0.0f);
 		flag.transform.parent = m_Board.transform;
-		flag.transform.localPosition = m_MazeGrid[X, Y].Position + flagSpawnOffset;
+		flag.transform.localPosition = m_EndNode.Position + flagSpawnOffset;
 		m_Flag = flag;
-
 	}
 
 	// Returns the node at the specified index:
