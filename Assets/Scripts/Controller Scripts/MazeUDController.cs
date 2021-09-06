@@ -39,9 +39,9 @@ public class MazeUDController : MonoBehaviour
 	{
 		// Get input from W/S keys or U/D arrows and store in vector
 		m_InputVector = Vector3.zero;
-		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+		if (InputController.Instance.Up)
 			m_InputVector.x += 1.0f;
-		if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+		if (InputController.Instance.Down)
 			m_InputVector.x -= 1.0f;
 	}
 
