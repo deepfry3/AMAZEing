@@ -24,18 +24,29 @@ public class GameController : MonoBehaviour
 
 	// Private variables
 	private float m_TimeCounter = 0.0f;					// Time taken during gameplay
-	private GameState m_State;							// Current game state
+	private GameState m_State;                          // Current game state
+	private static GameController m_Instance;			// Instance of singleton
 
 	private int m_Gemscollected = 0;                         
 	
 	// Static
 	public static int GemCount = 0;
 	private SoundManager m_Sound;                       // The Sound manager
-	private MazeGeneration m_MazeGen;					// The maze generator
+	private MazeGeneration m_MazeGen;                   // The maze generator
+
+	// Properties
+	public static GameController Instance { get { return m_Instance; } }
 	#endregion
 
 	#region Functions
-
+	// Initialize Singleton
+	void Awake()
+	{
+		if (m_Instance != null && m_Instance != this)
+			Destroy(this.gameObject);
+		else
+			m_Instance = this;
+	}
 	void Start()
 	{
 		m_Sound = GetComponent<SoundManager>();
@@ -151,6 +162,7 @@ public class GameController : MonoBehaviour
 				break;
 			case GameState.FINISH:
 				m_LCDText.text = "YOU WIN";
+				m_TimeCounter = 0.0f;
 				break;
 		}
 	}
