@@ -17,22 +17,13 @@ public class InputController : MonoBehaviour
 {
 	#region Variables/Properties
 	// Pubilc
-	public GameObject m_UpButton = null;
-	public GameObject m_DownButton = null;
-	public GameObject m_LeftButton = null;
-	public GameObject m_RightButton = null;
-
-	// Private
-	private bool m_Up = false;
-	private bool m_Down = false;
-	private bool m_Left = false;
-	private bool m_Right = false;
+	public GameObject[] m_Buttons = null;					// Array of on-screen button objects (U, D, L, R)
 
 	// -- Properties --
-	public bool Up { get { return m_Up; } }
-	public bool Down { get { return m_Down; } }
-	public bool Left { get { return m_Left; } }
-	public bool Right { get { return m_Right; } }
+	public bool Up { get; private set; }					// Whether or not Up key (on-screen or keyboard) is being pressed
+	public bool Down { get; private set; }                  // Whether or not Down key (on-screen or keyboard) is being pressed
+	public bool Left { get; private set; }                  // Whether or not Left key (on-screen or keyboard) is being pressed
+	public bool Right { get; private set; }                 // Whether or not Right key (on-screen or keyboard) is being pressed
 
 	#region Singleton
 	private static InputController m_Instance;
@@ -64,7 +55,7 @@ public class InputController : MonoBehaviour
 	void Update()
 	{
 		// Process on-screen button presses
-		bool upTouch = false, downTouch = false, leftTouch = false, rightTouch = false;
+		bool[] touchInput = new bool[4];
 		if (Input.GetMouseButton(0))
 		{
 			// Raycast the mouse position
@@ -75,18 +66,35 @@ public class InputController : MonoBehaviour
 			// Check for hits
 			if (mouseHit.transform != null)
 			{
-				upTouch = mouseHit.transform.gameObject == m_UpButton;
-				downTouch = mouseHit.transform.gameObject == m_DownButton;
-				leftTouch = mouseHit.transform.gameObject == m_LeftButton;
-				rightTouch = mouseHit.transform.gameObject == m_RightButton;
+				for (int i = 0; i < 4; i++)
+					touchInput[i] = mouseHit.transform.gameObject == m_Buttons[i];
 			}
 		}
 
 		// Store result of keypress
-		m_Up =		Input.GetKey(KeyCode.UpArrow)		|| Input.GetKey(KeyCode.W)	|| upTouch;
-		m_Down =	Input.GetKey(KeyCode.DownArrow)		|| Input.GetKey(KeyCode.S)	|| downTouch;
-		m_Left =	Input.GetKey(KeyCode.LeftArrow)		|| Input.GetKey(KeyCode.A)	|| leftTouch;
-		m_Right =	Input.GetKey(KeyCode.RightArrow)	|| Input.GetKey(KeyCode.D)	|| rightTouch;
+		Up =	Input.GetKey(KeyCode.UpArrow)		|| Input.GetKey(KeyCode.W)	|| touchInput[0];
+		Down =	Input.GetKey(KeyCode.DownArrow)		|| Input.GetKey(KeyCode.S)	|| touchInput[1];
+		Left =	Input.GetKey(KeyCode.LeftArrow)		|| Input.GetKey(KeyCode.A)	|| touchInput[2];
+		Right =	Input.GetKey(KeyCode.RightArrow)	|| Input.GetKey(KeyCode.D)	|| touchInput[3];
+
+		// Set position of on-screen keys based on press
+		SetButtonZ(0, (Up ? 0.1f : 0.0f));
+		SetButtonZ(1, (Down ? 0.1f : 0.0f));
+		SetButtonZ(2, (Left ? 0.1f : 0.0f));
+		SetButtonZ(3, (Right ? 0.1f : 0.0f));
+	}
+	#endregion
+
+	#region Functions
+	/// <summary>
+	/// Sets the Z position of the specified Button.
+	/// </summary>
+	/// <param name="index">The index of the Button to change</param>
+	/// <param name="Z">The Z position to set</param>
+	private void SetButtonZ(int index, float z)
+	{
+		Vector3 currentPos = m_Buttons[index].transform.localPosition;
+		m_Buttons[index].transform.localPosition = new Vector3(currentPos.x, currentPos.y, z);
 	}
 	#endregion
 }
