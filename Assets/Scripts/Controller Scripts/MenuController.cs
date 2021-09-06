@@ -8,7 +8,7 @@ public class MenuController : MonoBehaviour
 	// Public
 	public float m_TransitionSpeed = 1.0f;                  // How quickly to transition between two positions
 	public GameObject m_DrawerButton;                       // Button object that triggers drawer opening/closing
-	public GameObject[] m_MenuButtons;				        // Array of button objects that trigger options changing
+	public GameObject[] m_MenuButtons;                      // Array of button objects that trigger options changing
 
 	// Private
 	private Transform m_Transform;                          // The menu drawer's transform component

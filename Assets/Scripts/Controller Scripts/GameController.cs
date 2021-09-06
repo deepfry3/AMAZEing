@@ -8,16 +8,23 @@ using TMPro;
  * GameController is used to manage everything within the 'Game' state.
  */
 
+public enum GameState
+{
+	PAUSED,												// No game has been initiated or active game is paused
+	GAME,												// Currently playing
+	FINISH												// Player won
+}
+
 public class GameController : MonoBehaviour
 {
 	#region Variables
 	// Public variables
-	public GameObject m_DanceGuyPrefab;					// Prefab for the dance animation
-	public TextMeshPro m_TimeCounter = null;			// TMP object that displays time to player
-	public TextMeshPro m_GemCounter = null;             // TMP object that displays gem count to player
+	public GameObject m_DanceGuyPrefab;                 // Prefab for the dance animation
+	public TextMeshPro m_LCDText;						// TMP object that displays info to player
 
 	// Private variables
-	private float m_TimeRemaining = 0;                  // Time taken during gameplay
+	private float m_TimeCounter = 0.0f;					// Time taken during gameplay
+	private GameState m_State;							// Current game state
 
 	private int m_Gemscollected = 0;                         
 	
@@ -34,6 +41,8 @@ public class GameController : MonoBehaviour
 		m_Sound = GetComponent<SoundManager>();
 		m_MazeGen = GetComponent<MazeGeneration>();
 		StartGame();
+		SetState(GameState.GAME);
+		m_TimeCounter = 0;
 	}
 
 	// Called every frame - updates the time remaining counter
@@ -67,13 +76,13 @@ public class GameController : MonoBehaviour
 		}
 
 		// Update time counter
-		m_TimeRemaining += Time.deltaTime;
-		float minutes = Mathf.FloorToInt(m_TimeRemaining / 60.0f);
-		float seconds = Mathf.FloorToInt(m_TimeRemaining % 60.0f);
-		m_TimeCounter.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-
-		// Update Gem counter
-		m_GemCounter.text = ("" + m_Gemscollected + " / " + GemCount);
+		if (m_State == GameState.GAME)
+		{
+			m_TimeCounter += Time.deltaTime;
+			float minutes = Mathf.FloorToInt(m_TimeCounter / 60.0f);
+			float seconds = Mathf.FloorToInt(m_TimeCounter % 60.0f);
+			m_LCDText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+		}
 	}
 
 	// Adds gems to the gem counter
@@ -115,15 +124,35 @@ public class GameController : MonoBehaviour
 	private void RestartMaze()
 	{
 		m_Gemscollected = 0;
-		m_TimeRemaining = 0;
+		m_TimeCounter = 0;
 		m_MazeGen.RestartMaze();
 	}
 
 	public void OnFinish()
 	{
 		m_Gemscollected = 0;
-		m_TimeRemaining = 0;
+		m_TimeCounter = 0;
 		m_MazeGen.RestartMaze();
+	}
+
+	public void SetState(GameState state)
+	{
+		// Set state as specified
+		m_State = state;
+
+		// Update LCD text accordingly
+		switch (state)
+		{
+			case GameState.PAUSED:
+				m_LCDText.text = "PAUSED";
+				break;
+			case GameState.GAME:
+				m_LCDText.text = "00:00";
+				break;
+			case GameState.FINISH:
+				m_LCDText.text = "YOU WIN";
+				break;
+		}
 	}
 
 	#endregion
