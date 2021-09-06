@@ -109,7 +109,7 @@ public class MazeGeneration : MonoBehaviour
 		m_IsGenerated = true;
 
 		// Set random amount of gems to create, then create maze
-		GameController.GemCount = Random.Range((int)m_MinGemCount, (int)m_MaxGemCount);
+		GameController.m_GemCount = Random.Range((int)m_MinGemCount, (int)m_MaxGemCount);
 		GenerateMaze();
 		InstantiateMaze();
 	}
@@ -260,7 +260,7 @@ public class MazeGeneration : MonoBehaviour
 		m_Ball = ball;
 
 		// Instantiate Gems
-		for (int i = 0; i < GameController.GemCount; i++)
+		for (int i = 0; i < GameController.m_GemCount; i++)
 		{
 			// Randomly generate gem position on the maze grid
 			int x = Random.Range(0, (int)m_GridWidth);

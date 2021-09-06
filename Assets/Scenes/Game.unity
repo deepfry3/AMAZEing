@@ -1817,12 +1817,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransitionSpeed: 2.5
-  m_GamePosition: {x: 0, y: 25, z: -25}
-  m_GameRotation: {x: 0.38268346, y: 0, z: 0, w: 0.9238795}
-  m_GameFOV: 50
-  m_MenuPosition: {x: -7.5, y: 15, z: -28}
-  m_MenuRotation: {x: 0.4226184, y: 0, z: 0, w: 0.9063077}
-  m_MenuFOV: 40
+  m_GameSettings:
+    position: {x: 0, y: 25, z: -25}
+    rotation: {x: 0.38268346, y: 0, z: 0, w: 0.9238795}
+    fieldOfView: 50
+  m_MenuSettings:
+    position: {x: -7.5, y: 15, z: -28}
+    rotation: {x: 0.4226184, y: 0, z: 0, w: 0.9063077}
+    fieldOfView: 40
 --- !u!1 &785414079 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3709348213615687650, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}

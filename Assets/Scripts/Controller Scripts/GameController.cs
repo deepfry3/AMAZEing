@@ -30,7 +30,7 @@ public enum GameState
 /// </summary>
 public class GameController : MonoBehaviour
 {
-	#region Variables
+	#region Variables/Properties
 	// -- Public --
 	public GameObject m_DanceGuyPrefab;                 // Prefab for dancing man object
 	public TextMeshPro m_LCDText;                       // TMP that displays info to player
