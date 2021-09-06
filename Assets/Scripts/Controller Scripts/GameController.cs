@@ -5,87 +5,94 @@ using TMPro;
 
 /* Author: Cameron, Declan
  * 
- * GameController is used to manage everything within the 'Game' state.
+ * GameController is a Singleton used to manage everything within the 'Game' state, meaning references to
+ * it do not need to be stored, and its public properties can be accessed via GameController.Instance.
+ * 
+ * This class manages everything relating to managing the game state.
  */
 
+/// <summary>
+/// Enum for the basic states in the game for what the player is currently doing.
+/// </summary>
 public enum GameState
 {
-	PAUSED,												// No game has been initiated or active game is paused
-	GAME,												// Currently playing
-	FINISH												// Player won
+	/// <summary> An active game is currently paused. </summary>
+	PAUSED,
+	/// <summary> The game is currently in progress. </summary>
+	GAME,
+	/// <summary> Game is over (won/lost). </summary>
+	FINISH
 }
 
+/// <summary>
+/// Manages everything relating to the active game.
+/// (Properties accessed with <c>GameController.Instance</c>.)
+/// </summary>
 public class GameController : MonoBehaviour
 {
 	#region Variables
-	// Public variables
-	public GameObject m_DanceGuyPrefab;                 // Prefab for the dance animation
-	public TextMeshPro m_LCDText;						// TMP object that displays info to player
+	// -- Public --
+	public GameObject m_DanceGuyPrefab;                 // Prefab for dancing man object
+	public TextMeshPro m_LCDText;                       // TMP that displays info to player
+	public static int m_GemCount = 0;					// ???
 
-	// Private variables
-	private float m_TimeCounter = 0.0f;					// Time taken during gameplay
-	private GameState m_State;                          // Current game state
-	private static GameController m_Instance;			// Instance of singleton
+	// -- Private --
+	private GameState m_State;							// Current GameController state
+	private SoundManager m_Sound;                       // Reference to SoundManager class
+	private MazeGeneration m_MazeGen;                   // Reference to MazeGeneration class
+	private float m_TimeCounter = 0.0f;                 // Time taken during gameplay
+	private int m_GemsCollected = 0;					// ???
 
-	private int m_Gemscollected = 0;                         
-	
-	// Static
-	public static int GemCount = 0;
-	private SoundManager m_Sound;                       // The Sound manager
-	private MazeGeneration m_MazeGen;                   // The maze generator
+	// -- Properties --
+	// (currently blank)
 
-	// Properties
-	public static GameController Instance { get { return m_Instance; } }
+	#region Singleton
+	private static GameController m_Instance;
+	public static GameController Instance
+	{ 
+		get { return m_Instance; }
+	}
+	#endregion
 	#endregion
 
-	#region Functions
-	// Initialize Singleton
+	#region Unity Functions
+	/// <summary>
+	/// Called on Awake.
+	/// Initializes Singleton.
+	/// </summary>
 	void Awake()
 	{
+		// Initialize Singleton
 		if (m_Instance != null && m_Instance != this)
 			Destroy(this.gameObject);
 		else
 			m_Instance = this;
 	}
+
+	/// <summary>
+	/// Called on Start.
+	/// Caches components and initializes the game.
+	/// </summary>
 	void Start()
 	{
+		// Cache components
 		m_Sound = GetComponent<SoundManager>();
 		m_MazeGen = GetComponent<MazeGeneration>();
-		StartGame();
+
+		// Initialize variables
+		m_TimeCounter = 0.0f;
 		SetState(GameState.GAME);
-		m_TimeCounter = 0;
+
+		// Initialize game
+		StartGame();
 	}
 
-	// Called every frame - updates the time remaining counter
+	/// <summary>
+	/// Called on Update.
+	/// Processes game loop.
+	/// </summary>
 	void Update()
 	{
-		// Process clicks on GUI buttons
-		if (Input.GetMouseButtonDown(0))
-		{
-			RaycastHit hit;
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			if (Physics.Raycast(ray, out hit, 100.0f))
-			{
-				if (hit.transform != null)
-				{
-					if (hit.transform.gameObject.name == "MainMenuButton")
-						Debug.Log("Clicked 'Main Menu'");
-					if (hit.transform.gameObject.name == "RestartButton")
-					{
-						Debug.Log("Clicked 'Restart'");
-						RestartMaze();
-					}
-				}
-			}
-		}
-		
-		// All the gems have been collected
-		if (m_Gemscollected == GemCount)
-		{
-			m_Gemscollected = 0;
-			OnAllGemsCollected();
-		}
-
 		// Update time counter
 		if (m_State == GameState.GAME)
 		{
@@ -94,58 +101,22 @@ public class GameController : MonoBehaviour
 			float seconds = Mathf.FloorToInt(m_TimeCounter % 60.0f);
 			m_LCDText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 		}
-	}
 
-	// Adds gems to the gem counter
-	public void AddGem()
-	{
-		m_Gemscollected++;
-		m_Sound.PlayGemCollected();
+		// If all gems are collected, regenerate maze
+		if (m_GemsCollected == m_GemCount)
+		{
+			m_GemsCollected = 0;
+			OnAllGemsCollected();
+		}
 	}
-	
-	// Sets the total amount of gems 
-	public void SetGemCount(int count)
-	{
-		GemCount = count;
-	}
+	#endregion
 
-	// Runs when all gems are collected
-	public void OnAllGemsCollected()
-	{
-		m_MazeGen.Generate();
-	}
-
-	// Runs when the maze has been completed
-	public void OnComplete()
-	{
-		// do stuff
-	}
-
-	// Starts the game
-	private void StartGame()
-	{
-		Instantiate(m_DanceGuyPrefab);
-		m_MazeGen.Generate();
-		m_Sound.SetMusicVolume(0.3f);
-		m_Sound.SetGemVolume(1.0f);
-		m_Sound.PlayBackroundMusic();
-	}
-
-	// Restarts the maze
-	private void RestartMaze()
-	{
-		m_Gemscollected = 0;
-		m_TimeCounter = 0;
-		m_MazeGen.RestartMaze();
-	}
-
-	public void OnFinish()
-	{
-		m_Gemscollected = 0;
-		m_TimeCounter = 0;
-		m_MazeGen.RestartMaze();
-	}
-
+	#region Functions
+	// -- Public --
+	/// <summary>
+	/// Sets the active GameController state, and the timer/LCD text accordingly.
+	/// </summary>
+	/// <param name="state">The GameState to set the game to.</param>
 	public void SetState(GameState state)
 	{
 		// Set state as specified
@@ -167,5 +138,82 @@ public class GameController : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Increments the Gem counter and plays a sound
+	/// </summary>
+	public void AddGem()
+	{
+		m_GemsCollected++;
+		m_Sound.PlayGemCollected();
+	}
+
+	/// <summary>
+	/// Initialize the total amount of Gems as specified
+	/// </summary>
+	/// <param name="count">The count of gems to initialize with.</param>
+	public void SetGemCount(int count)
+	{
+		m_GemCount = count;
+	}
+
+	/// <summary>
+	/// Called when all Gems are collected.
+	/// Regenerates the maze.
+	/// </summary>
+	public void OnAllGemsCollected()
+	{
+		m_MazeGen.Generate();
+	}
+
+	/// <summary>
+	/// Called when Maze is completed.
+	/// Does absolutely nothing.
+	/// </summary>
+	public void OnComplete()
+	{
+		// do stuff
+	}
+
+	/// <summary>
+	/// Appears to do exactly the same thing as RestartMaze - Declan what are you doing bro
+	/// </summary>
+	public void OnFinish()
+	{
+		// Reset variables
+		m_GemsCollected = 0;
+		m_TimeCounter = 0.0f;
+
+		// Restart maze
+		m_MazeGen.RestartMaze();
+	}
+
+	// -- Private --
+	/// <summary>
+	/// Generates Maze and initializes dance guy and music.
+	/// </summary>
+	private void StartGame()
+	{
+		// Initialize dance guy and music
+		Instantiate(m_DanceGuyPrefab);
+		m_Sound.SetMusicVolume(0.3f);
+		m_Sound.SetGemVolume(1.0f);
+		m_Sound.PlayBackroundMusic();
+
+		// Generate maze
+		m_MazeGen.Generate();
+	}
+
+	/// <summary>
+	/// Restarts the Maze by resetting Gem Counter, Timer and Player Position.
+	/// </summary>
+	private void RestartMaze()
+	{
+		// Reset variables
+		m_GemsCollected = 0;
+		m_TimeCounter = 0.0f;
+
+		// Restart maze
+		m_MazeGen.RestartMaze();
+	}
 	#endregion
 }
