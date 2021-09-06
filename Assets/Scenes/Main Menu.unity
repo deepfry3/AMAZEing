@@ -209,7 +209,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 21226549}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 2, y: 2, z: -2}
+  m_LocalPosition: {x: 2, y: 43.41, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -660,11 +660,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e66bb9092e579c46831c66defb5602c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MazeUD: {fileID: 2026251444}
+  m_MazeLR: {fileID: 1945837285}
   m_Board: {fileID: 1945837285}
   m_Floor: {fileID: 1819057836}
   m_WallPrefab: {fileID: 3578675055094522216, guid: 8f80e70a4d2644449a545916f3644065, type: 3}
   m_BallPrefab: {fileID: 3364666516046432939, guid: 74a3ab7a1c3eb4745aaf448ebd95465a, type: 3}
   m_GemPrefab: {fileID: 7157106576974346405, guid: be25cd019d5a3524db9cd4ede02c5f9a, type: 3}
+  m_FlagPrefab: {fileID: 8533913831792014013, guid: 23b909d4561ccd343bc0ff87efca1492, type: 3}
   m_GridWidth: 10
   m_GridHeight: 5
   m_MinGemCount: 1
@@ -681,6 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4fdda14870631438d10c4c2cf5d9c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_DanceGuyPrefab: {fileID: 5836915680297717053, guid: 137f9eea120314f4fa069cb11ee1ec65, type: 3}
   m_TimeCounter: {fileID: 537891490}
   m_GemCounter: {fileID: 1095883118}
 --- !u!4 &339090353
