@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7157106576973178021}
   - component: {fileID: 7157106576972080741}
   - component: {fileID: 7760852863257666594}
-  - component: {fileID: -6362046814024609514}
   - component: {fileID: -1527233242318698091}
   m_Layer: 0
   m_Name: 4 Side Diamond
@@ -108,18 +107,6 @@ MonoBehaviour:
   endScale: {x: 0, y: 0, z: 0}
   scaleSpeed: 0
   scaleRate: 0
---- !u!114 &-6362046814024609514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7157106576974346405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c673f0e97ce1d4444a7e24144e31a0a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!135 &-1527233242318698091
 SphereCollider:
   m_ObjectHideFlags: 0

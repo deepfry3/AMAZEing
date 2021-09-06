@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/* Author: Cameron
+/* Author: Cameron, Declan
  * 
  * BallController manages everything relating to the maze ball.
  * Currently, this is limited to playing audio based on velocity.
@@ -57,6 +57,18 @@ public class BallController : MonoBehaviour
 
 		// Store current velocity for use next frame
 		m_VelocityPrev = velocityCurrent;
+	}
+
+	// Called on TriggerEnter - Destroys Gem and plays sound
+	private void OnTriggerEnter(Collider other)
+	{
+		Debug.Log("Ball collided with: " + other.tag);
+
+		if (other.tag == "Gem")
+		{
+			GameController.Instance.AddGem();
+			other.gameObject.SetActive(false);
+		}
 	}
 	#endregion
 }
