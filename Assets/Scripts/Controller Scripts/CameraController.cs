@@ -46,9 +46,9 @@ public class CameraController : MonoBehaviour
 	public CameraSettings m_MenuSettings;                   // Target camera settings while accessing menu
 
 	// -- Private --
-	private Transform m_Transform;							// The camera's transform component
-	private Camera m_Camera;                                // The camera's Camera component
-	private CameraSettings m_TargetSettings;                // The camera settings currently targeted
+	private Transform m_Transform;							// Camera's transform component
+	private Camera m_Camera;                                // Camera's Camera component
+	private CameraSettings m_TargetSettings;                // Camera settings currently targeted
 
 	// -- Properties --
 	// (currently blank)
@@ -86,7 +86,7 @@ public class CameraController : MonoBehaviour
 		m_Transform = GetComponent<Transform>();
 		m_Camera = GetComponent<Camera>();
 
-		// Initialize target position to current
+		// Initialize target settings to current
 		m_TargetSettings = new CameraSettings(m_Transform.position, m_Transform.rotation, m_Camera.fieldOfView);
 	}
 
@@ -107,6 +107,7 @@ public class CameraController : MonoBehaviour
 	#endregion
 
 	#region Functions
+	// -- Public --
 	/// <summary>
 	/// Initiates the camera transition towards the 'game' settings
 	/// </summary>
