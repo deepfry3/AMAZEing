@@ -23,7 +23,7 @@ public class Flag : MonoBehaviour
 
         if (other.tag == "Ball")
         {
-            m_GameController.OnFinish();
+            m_GameController.GenerateNewMaze();
         }
     }
 }

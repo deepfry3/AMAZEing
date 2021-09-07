@@ -166,11 +166,11 @@ public class MenuController : MonoBehaviour
 		// Perform action based on specified button index
 		switch (index)
 		{
-			case 0:		GameController.Instance.OnFinish();		break;
-			case 1:		GameController.Instance.OnFinish();		break;
-			case 2:		Application.Quit();						break;
-			case 3:		/* Toggle Touch/Gyro */					break;
-			case 4:		/* Calibrate Gyro */					break;
+			case 0:		GameController.Instance.GenerateNewMaze();			break;  // New Maze	
+			case 1:		GameController.Instance.RestartMaze();				break;	// Restart
+			case 2:		Application.Quit();									break;	// Quit 
+			case 3:		/* Toggle Touch/Gyro */								break;	// Toggle touch
+			case 4:		/* Calibrate Gyro */								break;	// Calibrate gyro
 		}
 
 		// Leave menu

@@ -62,12 +62,13 @@ public class MazeGeneration : MonoBehaviour
 
 	#region Functions
 	// Called on Start
-	public void Generate()
+	public void GenerateNewMaze()
 	{
 		if(m_IsGenerated)
 		{
 			DeleteCurrentMaze();
 		}
+
 		// Resets both inner boxes to have no rotation
 		m_MazeUD.transform.rotation = Quaternion.identity;
 		m_MazeLR.transform.rotation = Quaternion.identity;
@@ -321,6 +322,7 @@ public class MazeGeneration : MonoBehaviour
 		m_MazeLR.transform.rotation = Quaternion.identity;
 		m_MazeUD.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 		m_MazeLR.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
 		for (int i = 0; i < m_Gems.Count; i ++)
 		{
 			m_Gems[i].SetActive(true);

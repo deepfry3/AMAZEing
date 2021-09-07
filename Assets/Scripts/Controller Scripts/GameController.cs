@@ -162,7 +162,7 @@ public class GameController : MonoBehaviour
 	/// </summary>
 	public void OnAllGemsCollected()
 	{
-		m_MazeGen.Generate();
+		m_MazeGen.GenerateNewMaze();
 	}
 
 	/// <summary>
@@ -191,7 +191,7 @@ public class GameController : MonoBehaviour
 	/// <summary>
 	/// Generates Maze and initializes dance guy and music.
 	/// </summary>
-	private void StartGame()
+	public void StartGame()
 	{
 		// Initialize dance guy and music
 		Instantiate(m_DanceGuyPrefab);
@@ -200,13 +200,13 @@ public class GameController : MonoBehaviour
 		m_Sound.PlayBackroundMusic();
 
 		// Generate maze
-		m_MazeGen.Generate();
+		m_MazeGen.GenerateNewMaze();
 	}
 
 	/// <summary>
 	/// Restarts the Maze by resetting Gem Counter, Timer and Player Position.
 	/// </summary>
-	private void RestartMaze()
+	public void RestartMaze()
 	{
 		// Reset variables
 		m_GemsCollected = 0;
@@ -214,6 +214,18 @@ public class GameController : MonoBehaviour
 
 		// Restart maze
 		m_MazeGen.RestartMaze();
+	}
+
+	/// <summary>
+	/// Deletes existing maze and spawns new maze
+	/// </summary>
+	public void GenerateNewMaze()
+	{
+		// Reset variables
+		m_GemsCollected = 0;
+		m_TimeCounter = 0.0f;
+
+		m_MazeGen.GenerateNewMaze();
 	}
 	#endregion
 }
