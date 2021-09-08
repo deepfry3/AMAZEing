@@ -203,7 +203,7 @@ public class MazeGeneration : MonoBehaviour
 	// Spawns walls, gems and marble in the world to represent the maze
 	private void InstantiateMaze()
 	{
-		// Instantiate Maze
+		#region Instantiate Maze
 		for (int x = 0; x < m_GridWidth; x++)
 		{
 			for (int y = 0; y < m_GridHeight; y++)
@@ -252,35 +252,50 @@ public class MazeGeneration : MonoBehaviour
 				//}
 			}
 		}
+		#endregion
 
-		// Instantiate Ball
+		#region Instantiate Ball
 		GameObject ball = Instantiate(m_BallPrefab);
 		Vector3 spawnOffset = new Vector3(0.0f, 4.0f, 0.0f);
 		ball.transform.parent = m_Board.transform;
 		ball.transform.localPosition = m_StartNode.Position + spawnOffset;
 		m_Ball = ball;
+		#endregion
 
-		// Instantiate Gems
+		#region Instantiate Gems
+		// Create list of invalid gem spawn locations, adding start/end nodes to list
+		List<Vector2> invalidSpawns = new List<Vector2>();
+		invalidSpawns.Add(m_StartNode.GridPosition);
+		invalidSpawns.Add(m_EndNode.GridPosition);
 		for (int i = 0; i < GameController.m_GemCount; i++)
 		{
-			// Randomly generate gem position on the maze grid
-			int x = Random.Range(0, (int)m_GridWidth);
-			int y = Random.Range(0, (int)m_GridHeight);
+			// Randomly generate gem position on the maze grid, ensuring it does not overlap start node
+			Vector2 spawn = new Vector2();
+			do
+			{
+				spawn.x = (float)Random.Range(0, (int)m_GridWidth);
+				spawn.y = (float)Random.Range(0, (int)m_GridHeight);
+			} while (invalidSpawns.Contains(spawn));
 
 			// Create gem and set position based on the node's position
 			GameObject gem = Instantiate(m_GemPrefab);
 			Vector3 gemSpawnOffset = new Vector3(0.0f, 1.0f, 0.0f);
 			gem.transform.parent = m_Board.transform;
-			gem.transform.localPosition = m_MazeGrid[x, y].Position + gemSpawnOffset;
+			gem.transform.localPosition = m_MazeGrid[(int)spawn.x, (int)spawn.y].Position + gemSpawnOffset;
 			m_Gems.Add(gem);
-		}
 
-		// Instantiate flag
+			// Add spawned gem position to list of invalid positions to spawn next gem
+			invalidSpawns.Add(spawn);
+		}
+		#endregion
+
+		#region Instantiate Flag
 		GameObject flag = Instantiate(m_FlagPrefab);
 		Vector3 flagSpawnOffset = new Vector3(0.0f, -0.5f, 0.0f);
 		flag.transform.parent = m_Board.transform;
 		flag.transform.localPosition = m_EndNode.Position + flagSpawnOffset;
 		m_Flag = flag;
+		#endregion
 	}
 
 	// Returns the node at the specified index:
