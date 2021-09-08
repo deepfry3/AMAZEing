@@ -129,14 +129,14 @@ public class MenuController : MonoBehaviour
 		if (m_MenuOpen)
 		{
 			// Set target drawer and camera position
-			m_TargetPosition = new Vector3(-7.5f, 3.75f, -7.5f);
+			m_TargetPosition = new Vector3(m_Transform.position.x, m_Transform.position.y, -7.5f);
 			CameraController.Instance.TransitionToGame();
 			GameController.Instance.SetState(GameState.GAME);
 		}
 		else
 		{
 			// Set target drawer and camera position
-			m_TargetPosition = new Vector3(-7.5f, 3.75f, (SystemInfo.supportsGyroscope ? -17.5f : -13.5f));
+			m_TargetPosition = new Vector3(m_Transform.position.x, m_Transform.position.y, (SystemInfo.supportsGyroscope ? -17.5f : -13.5f));
 			CameraController.Instance.TransitionToMenu();
 			GameController.Instance.SetState(GameState.PAUSED);
 		}
