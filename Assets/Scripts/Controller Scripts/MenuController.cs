@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /* Author: Cameron
  * 
@@ -17,26 +18,19 @@ public class MenuController : MonoBehaviour
 {
 	#region Variables/Properties
 	// -- Public --
-	public float m_TransitionSpeed = 1.0f;                  // Transition speed between two positions
-	public GameObject m_TrayTrigger;                        // Object that triggers Tray opening/closing
-	public GameObject[] m_MenuButtons;                      // Array of option button objects
+	public float m_TransitionSpeed = 1.0f;						// Transition speed between two positions
+	public GameObject m_TrayTrigger;							// Object that triggers Tray opening/closing when clicked
+	public GameObject[] m_MenuButtons;                          // Array of option button objects
+	public TextMeshPro m_InputButtonText;						// Text displaying the current input method (for mobile devices)
 
 	// -- Private --
-	private Transform m_Transform;                          // Tray's transform component
-	private Vector3 m_TargetPosition;						// Tray position currently targeted
-	private bool m_MenuOpen;                                // Whether or not Tray is currently open
-	private float m_InputDisabledTimer;						// Timer between inputs (preventing accidental double-inputs)
+	private Transform m_Transform;								// Tray's transform component
+	private Vector3 m_TargetPosition;							// Tray position currently targeted
+	private bool m_MenuOpen;									// Whether or not Tray is currently open
+	private float m_InputDisabledTimer;                         // Timer between inputs (preventing accidental double-inputs)
 
-	// -- Properties --
-	// (currently blank)
-
-	#region Singleton
-	private static MenuController m_Instance;
-	public static MenuController Instance
-	{
-		get { return m_Instance; }
-	}
-	#endregion
+	// -- Singleton --
+	public static MenuController Instance { get; private set; }
 	#endregion
 
 	#region Unity Functions
@@ -47,10 +41,7 @@ public class MenuController : MonoBehaviour
 	void Awake()
 	{
 		// Initialize Singleton
-		if (m_Instance != null && m_Instance != this)
-			Destroy(this.gameObject);
-		else
-			m_Instance = this;
+		Instance = this;
 	}
 
 	/// <summary>
@@ -66,6 +57,7 @@ public class MenuController : MonoBehaviour
 		m_TargetPosition = m_Transform.position;
 		m_MenuOpen = false;
 		m_InputDisabledTimer = 0.0f;
+		m_InputButtonText.text = "Input: Mouse/Touch";
 	}
 
 	/// <summary>
@@ -129,14 +121,14 @@ public class MenuController : MonoBehaviour
 		if (m_MenuOpen)
 		{
 			// Set target drawer and camera position
-			m_TargetPosition = new Vector3(-7.5f, 3.75f, -7.5f);
+			m_TargetPosition = new Vector3(m_Transform.position.x, m_Transform.position.y, -7.5f);
 			CameraController.Instance.TransitionToGame();
 			GameController.Instance.SetState(GameState.GAME);
 		}
 		else
 		{
 			// Set target drawer and camera position
-			m_TargetPosition = new Vector3(-7.5f, 3.75f, (SystemInfo.supportsGyroscope ? -17.5f : -13.5f));
+			m_TargetPosition = new Vector3(m_Transform.position.x, m_Transform.position.y, (SystemInfo.supportsGyroscope ? -17.5f : -13.5f));
 			CameraController.Instance.TransitionToMenu();
 			GameController.Instance.SetState(GameState.PAUSED);
 		}
@@ -166,15 +158,18 @@ public class MenuController : MonoBehaviour
 		// Perform action based on specified button index
 		switch (index)
 		{
-			case 0:		GameController.Instance.GenerateNewMaze();			break;  // New Maze	
-			case 1:		GameController.Instance.RestartMaze();				break;	// Restart
-			case 2:		Application.Quit();									break;	// Quit 
-			case 3:		/* Toggle Touch/Gyro */								break;	// Toggle touch
-			case 4:		/* Calibrate Gyro */								break;	// Calibrate gyro
+			case 0:		GameController.Instance.GenerateNewMaze();			break;		// New Maze Button
+			case 1:		GameController.Instance.RestartMaze();				break;		// Retry Button
+			case 2:		Application.Quit();									break;		// Quit Button
+			case 3:		InputController.Instance.ToggleGyro();				break;		// Input Toggle Button
+			case 4:		InputController.Instance.CalibrateGyro();			break;		// Calibrate Gyro Button
 		}
 
-		// Leave menu
-		ToggleMenu();
+		// Update Input Toggle button text to the selected input, otherwise leave menu
+		if (index == 3)
+			m_InputButtonText.text = (InputController.Instance.IsGyroActive ? "Input: Gyro" : "Input: Mouse/Touch");
+		else
+			ToggleMenu();
 	}
 	#endregion
 }
