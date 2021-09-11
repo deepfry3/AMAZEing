@@ -2,34 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/* Author: Cameron
+/* Author: Cameron, Declan
  * 
  * BallController manages everything relating to the maze ball.
  * Currently, this is limited to playing audio based on velocity.
  */
 
+/// <summary>
+/// Manages the Ball object, playing audio based on its velocity.
+/// </summary>
 public class BallController : MonoBehaviour
 {
-	#region Variables
-	// Public
-	public AudioSource m_HitSound = null;               // Sound to play when ball collides with wall
-	public AudioSource m_RollSound = null;              // Sound to play as ball increases in speed
-	public AudioClip[] m_HitSoundClips = null;          // Array of audio clips to choose from when ball collides with wall
+	#region Variables/Properties
+	// -- Public --
+	public AudioSource m_HitSound = null;						// Sound to play when ball collides with wall
+	public AudioSource m_RollSound = null;						// Sound to play as ball increases in speed
+	public AudioClip[] m_HitSoundClips = null;                  // Array of audio clips to choose from when ball collides with wall
 
-	// Private
-	private Rigidbody m_Rigidbody = null;               // Rigidbody of the ball
-	private float m_VelocityPrev = 0.0f;                // Ball's velocity from the previous update frame
+	// -- Public --
+	private Rigidbody m_Rigidbody = null;						// Rigidbody of the ball
+	private float m_VelocityPrev = 0.0f;                        // Ball's velocity from the previous update frame
 	#endregion
 
-	#region Functions
-	// Called on Start - Initialises Rigidbody
+	#region Unity Functions
+	/// <summary>
+	/// Called on Start.
+	/// Caches components.
+	/// </summary>
 	void Start()
 	{
 		// Get and cache the Rigidbody component
 		m_Rigidbody = GetComponent<Rigidbody>();
 	}
 
-	// Called every fixed frame - Plays sound based on velocity changes
+	/// <summary>
+	/// Called on FixedUpdate.
+	/// Plays appropriate sounds based on Ball velocity.
+	/// </summary>
 	void FixedUpdate()
 	{
 		// Get ball's velocity and difference since previous update
@@ -57,6 +66,21 @@ public class BallController : MonoBehaviour
 
 		// Store current velocity for use next frame
 		m_VelocityPrev = velocityCurrent;
+	}
+
+	/// <summary>
+	/// Called on TriggerEnter.
+	/// Increments Gem counter and plays sound.
+	/// </summary>
+	private void OnTriggerEnter(Collider other)
+	{
+		Debug.Log("Ball collided with: " + other.tag);
+
+		if (other.tag == "Gem")
+		{
+			GameController.Instance.AddGem();
+			other.gameObject.SetActive(false);
+		}
 	}
 	#endregion
 }
