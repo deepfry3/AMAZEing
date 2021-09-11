@@ -17,17 +17,26 @@ public class InputController : MonoBehaviour
 {
 	#region Variables/Properties
 	// -- Public --
-	public GameObject[] m_Buttons = null;						// Array of on-screen button objects (U, D, L, R)
+	public GameObject[] m_Buttons = null;                       // Array of on-screen button objects (U, D, L, R)
+	public float m_Sensitivity;									// Sensitivity/speed to lerp to target input values
 
 	// -- Private --
 	private Transform[] m_ButtonsTransforms = new Transform[4];	// Transform components of on-screen button objects (U, D, L, R)
 	private Vector3 m_GyroOffset = Vector3.zero;				// Offset for calibrating device rotation
-	private float m_GyroMaxTilt = 0.5f;							// Device rotation (between 0 and 90 degrees) required to reach maximum input
+	private float m_GyroMaxTilt = 0.5f;                         // Device rotation (between 0 and 90 degrees) required to reach maximum input
+	private float m_HAxis = 0.0f;                               // Value of the virtual horizontal input axis	(-1 to 1: Left to Right)
+	private float m_VAxis = 0.0f;                               // Value of the virtual vertical input axis		(-1 to 1: Down to Up)
 
 	// -- Properties --
-	public float HAxis { get; private set; }					// Value of the virtual horizontal input axis	(-1 to 1: Left to Right)
-	public float VAxis { get; private set; }					// Value of the virtual vertical input axis		(-1 to 1: Down to Up)
-	public bool IsGyroActive { get; set; }                      // Whether or not device rotation control is active (ignores other inputs)
+	public bool IsGyroActive { get; set; } = false;             // Whether or not device rotation control is active (ignores other inputs)
+	public float HAxis                                          // Value of the virtual horizontal input axis	(Public; rounded to 0.00f)
+	{
+		get { return Mathf.Round(m_HAxis * 100.0f) / 100.0f; }
+	}
+	public float VAxis                                          // Value of the virtual vertical input axis		(Public; rounded to 0.00f)
+	{
+		get { return Mathf.Round(m_VAxis * 100.0f) / 100.0f; }
+	}
 
 	// -- Singleton --
 	public static InputController Instance { get; private set; }
@@ -46,18 +55,13 @@ public class InputController : MonoBehaviour
 
 	/// <summary>
 	/// Called on Start.
-	/// Caches components and initializes variables.
+	/// Caches components.
 	/// </summary>
 	void Start()
 	{
 		// Cache components
 		for (int i = 0; i < m_Buttons.Length; i++)
 			m_ButtonsTransforms[i] = m_Buttons[i].GetComponent<Transform>();
-
-		// Initialize variables and properties
-		HAxis = 0.0f;
-		VAxis = 0.0f;
-		IsGyroActive = false;
 	}
 
 	/// <summary>
@@ -87,21 +91,26 @@ public class InputController : MonoBehaviour
 			}
 		}
 
-		// Process inputs (only accepts device rotation if active)
+		// Calculate target values based on device input (only accepts device rotation if active)
+		float HAxisTarget, VAxisTarget;
 		if (IsGyroActive)
 		{
-			HAxis = (Input.acceleration.x - m_GyroOffset.x) * (1 / m_GyroMaxTilt);
-			VAxis = (Input.acceleration.y - m_GyroOffset.y) * (1 / m_GyroMaxTilt);
+			HAxisTarget = (Input.acceleration.x - m_GyroOffset.x) * (1 / m_GyroMaxTilt);
+			VAxisTarget = (Input.acceleration.y - m_GyroOffset.y) * (1 / m_GyroMaxTilt);
 		}
 		else
 		{
-			HAxis = Input.GetAxis("Horizontal") + (float)touchHAxis;
-			VAxis = Input.GetAxis("Vertical") + (float)touchVAxis;
+			HAxisTarget = Input.GetAxis("Horizontal") + (float)touchHAxis;
+			VAxisTarget = Input.GetAxis("Vertical") + (float)touchVAxis;
 		}
 
+		// Lerp towards target to smooth inputs consistently across devices
+		m_HAxis = Mathf.Lerp(m_HAxis, HAxisTarget, m_Sensitivity * Time.deltaTime);
+		m_VAxis = Mathf.Lerp(m_VAxis, VAxisTarget, m_Sensitivity * Time.deltaTime);
+
 		// Round and clamp axes
-		HAxis = Mathf.Clamp(Mathf.Floor(HAxis * 100.0f) / 100.0f, -1.0f, 1.0f);
-		VAxis = Mathf.Clamp(Mathf.Floor(VAxis * 100.0f) / 100.0f, -1.0f, 1.0f);
+		m_HAxis = Mathf.Clamp(m_HAxis, -1.0f, 1.0f);
+		m_VAxis = Mathf.Clamp(m_VAxis, -1.0f, 1.0f);
 		#endregion
 
 		// Set position of on-screen buttons based on input
