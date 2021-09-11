@@ -3499,6 +3499,7 @@ MonoBehaviour:
   - {fileID: 919087421}
   - {fileID: 2116229829}
   - {fileID: 602820531}
+  m_Sensitivity: 10
 --- !u!1 &1684989611
 GameObject:
   m_ObjectHideFlags: 0
