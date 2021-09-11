@@ -4454,6 +4454,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1183136412}
     m_Modifications:
+    - target: {fileID: 3709348213615687648, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7db4b1476eecb744db0c47adb960babc, type: 2}
     - target: {fileID: 3709348213615687649, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -4779,6 +4783,16 @@ MonoBehaviour:
   m_Floor: {fileID: 475671481}
   m_WallPrefab: {fileID: 3578675055094522216, guid: 8f80e70a4d2644449a545916f3644065, type: 3}
   m_BallPrefab: {fileID: 3364666516046432939, guid: 74a3ab7a1c3eb4745aaf448ebd95465a, type: 3}
+  m_GemPrefabs:
+  - {fileID: 6053882645228620562, guid: 1876d196ced9631439760461f9d226a3, type: 3}
+  - {fileID: 4873245428931651114, guid: 84fdcd450899c88469b23b231bf41601, type: 3}
+  - {fileID: 4067548609571587517, guid: 2a50e11f7b0a81841a93cb8799ba748a, type: 3}
+  m_Colours:
+  - {fileID: 2100000, guid: 7d807874cefc948c8858f97222932cca, type: 2}
+  - {fileID: 2100000, guid: bc53c90e04a0e48c48f35fe311be0960, type: 2}
+  - {fileID: 2100000, guid: d7137ed4885f24959afe2a87ac0f7693, type: 2}
+  - {fileID: 2100000, guid: 0cc09147dbf0d456a9c6846c8dcad0d3, type: 2}
+  - {fileID: 2100000, guid: 1549bf01482b547159fa92e4f95bff12, type: 2}
   m_GemPrefab: {fileID: 7157106576974346405, guid: be25cd019d5a3524db9cd4ede02c5f9a, type: 3}
   m_FlagPrefab: {fileID: 8533913831792014013, guid: 23b909d4561ccd343bc0ff87efca1492, type: 3}
   m_GridWidth: 10

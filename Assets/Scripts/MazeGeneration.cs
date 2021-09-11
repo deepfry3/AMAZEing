@@ -38,6 +38,11 @@ public class MazeGeneration : MonoBehaviour
 	public GameObject m_Floor;                              // Floor object, used solely for width and height dimensions
 	public GameObject m_WallPrefab;                         // Prefab used to instantiate walls
 	public GameObject m_BallPrefab;                         // Prefab used to instantiate ball
+
+	public GameObject[] m_GemPrefabs = new GameObject[3];
+
+	public Material[] m_Colours = new Material[5];
+
 	public GameObject m_GemPrefab;                          // Prefab used to instantiate gems
 	public GameObject m_FlagPrefab;							// Prefab used to instantiate the flag
 	public uint m_GridWidth;								// Amount of cells in the maze horizontally
@@ -75,6 +80,7 @@ public class MazeGeneration : MonoBehaviour
 
 		m_Walls = new Stack<GameObject>();
 		m_Gems = new List<GameObject>();
+
 		// Create path and grid
 		m_Path = new Stack<GridNode>();
 		m_MazeGrid = new GridNode[m_GridWidth, m_GridHeight];
@@ -267,8 +273,15 @@ public class MazeGeneration : MonoBehaviour
 			int x = Random.Range(0, (int)m_GridWidth);
 			int y = Random.Range(0, (int)m_GridHeight);
 
+
+			int rand = Random.Range(0, 2);
+			GameObject gem = Instantiate(m_GemPrefabs[rand]);
+			rand = Random.Range(0, 4);
+			Renderer mat = gem.GetComponent<Renderer>();
+			mat.material = m_Colours[rand];
+
 			// Create gem and set position based on the node's position
-			GameObject gem = Instantiate(m_GemPrefab);
+			// GameObject gem = Instantiate(m_GemPrefab);
 			Vector3 gemSpawnOffset = new Vector3(0.0f, 1.0f, 0.0f);
 			gem.transform.parent = m_Board.transform;
 			gem.transform.localPosition = m_MazeGrid[x, y].Position + gemSpawnOffset;
