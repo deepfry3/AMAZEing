@@ -116,7 +116,7 @@ public class MenuController : MonoBehaviour
 	/// <summary>
 	/// Toggles the Menu Tray between opened and closed states.
 	/// </summary>
-	private void ToggleMenu()
+	public void ToggleMenu()
 	{
 		if (m_MenuOpen)
 		{

@@ -44,6 +44,7 @@ public class CameraController : MonoBehaviour
 	public float m_TransitionSpeed = 1.0f;                  // Transition speed between two camera settings
 	public CameraSettings m_GameSettings;                   // Target camera settings during gameplay
 	public CameraSettings m_MenuSettings;                   // Target camera settings while accessing menu
+	public CameraSettings m_AnimationSettings;
 
 	// -- Private --
 	private Transform m_Transform;							// Camera's transform component
@@ -122,6 +123,14 @@ public class CameraController : MonoBehaviour
 	public void TransitionToMenu()
 	{
 		m_TargetSettings = m_MenuSettings;
+	}
+
+	/// <summary>
+	/// Initiates the camera transition towards the 'animation'
+	/// </summary>
+	public void TransitionToAnimation()
+	{
+		m_TargetSettings = m_AnimationSettings;
 	}
 	#endregion
 }

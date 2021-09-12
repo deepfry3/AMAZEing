@@ -39,11 +39,8 @@ public class MazeGeneration : MonoBehaviour
 	public GameObject m_WallPrefab;                         // Prefab used to instantiate walls
 	public GameObject m_BallPrefab;                         // Prefab used to instantiate ball
 
-	public GameObject[] m_GemPrefabs = new GameObject[3];
-
-	public Material[] m_Colours = new Material[5];
-
-	public GameObject m_GemPrefab;                          // Prefab used to instantiate gems
+	public GameObject[] m_GemPrefabs = new GameObject[3];	// Prefab used to instantiate gems
+	public Material[] m_Colours = new Material[5];			// Colour materials used for the gems
 	public GameObject m_FlagPrefab;							// Prefab used to instantiate the flag
 	public uint m_GridWidth;								// Amount of cells in the maze horizontally
 	public uint m_GridHeight;                               // Amount of cells in the maze vertically
