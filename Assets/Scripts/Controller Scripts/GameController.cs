@@ -246,8 +246,12 @@ public class GameController : MonoBehaviour
 		m_Sound.SetGemVolume(1.0f);
 		m_Sound.PlayBackroundMusic();
 
-		// Generate maze
+		// Generate maze using the middle size (automatically grabbed no matter how many different sizes there are)
+		m_MazeGen.GridSizeIndex = m_MazeGen.m_GridSizes.Length / 2;
 		m_MazeGen.GenerateNewMaze();
+
+		// Transition camera to gameplay
+		CameraController.Instance.TransitionToGame();
 	}
 
 	/// <summary>

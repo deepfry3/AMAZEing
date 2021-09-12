@@ -41,17 +41,16 @@ public class MazeGeneration : MonoBehaviour
 
 	public GameObject[] m_GemPrefabs = new GameObject[3];	// Prefab used to instantiate gems
 	public Material[] m_Colours = new Material[5];			// Colour materials used for the gems
-	public GameObject m_FlagPrefab;							// Prefab used to instantiate the flag
-	public uint m_GridWidth;								// Amount of cells in the maze horizontally
-	public uint m_GridHeight;                               // Amount of cells in the maze vertically
-	public uint m_MinGemCount;                              // Minimum amount of gems to spawn in the maze
-	public uint m_MaxGemCount;                              // Maximum amount of gems to spawn in the maze
+	public GameObject m_FlagPrefab;                         // Prefab used to instantiate the flag
+	public Vector2Int[] m_GridSizes;						// Different grid sizes to choose from
 
 	// Private
 	private Stack<GameObject> m_Walls;
 	private List<GameObject> m_Gems;
 	private GameObject m_Ball;
 	private GameObject m_Flag;
+	private Vector2Int m_GridSize;
+	private int m_GridSizeIndex;
 	private const float m_WallWidth = 0.5f;                 // Width of the walls to be placed in the maze
 	private const float m_WallHeight = 1.5f;                // Height of the walls to be placed in the maze
 	private const float m_WallYPos = (2.0f * 0.5f) - 0.25f; // Y position the walls will be placed at in the maze
@@ -59,7 +58,43 @@ public class MazeGeneration : MonoBehaviour
 	private GridNode[,] m_MazeGrid;		                    // Grid of nodes used to store the generated maze
 	private GridNode m_StartNode;                           // Node the ball will start at
 	private GridNode m_EndNode;                             // Destination node
-	private bool m_IsGenerated = false;						// If the maze has been generated
+	private bool m_IsGenerated = false;                     // If the maze has been generated
+
+	// Properties
+	public int GridSizeIndex
+	{
+		get
+		{
+			return m_GridSizeIndex;
+		}
+		set
+		{
+			try
+			{
+				m_GridSize = m_GridSizes[value];
+				m_GridSizeIndex = value;
+			}
+			catch { Debug.Log("Unable to set Grid Size: Index " + value + " was invalid."); }
+		}
+	}
+	public int GemCount { get; set; }
+
+	// -- Singleton --
+	public static MazeGeneration Instance { get; private set; }
+	#endregion
+
+	#region Unity Functions
+	/// <summary>
+	/// Called on Awake.
+	/// Initializes Singleton and parameters.
+	/// </summary>
+	void Awake()
+	{
+		// Initialize Singleton
+		Instance = this;
+		m_GridSize = m_GridSizes[1];
+		GemCount = 2;
+	}
 	#endregion
 
 	#region Functions
@@ -80,18 +115,18 @@ public class MazeGeneration : MonoBehaviour
 
 		// Create path and grid
 		m_Path = new Stack<GridNode>();
-		m_MazeGrid = new GridNode[m_GridWidth, m_GridHeight];
+		m_MazeGrid = new GridNode[m_GridSize.x, m_GridSize.y];
 
 		// Calculate floor and node size
 		float floorW = m_Floor.transform.localScale.x - 1;
 		float floorH = m_Floor.transform.localScale.z - 1;
-		float nodeW = floorW / m_GridWidth;
-		float nodeH = floorH / m_GridHeight;
+		float nodeW = floorW / m_GridSize.x;
+		float nodeH = floorH / m_GridSize.y;
 		
 		// Create nodes at each element in the grid array to populate grid
-		for (int x = 0; x < m_GridWidth; x++)
+		for (int x = 0; x < m_GridSize.x; x++)
 		{
-			for (int y = 0; y < m_GridHeight; y++)
+			for (int y = 0; y < m_GridSize.y; y++)
 			{
 				// Create GridNode
 				m_MazeGrid[x, y] = new GridNode();
@@ -113,7 +148,7 @@ public class MazeGeneration : MonoBehaviour
 		m_IsGenerated = true;
 
 		// Set random amount of gems to create, then create maze
-		GameController.m_GemCount = Random.Range((int)m_MinGemCount, (int)m_MaxGemCount);
+		GameController.m_GemCount = GemCount;
 		GenerateMaze();
 		InstantiateMaze();
 	}
@@ -146,10 +181,10 @@ public class MazeGeneration : MonoBehaviour
 		int xStart, yStart, xEnd, yEnd;
 		do
 		{
-			xStart = Random.Range(0, (int)m_GridWidth);
-			yStart = Random.Range(0, (int)m_GridHeight);
-			xEnd = Random.Range(0, (int)m_GridWidth);
-			yEnd = Random.Range(0, (int)m_GridHeight);
+			xStart = Random.Range(0, m_GridSize.x);
+			yStart = Random.Range(0, m_GridSize.y);
+			xEnd = Random.Range(0, m_GridSize.x);
+			yEnd = Random.Range(0, m_GridSize.y);
 		} while (xStart == xEnd && yStart == yEnd);
 
 		// Store results
@@ -207,9 +242,9 @@ public class MazeGeneration : MonoBehaviour
 	private void InstantiateMaze()
 	{
 		// Instantiate Maze
-		for (int x = 0; x < m_GridWidth; x++)
+		for (int x = 0; x < m_GridSize.x; x++)
 		{
-			for (int y = 0; y < m_GridHeight; y++)
+			for (int y = 0; y < m_GridSize.y; y++)
 			{
 				GridNode node = m_MazeGrid[x, y];
 
@@ -267,8 +302,8 @@ public class MazeGeneration : MonoBehaviour
 		for (int i = 0; i < GameController.m_GemCount; i++)
 		{
 			// Randomly generate gem position on the maze grid
-			int x = Random.Range(0, (int)m_GridWidth);
-			int y = Random.Range(0, (int)m_GridHeight);
+			int x = Random.Range(0, (int)m_GridSize.x);
+			int y = Random.Range(0, (int)m_GridSize.y);
 
 
 			int rand = Random.Range(0, 2);
@@ -315,9 +350,9 @@ public class MazeGeneration : MonoBehaviour
 		}
 
 		// Return null if neighbour doesn't exist
-		if (x < 0 || x >= m_GridWidth)
+		if (x < 0 || x >= m_GridSize.x)
 			return null;
-		if (y < 0 || y >= m_GridHeight)
+		if (y < 0 || y >= m_GridSize.y)
 			return null;
 
 		// Otherwise, return neighbour node
