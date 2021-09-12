@@ -2742,7 +2742,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2962,8 +2962,9 @@ Transform:
   - {fileID: 116533116}
   - {fileID: 2135664609}
   - {fileID: 656763705}
+  - {fileID: 2106381576}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1470002488
 GameObject:
@@ -3371,6 +3372,7 @@ MonoBehaviour:
   m_Floor: {fileID: 136831563}
   m_WallPrefab: {fileID: 3578675055094522216, guid: 8f80e70a4d2644449a545916f3644065, type: 3}
   m_BallPrefab: {fileID: 3364666516046432939, guid: 74a3ab7a1c3eb4745aaf448ebd95465a, type: 3}
+  m_FlagPrefab: {fileID: 8533913831792014013, guid: 23b909d4561ccd343bc0ff87efca1492, type: 3}
   m_GemPrefabs:
   - {fileID: 4067548609571587517, guid: 2a50e11f7b0a81841a93cb8799ba748a, type: 3}
   - {fileID: 4873245428931651114, guid: 84fdcd450899c88469b23b231bf41601, type: 3}
@@ -3381,9 +3383,14 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3356fa3e6fa0f0b4dbcfa51992edf244, type: 2}
   - {fileID: 2100000, guid: 32212696f18524e4caa4c6985515a9e9, type: 2}
   - {fileID: 2100000, guid: c5e007c12934c054caa53da74e7db452, type: 2}
-  m_FlagPrefab: {fileID: 8533913831792014013, guid: 23b909d4561ccd343bc0ff87efca1492, type: 3}
-  m_GridWidth: 15
-  m_GridHeight: 10
+  m_Skyboxs:
+  - {fileID: 2100000, guid: 0a98eaa61401f3c49a068e4fbd6c2e2a, type: 2}
+  - {fileID: 2100000, guid: 4fbf92cf634b10148b946a2378bfec52, type: 2}
+  - {fileID: 2100000, guid: 9e07b5f1ebeb2764ea80a163086f4ba7, type: 2}
+  - {fileID: 2100000, guid: bcd3417f7c4e30d40bdf0dc5002ae1fd, type: 2}
+  - {fileID: 2100000, guid: 583f0d117f7056948943f87366c0f77b, type: 2}
+  m_GridWidth: 11
+  m_GridHeight: 9
   m_MinGemCount: 1
   m_MaxGemCount: 3
 --- !u!82 &1634500784
@@ -3398,7 +3405,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: ceede7a829d41470a86526620500b878, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.27
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4838,11 +4845,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106381574}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 15, y: 15, z: -15}
+  m_LocalPosition: {x: 15, y: 11.25, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 1456417971}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &2111654467
 GameObject:
