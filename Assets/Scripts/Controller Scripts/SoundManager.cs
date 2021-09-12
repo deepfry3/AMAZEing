@@ -31,8 +31,7 @@ public class SoundManager : MonoBehaviour
         m_GemCollected = GetComponent<AudioSource>();
     }
 
-    // Updates at a 
-
+ 
 	void update()
 	{
 		if(m_VolumeChange)

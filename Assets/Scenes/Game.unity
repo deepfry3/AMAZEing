@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2846214, g: 0.37120992, b: 0.498806, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1628,12 +1628,12 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 771528818}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 816b6eab58d24c646a55f35fb63b0f1f, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.02
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1738,6 +1738,10 @@ MonoBehaviour:
     position: {x: -7.5, y: 15, z: -28}
     rotation: {x: 0.42261827, y: 0, z: 0, w: 0.90630776}
     fieldOfView: 40
+  m_AnimationSettings:
+    position: {x: 0, y: 25, z: -25}
+    rotation: {x: 0, y: -1, z: 0, w: -0.00000004371139}
+    fieldOfView: 50
 --- !u!1 &785414079 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3709348213615687650, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
@@ -3332,7 +3336,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4fdda14870631438d10c4c2cf5d9c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DanceGuyPrefab: {fileID: 5836915680297717053, guid: 137f9eea120314f4fa069cb11ee1ec65, type: 3}
+  m_DanceGuyPrefab: {fileID: 7229914105222680117, guid: 85651655a3ae8de4395a1b5a9ee3ab08, type: 3}
+  m_DanceGirlPrefab: {fileID: 6745668075930225337, guid: e936ce474133ce74daca7df17a0ffe18, type: 3}
   m_LCDText: {fileID: 1397848281}
 --- !u!4 &1634500782
 Transform:
@@ -3366,10 +3371,19 @@ MonoBehaviour:
   m_Floor: {fileID: 136831563}
   m_WallPrefab: {fileID: 3578675055094522216, guid: 8f80e70a4d2644449a545916f3644065, type: 3}
   m_BallPrefab: {fileID: 3364666516046432939, guid: 74a3ab7a1c3eb4745aaf448ebd95465a, type: 3}
-  m_GemPrefab: {fileID: 7157106576974346405, guid: be25cd019d5a3524db9cd4ede02c5f9a, type: 3}
+  m_GemPrefabs:
+  - {fileID: 4067548609571587517, guid: 2a50e11f7b0a81841a93cb8799ba748a, type: 3}
+  - {fileID: 4873245428931651114, guid: 84fdcd450899c88469b23b231bf41601, type: 3}
+  - {fileID: 6053882645228620562, guid: 1876d196ced9631439760461f9d226a3, type: 3}
+  m_Colours:
+  - {fileID: 2100000, guid: 606e293a48418e740a548825d1215b9b, type: 2}
+  - {fileID: 2100000, guid: dd40cfbcc59397242b9926f94c131d3a, type: 2}
+  - {fileID: 2100000, guid: 3356fa3e6fa0f0b4dbcfa51992edf244, type: 2}
+  - {fileID: 2100000, guid: 32212696f18524e4caa4c6985515a9e9, type: 2}
+  - {fileID: 2100000, guid: c5e007c12934c054caa53da74e7db452, type: 2}
   m_FlagPrefab: {fileID: 8533913831792014013, guid: 23b909d4561ccd343bc0ff87efca1492, type: 3}
-  m_GridWidth: 10
-  m_GridHeight: 5
+  m_GridWidth: 15
+  m_GridHeight: 10
   m_MinGemCount: 1
   m_MaxGemCount: 3
 --- !u!82 &1634500784

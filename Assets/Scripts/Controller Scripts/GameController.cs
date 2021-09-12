@@ -32,16 +32,20 @@ public class GameController : MonoBehaviour
 {
 	#region Variables/Properties
 	// -- Public --
-	public GameObject m_DanceGuyPrefab;                 // Prefab for dancing man object
+	public GameObject m_DanceGuyPrefab;                 // Prefab for dancing man objects
+	public GameObject m_DanceGirlPrefab;
 	public TextMeshPro m_LCDText;                       // TMP that displays info to player
 	public static int m_GemCount = 0;					// ???
 
 	// -- Private --
-	private GameState m_State;							// Current GameController state
+	private GameState m_State;                          // Current GameController state
+	private GameObject m_DanceGirl = null;
+	private GameObject m_DanceGuy = null;
 	private SoundManager m_Sound;                       // Reference to SoundManager class
 	private MazeGeneration m_MazeGen;                   // Reference to MazeGeneration class
 	private float m_TimeCounter = 0.0f;                 // Time taken during gameplay
-	private int m_GemsCollected = 0;					// ???
+	private int m_GemsCollected = 0;                    // ???
+	private bool InAnimation = false;
 
 	// -- Properties --
 	// (currently blank)
@@ -107,6 +111,33 @@ public class GameController : MonoBehaviour
 		{
 			m_GemsCollected = 0;
 			OnAllGemsCollected();
+		}
+
+		if (Input.GetKeyDown(KeyCode.Escape) && InAnimation)
+		{
+			CameraController.Instance.TransitionToMenu();
+			MenuController.Instance.ToggleMenu();
+			Destroy(m_DanceGirl);
+			Destroy(m_DanceGuy);
+			SetState(GameState.PAUSED);
+			// Open menu
+
+		}
+
+		else if (Input.GetKeyDown(KeyCode.Escape) && m_State == GameState.PAUSED)
+		{
+			CameraController.Instance.TransitionToGame();
+			MenuController.Instance.ToggleMenu();
+			SetState(GameState.GAME);
+			
+		}
+
+		else if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			CameraController.Instance.TransitionToMenu();
+			SetState(GameState.PAUSED);
+			MenuController.Instance.ToggleMenu();
+			//Open menu
 		}
 	}
 	#endregion
@@ -183,8 +214,25 @@ public class GameController : MonoBehaviour
 		m_GemsCollected = 0;
 		m_TimeCounter = 0.0f;
 
-		// Restart maze
-		m_MazeGen.RestartMaze();
+		// Pans camera to dancing guy
+		if(m_DanceGuy == null)
+		{
+			GameObject guy = Instantiate(m_DanceGuyPrefab);
+			Vector3 position = new Vector3(10.0f, -1.5f, -50.0f);
+			guy.transform.position = position;
+			m_DanceGuy = guy;
+		}
+
+		if(m_DanceGirl == null)
+		{
+			GameObject girl = Instantiate(m_DanceGirlPrefab);
+			Vector3 position = new Vector3(-10.0f, -1.5f, -50.0f);
+			girl.transform.position = position;
+			m_DanceGirl = girl;
+		}
+
+		InAnimation = true;
+		CameraController.Instance.TransitionToAnimation();
 	}
 
 	// -- Private --
@@ -193,8 +241,7 @@ public class GameController : MonoBehaviour
 	/// </summary>
 	public void StartGame()
 	{
-		// Initialize dance guy and music
-		Instantiate(m_DanceGuyPrefab);
+		// Initialize  music
 		m_Sound.SetMusicVolume(0.3f);
 		m_Sound.SetGemVolume(1.0f);
 		m_Sound.PlayBackroundMusic();
