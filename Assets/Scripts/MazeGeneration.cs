@@ -32,16 +32,21 @@ public class MazeGeneration : MonoBehaviour
 {
 	#region Variables and Constants
 	// Public
+	[Header ("Board Stuffs")]
 	public GameObject m_MazeUD;
 	public GameObject m_MazeLR;
 	public GameObject m_Board;                              // Parent object that contains all walls/floor, used for transforms
 	public GameObject m_Floor;                              // Floor object, used solely for width and height dimensions
+
+	[Header("Prefab Stuffs")]
 	public GameObject m_WallPrefab;                         // Prefab used to instantiate walls
 	public GameObject m_BallPrefab;                         // Prefab used to instantiate ball
-
+	public GameObject m_FlagPrefab;                         // Prefab used to instantiate the flag
 	public GameObject[] m_GemPrefabs = new GameObject[3];	// Prefab used to instantiate gems
-	public Material[] m_Colours = new Material[5];			// Colour materials used for the gems
-	public GameObject m_FlagPrefab;							// Prefab used to instantiate the flag
+	public Material[] m_Colours = new Material[5];          // Colour materials used for the gems
+	public Material[] m_Skyboxs = new Material[5];			// Skyboxe materials used for theskybox
+
+	[Header("Maze Creation Stuffs")]
 	public uint m_GridWidth;								// Amount of cells in the maze horizontally
 	public uint m_GridHeight;                               // Amount of cells in the maze vertically
 	public uint m_MinGemCount;                              // Minimum amount of gems to spawn in the maze
@@ -52,6 +57,8 @@ public class MazeGeneration : MonoBehaviour
 	private List<GameObject> m_Gems;
 	private GameObject m_Ball;
 	private GameObject m_Flag;
+	private GameObject m_Camera;
+	private Skybox m_Skybox;
 	private const float m_WallWidth = 0.5f;                 // Width of the walls to be placed in the maze
 	private const float m_WallHeight = 1.5f;                // Height of the walls to be placed in the maze
 	private const float m_WallYPos = (2.0f * 0.5f) - 0.25f; // Y position the walls will be placed at in the maze
@@ -59,13 +66,23 @@ public class MazeGeneration : MonoBehaviour
 	private GridNode[,] m_MazeGrid;		                    // Grid of nodes used to store the generated maze
 	private GridNode m_StartNode;                           // Node the ball will start at
 	private GridNode m_EndNode;                             // Destination node
-	private bool m_IsGenerated = false;						// If the maze has been generated
+	private bool m_IsGenerated = false;                     // If the maze has been generated
+	private int m_GemAmount;                                // Index for the current gem/checkpoint
+	private int m_PreviousSkybox;							// Index for the previous skybox
 	#endregion
 
 	#region Functions
 	// Called on Start
+	private void Start()
+	{
+		m_Camera = GameObject.FindGameObjectWithTag("MainCamera");
+		m_Skybox = m_Camera.GetComponent<Skybox>();
+	}
+
+	// Creates a new maze
 	public void GenerateNewMaze()
 	{
+
 		if(m_IsGenerated)
 		{
 			DeleteCurrentMaze();
@@ -156,7 +173,7 @@ public class MazeGeneration : MonoBehaviour
 		m_StartNode = m_MazeGrid[xStart, yStart];
 		m_EndNode = m_MazeGrid[xEnd, yEnd];
 		#endregion
-
+	
 		// Push start node onto path
 		m_Path.Push(m_StartNode);
 		GridNode node = m_StartNode;
@@ -282,6 +299,7 @@ public class MazeGeneration : MonoBehaviour
 			Vector3 gemSpawnOffset = new Vector3(0.0f, 1.0f, 0.0f);
 			gem.transform.parent = m_Board.transform;
 			gem.transform.localPosition = m_MazeGrid[x, y].Position + gemSpawnOffset;
+			gem.SetActive(false);
 			m_Gems.Add(gem);
 		}
 
@@ -291,6 +309,11 @@ public class MazeGeneration : MonoBehaviour
 		flag.transform.parent = m_Board.transform;
 		flag.transform.localPosition = m_EndNode.Position + flagSpawnOffset;
 		m_Flag = flag;
+		m_Flag.SetActive(false);
+
+		int r = Random.Range(0, 4);
+		RenderSettings.skybox = m_Skyboxs[r];
+		Debug.Log("Set Skybox: " + r);
 	}
 
 	// Returns the node at the specified index:
@@ -335,7 +358,7 @@ public class MazeGeneration : MonoBehaviour
 
 		for (int i = 0; i < m_Gems.Count; i ++)
 		{
-			m_Gems[i].SetActive(true);
+			m_Gems[i].SetActive(false);
 		}
 
 		if(m_Ball != null)
@@ -343,6 +366,19 @@ public class MazeGeneration : MonoBehaviour
 			Vector3 spawnOffset = new Vector3(0.0f, 10.0f, 0.0f);
 			m_Ball.transform.position = m_StartNode.Position + spawnOffset;	
 		}
+		m_Flag.SetActive(false);
 	}
+
+	// Activates Gem
+	public void SpawnGem(int index)
+	{
+		m_Gems[index].SetActive(true);
+	}
+
+	// Activates Flag
+	public void SpawnFlag()
+	{
+		m_Flag.SetActive(true);
+	} 
 	#endregion
 }
