@@ -45,11 +45,9 @@ public class MazeGeneration : MonoBehaviour
 	public GameObject[] m_GemPrefabs = new GameObject[3];	// Prefab used to instantiate gems
 	public Material[] m_Colours = new Material[5];          // Colour materials used for the gems
 	public Material[] m_Skyboxs = new Material[5];          // Skyboxe materials used for theskybox
-	public Vector2Int[] m_GridSizes;						// Possible sizes for maze generation (amount of cells in maze horizontally/vertically)
+	public Vector2Int[] m_GridSizes;                        // Possible sizes for maze generation (amount of cells in maze horizontally/vertically)
 
 	[Header("Maze Creation Stuffs")]
-	public uint m_GridWidth;								// Amount of cells in the maze horizontally
-	public uint m_GridHeight;                               // Amount of cells in the maze vertically
 	public uint m_GemCount;									// Amount of gems to spawn in the maze
 
 	// Private
@@ -68,7 +66,27 @@ public class MazeGeneration : MonoBehaviour
 	private GridNode m_EndNode;                             // Destination node
 	private bool m_IsGenerated = false;                     // If the maze has been generated
 	private int m_GemAmount;                                // Index for the current gem/checkpoint
-	private int m_PreviousSkybox;							// Index for the previous skybox
+	private int m_PreviousSkybox;                           // Index for the previous skybox
+	private int m_GridSizeIndex;                            // Current grid size (index of GridSizes array)
+	private Vector2Int m_GridSize;							// Current grid size (actual size)
+
+	// Properties
+	public int GridSizeIndex
+	{
+		get
+		{
+			return m_GridSizeIndex;
+		}
+		set
+		{
+			try
+			{
+				m_GridSize = m_GridSizes[value];
+				m_GridSizeIndex = value;
+			}
+			catch { Debug.Log("Unable to set Grid Size: Index " + value + " was invalid."); }
+		}
+	}
 	#endregion
 
 	#region Functions
@@ -97,18 +115,18 @@ public class MazeGeneration : MonoBehaviour
 
 		// Create path and grid
 		m_Path = new Stack<GridNode>();
-		m_MazeGrid = new GridNode[m_GridWidth, m_GridHeight];
+		m_MazeGrid = new GridNode[m_GridSize.x, m_GridSize.y];
 
 		// Calculate floor and node size
 		float floorW = m_Floor.transform.localScale.x - 1;
 		float floorH = m_Floor.transform.localScale.z - 1;
-		float nodeW = floorW / m_GridWidth;
-		float nodeH = floorH / m_GridHeight;
+		float nodeW = floorW / m_GridSize.x;
+		float nodeH = floorH / m_GridSize.y;
 		
 		// Create nodes at each element in the grid array to populate grid
-		for (int x = 0; x < m_GridWidth; x++)
+		for (int x = 0; x < m_GridSize.x; x++)
 		{
-			for (int y = 0; y < m_GridHeight; y++)
+			for (int y = 0; y < m_GridSize.y; y++)
 			{
 				// Create GridNode
 				m_MazeGrid[x, y] = new GridNode();
@@ -163,10 +181,10 @@ public class MazeGeneration : MonoBehaviour
 		int xStart, yStart, xEnd, yEnd;
 		do
 		{
-			xStart = Random.Range(0, (int)m_GridWidth);
-			yStart = Random.Range(0, (int)m_GridHeight);
-			xEnd = Random.Range(0, (int)m_GridWidth);
-			yEnd = Random.Range(0, (int)m_GridHeight);
+			xStart = Random.Range(0, (int)m_GridSize.x);
+			yStart = Random.Range(0, (int)m_GridSize.y);
+			xEnd = Random.Range(0, (int)m_GridSize.x);
+			yEnd = Random.Range(0, (int)m_GridSize.y);
 		} while (xStart == xEnd && yStart == yEnd);
 
 		// Store results
@@ -224,9 +242,9 @@ public class MazeGeneration : MonoBehaviour
 	private void InstantiateMaze()
 	{
 		// Instantiate Maze
-		for (int x = 0; x < m_GridWidth; x++)
+		for (int x = 0; x < m_GridSize.x; x++)
 		{
-			for (int y = 0; y < m_GridHeight; y++)
+			for (int y = 0; y < m_GridSize.y; y++)
 			{
 				GridNode node = m_MazeGrid[x, y];
 
@@ -286,8 +304,8 @@ public class MazeGeneration : MonoBehaviour
 		for (int i = 0; i < GameController.m_GemCount; i++)
 		{
 			// Randomly generate gem position on the maze grid
-			int x = Random.Range(0, (int)m_GridWidth);
-			int y = Random.Range(0, (int)m_GridHeight);
+			int x = Random.Range(0, (int)m_GridSize.x);
+			int y = Random.Range(0, (int)m_GridSize.y);
 
 
 			int rand = Random.Range(0, 2);
@@ -340,9 +358,9 @@ public class MazeGeneration : MonoBehaviour
 		}
 
 		// Return null if neighbour doesn't exist
-		if (x < 0 || x >= m_GridWidth)
+		if (x < 0 || x >= m_GridSize.x)
 			return null;
-		if (y < 0 || y >= m_GridHeight)
+		if (y < 0 || y >= m_GridSize.y)
 			return null;
 
 		// Otherwise, return neighbour node

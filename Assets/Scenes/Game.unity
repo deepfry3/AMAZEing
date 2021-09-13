@@ -4146,10 +4146,7 @@ MonoBehaviour:
   - {x: 8, y: 6}
   - {x: 10, y: 8}
   - {x: 15, y: 12}
-  m_GridWidth: 11
-  m_GridHeight: 9
-  m_MinGemCount: 1
-  m_MaxGemCount: 3
+  m_GemCount: 2
 --- !u!82 &1634500784
 AudioSource:
   m_ObjectHideFlags: 0

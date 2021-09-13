@@ -89,7 +89,8 @@ public class MenuController : MonoBehaviour
 		}
 		m_InputButtonText.text = "Input:\nMouse/Touch";
 		MazeGeneration mazeGen = GameController.Instance.GetComponent<MazeGeneration>();
-		//m_MazeSizeButtonText.text = "Maze Size:\n" + mazeGen.GridSizeIndex
+		int ind = mazeGen.GridSizeIndex;
+		m_MazeSizeButtonText.text = "Maze Size:\n" + mazeGen.m_GridSizes[ind].x + "x" + mazeGen.m_GridSizes[ind].y;
 		m_GemCountButtonText.text = "Gem Count:\n" + mazeGen.m_GemCount;
 	}
 
@@ -247,7 +248,14 @@ public class MenuController : MonoBehaviour
 					mazeGen.m_GemCount++;
 				m_GemCountButtonText.text = "Gem Count:\n" + mazeGen.m_GemCount;
 				break;
-			case 7:		// Maze Size button
+			case 7:     // Maze Size button
+				MazeGeneration mazeGen2 = GameController.Instance.GetComponent<MazeGeneration>();
+				if (mazeGen2.GridSizeIndex == mazeGen2.m_GridSizes.Length - 1)
+					mazeGen2.GridSizeIndex = 0;
+				else
+					mazeGen2.GridSizeIndex++;
+				int ind = mazeGen2.GridSizeIndex;
+				m_MazeSizeButtonText.text = "Maze Size:\n" + mazeGen2.m_GridSizes[ind].x + "x" + mazeGen2.m_GridSizes[ind].y;
 				break;
 		}
 	}
