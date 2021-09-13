@@ -36,10 +36,10 @@ public class MenuController : MonoBehaviour
 	public GameObject m_TrayTrigger;							// Object that triggers Tray opening/closing when clicked
 	public GameObject[] m_MenuButtons;                          // Array of option button objects
 	public TextMeshPro m_OptionsButtonText;                     // Text displaying 'Options' (to be toggled between 'Options'/'Back')
+	public TextMeshPro m_CalibrateGyroButtonText;               // Text displaying 'Calibrate Gyro' (for mobile devices)
+	public TextMeshPro m_InputButtonText;                       // Text displaying the current input method (for mobile devices)
 	public TextMeshPro m_GemCountButtonText;                    // Text displaying Gem Count
 	public TextMeshPro m_MazeSizeButtonText;					// Text displaying Maze Size
-	public TextMeshPro m_InputButtonText;                       // Text displaying the current input method (for mobile devices)
-	public TextMeshPro m_CalibrateGyroButtonText;               // Text displaying 'Calibrate Gyro' (for mobile devices)
 
 	// -- Private --
 	private Transform m_Transform;								// Tray's transform component
