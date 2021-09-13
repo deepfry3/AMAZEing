@@ -106,13 +106,6 @@ public class GameController : MonoBehaviour
 			m_LCDText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 		}
 
-		// If all gems are collected, regenerate maze
-		if (m_GemsCollected == m_GemCount)
-		{
-			m_GemsCollected = 0;
-			OnAllGemsCollected();
-		}
-
 		if (Input.GetKeyDown(KeyCode.Escape) && InAnimation)
 		{
 			CameraController.Instance.TransitionToMenu();
@@ -176,6 +169,15 @@ public class GameController : MonoBehaviour
 	{
 		m_GemsCollected++;
 		m_Sound.PlayGemCollected();
+
+		if (m_GemsCollected < m_GemCount)
+		{
+			m_MazeGen.SpawnGem(m_GemsCollected);
+		}
+		else if(m_GemsCollected == m_GemCount)
+		{
+			m_MazeGen.SpawnFlag();
+		}
 	}
 
 	/// <summary>
@@ -206,7 +208,8 @@ public class GameController : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Appears to do exactly the same thing as RestartMaze - Declan what are you doing bro
+	/// Appears to do exactly the same thing as RestartMaze - Declan what are you doing bro  - This is called when the ball interacts with the end flag
+	/// // Spawns animations for celebration
 	/// </summary>
 	public void OnFinish()
 	{
@@ -248,6 +251,7 @@ public class GameController : MonoBehaviour
 
 		// Generate maze
 		m_MazeGen.GenerateNewMaze();
+		m_MazeGen.SpawnGem(m_GemsCollected);
 	}
 
 	/// <summary>
@@ -261,6 +265,7 @@ public class GameController : MonoBehaviour
 
 		// Restart maze
 		m_MazeGen.RestartMaze();
+		m_MazeGen.SpawnGem(m_GemsCollected);
 	}
 
 	/// <summary>
@@ -273,6 +278,7 @@ public class GameController : MonoBehaviour
 		m_TimeCounter = 0.0f;
 
 		m_MazeGen.GenerateNewMaze();
+		m_MazeGen.SpawnGem(m_GemsCollected);
 	}
 	#endregion
 }

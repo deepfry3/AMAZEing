@@ -27,8 +27,6 @@ public class Gem : MonoBehaviour
 
         if (other.tag == "Ball")
         {
-            m_GameController.AddGem();
-            //Destroy(gameObject);
             gameObject.SetActive(false);
         }
     }
