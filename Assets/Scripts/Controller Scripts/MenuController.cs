@@ -88,7 +88,10 @@ public class MenuController : MonoBehaviour
 			m_MobileButtonsEnabled = false;
 		}
 		m_InputButtonText.text = "Input:\nMouse/Touch";
-		//m_MazeSizeButtonText.text = "Maze Size:\n" + MazeGeneration.Instance.GridSizeIndex
+		MazeGeneration mazeGen = GameController.Instance.GetComponent<MazeGeneration>();
+		int ind = mazeGen.GridSizeIndex;
+		m_MazeSizeButtonText.text = "Maze Size:\n" + mazeGen.m_GridSizes[ind].x + "x" + mazeGen.m_GridSizes[ind].y;
+		m_GemCountButtonText.text = "Gem Count:\n" + mazeGen.m_GemCount;
 	}
 
 	/// <summary>
@@ -237,9 +240,22 @@ public class MenuController : MonoBehaviour
 				InputController.Instance.ToggleGyro();
 				m_InputButtonText.text = (InputController.Instance.IsGyroActive ? "Input\nGyro" : "Input\nMouse/Touch");
 				break;
-			case 6:		// Gem Count button
+			case 6:     // Gem Count button
+				MazeGeneration mazeGen = GameController.Instance.GetComponent<MazeGeneration>();
+				if (mazeGen.m_GemCount == 6)
+					mazeGen.m_GemCount = 1;
+				else
+					mazeGen.m_GemCount++;
+				m_GemCountButtonText.text = "Gem Count:\n" + mazeGen.m_GemCount;
 				break;
-			case 7:		// Maze Size button
+			case 7:     // Maze Size button
+				MazeGeneration mazeGen2 = GameController.Instance.GetComponent<MazeGeneration>();
+				if (mazeGen2.GridSizeIndex == mazeGen2.m_GridSizes.Length - 1)
+					mazeGen2.GridSizeIndex = 0;
+				else
+					mazeGen2.GridSizeIndex++;
+				int ind = mazeGen2.GridSizeIndex;
+				m_MazeSizeButtonText.text = "Maze Size:\n" + mazeGen2.m_GridSizes[ind].x + "x" + mazeGen2.m_GridSizes[ind].y;
 				break;
 		}
 	}

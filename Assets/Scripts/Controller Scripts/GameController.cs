@@ -250,8 +250,12 @@ public class GameController : MonoBehaviour
 		m_Sound.PlayBackroundMusic();
 
 		// Generate maze
+		m_MazeGen.GridSizeIndex = (m_MazeGen.m_GridSizes.Length - 1) / 2;
 		m_MazeGen.GenerateNewMaze();
 		m_MazeGen.SpawnGem(m_GemsCollected);
+
+		// Set camera to transition to game (if it isn't already)
+		CameraController.Instance.TransitionToGame();
 	}
 
 	/// <summary>
