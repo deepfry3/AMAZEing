@@ -44,13 +44,13 @@ public class MazeGeneration : MonoBehaviour
 	public GameObject m_FlagPrefab;                         // Prefab used to instantiate the flag
 	public GameObject[] m_GemPrefabs = new GameObject[3];	// Prefab used to instantiate gems
 	public Material[] m_Colours = new Material[5];          // Colour materials used for the gems
-	public Material[] m_Skyboxs = new Material[5];			// Skyboxe materials used for theskybox
+	public Material[] m_Skyboxs = new Material[5];          // Skyboxe materials used for theskybox
+	public Vector2Int[] m_GridSizes;						// Possible sizes for maze generation (amount of cells in maze horizontally/vertically)
 
 	[Header("Maze Creation Stuffs")]
 	public uint m_GridWidth;								// Amount of cells in the maze horizontally
 	public uint m_GridHeight;                               // Amount of cells in the maze vertically
-	public uint m_MinGemCount;                              // Minimum amount of gems to spawn in the maze
-	public uint m_MaxGemCount;                              // Maximum amount of gems to spawn in the maze
+	public uint m_GemCount;									// Amount of gems to spawn in the maze
 
 	// Private
 	private Stack<GameObject> m_Walls;
@@ -130,7 +130,7 @@ public class MazeGeneration : MonoBehaviour
 		m_IsGenerated = true;
 
 		// Set random amount of gems to create, then create maze
-		GameController.m_GemCount = Random.Range((int)m_MinGemCount, (int)m_MaxGemCount);
+		GameController.m_GemCount = (int)m_GemCount;
 		GenerateMaze();
 		InstantiateMaze();
 	}
