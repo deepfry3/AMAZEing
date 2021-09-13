@@ -252,6 +252,9 @@ public class GameController : MonoBehaviour
 		// Generate maze
 		m_MazeGen.GenerateNewMaze();
 		m_MazeGen.SpawnGem(m_GemsCollected);
+
+		// Set camera to transition to game (if it isn't already)
+		CameraController.Instance.TransitionToGame();
 	}
 
 	/// <summary>
