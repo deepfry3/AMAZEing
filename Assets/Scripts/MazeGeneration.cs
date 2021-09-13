@@ -250,11 +250,13 @@ public class MazeGeneration : MonoBehaviour
 						{
 							position.z = (node.Position.z + neighbour.Position.z) * 0.5f;
 							scale.z = m_WallWidth;
+							scale.x += 0.5f;
 						}
 						else if (n == 1 || n == 3)  // Horizontal path blocked - create vertical wall
 						{
 							position.x = (node.Position.x + neighbour.Position.x) * 0.5f;
 							scale.x = m_WallWidth;
+							scale.z += 0.5f;
 						}
 						wall.transform.localPosition = position;
 						wall.transform.localScale = scale;
