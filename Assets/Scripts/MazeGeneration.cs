@@ -299,6 +299,10 @@ public class MazeGeneration : MonoBehaviour
 			Vector3 gemSpawnOffset = new Vector3(0.0f, 1.0f, 0.0f);
 			gem.transform.parent = m_Board.transform;
 			gem.transform.localPosition = m_MazeGrid[x, y].Position + gemSpawnOffset;
+
+			Color color = new Color();
+			color = m_Colours[rand].GetColor("_Color");
+			gem.GetComponent<Gem>().SetLightColor(color);
 			gem.SetActive(false);
 			m_Gems.Add(gem);
 		}
