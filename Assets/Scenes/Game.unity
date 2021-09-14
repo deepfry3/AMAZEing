@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2846214, g: 0.37120992, b: 0.498806, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5858,11 +5858,9 @@ MonoBehaviour:
   - {fileID: 1396047934}
   - {fileID: 1150311410}
   - {fileID: 1231587869}
-  m_OptionsButtonText: {fileID: 0}
-  m_GemCountButtonText: {fileID: 0}
-  m_MazeSizeButtonText: {fileID: 0}
-  m_InputButtonText: {fileID: 2037200783}
-  m_CalibrateGyroButtonText: {fileID: 0}
+  - {fileID: 1833073006}
+  - {fileID: 307725130}
+  - {fileID: 79188369}
 --- !u!1 &2135664608
 GameObject:
   m_ObjectHideFlags: 0
@@ -5945,9 +5943,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e92cf3000e7ddd4180b1bdb4390e3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotateX: 0.01
-  RotateY: 0.01
-  RotateZ: 0.01
+  RotateX: 0.005
+  RotateY: 0.005
+  RotateZ: 0.005
 --- !u!114 &2144782233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6035,7 +6033,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 45.5, y: 0, z: 0}
 --- !u!1001 &3709348213185988711
 PrefabInstance:
