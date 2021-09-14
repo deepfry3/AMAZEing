@@ -336,6 +336,7 @@ public class MazeGeneration : MonoBehaviour
 		m_Flag.SetActive(false);
 
 		int r = Random.Range(0, 4);
+		r = 0;
 		RenderSettings.skybox = m_Skyboxs[r];
 		Debug.Log("Set Skybox: " + r);
 	}
