@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Author: Blake
+ * 
+ * Manages the rotation of the Skybox camera
+ */
+
 public class SkyBox : MonoBehaviour
 {
 
