@@ -563,6 +563,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6745668075930261337}
   - component: {fileID: 6745668075922847941}
+  - component: {fileID: 2845452566659391214}
   m_Layer: 0
   m_Name: DanceFemale
   m_TagString: Untagged
@@ -606,6 +607,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2845452566659391214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6745668075930225337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30febb37d3935544a83c2885f55125fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6745668075930225339
 GameObject:
   m_ObjectHideFlags: 0
