@@ -416,6 +416,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 656763705}
     m_Modifications:
+    - target: {fileID: 3709348213615687649, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 3bebc4e864ac8f546b0e2f876270916f, type: 2}
     - target: {fileID: 3709348213615687650, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_Name
       value: Box Floor
@@ -1647,7 +1651,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 656763705}
-  - component: {fileID: 656763706}
   m_Layer: 0
   m_Name: Inner Box L/R
   m_TagString: Untagged
@@ -1674,22 +1677,6 @@ Transform:
   m_Father: {fileID: 1456417971}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &656763706
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 656763704}
-  serializedVersion: 2
-  m_Mass: 2
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 46
-  m_CollisionDetection: 3
 --- !u!4 &658034173 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
@@ -6060,7 +6047,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2135664609}
-  - component: {fileID: 2135664611}
   m_Layer: 0
   m_Name: Inner Box U/D
   m_TagString: Untagged
@@ -6086,22 +6072,6 @@ Transform:
   m_Father: {fileID: 1456417971}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &2135664611
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135664608}
-  serializedVersion: 2
-  m_Mass: 2
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 46
-  m_CollisionDetection: 3
 --- !u!1 &2144782231
 GameObject:
   m_ObjectHideFlags: 0
