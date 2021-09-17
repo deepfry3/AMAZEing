@@ -222,7 +222,7 @@ public class GameController : MonoBehaviour
 		// Reset variables
 		m_GemsCollected = 0;
 		m_TimeCounter = 0.0f;
-		int rand = Random.Range(0, 7);
+		int rand = Random.Range(0, 8);
 		// Pans camera to dancing guy
 		if(m_DanceGuy == null)
 		{
