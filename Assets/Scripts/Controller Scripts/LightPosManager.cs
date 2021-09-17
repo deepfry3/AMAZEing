@@ -18,6 +18,8 @@ public class LightPosManager : MonoBehaviour
     // Called when script is being loaded
     void Awake()
     {
+        m_Light = GetComponentInChildren<Light>();
+
         // Initialize Singleton
         if (m_Instance != null && m_Instance != this)
             Destroy(this.gameObject);
@@ -28,7 +30,6 @@ public class LightPosManager : MonoBehaviour
     // On start
 	private void Start()
 	{
-        m_Light = GetComponentInChildren<Light>();
 
         m_Positions[0] = new Vector3(30, 50, 30);
         m_Rotations[0] = new Vector3(51, -84, 73);
