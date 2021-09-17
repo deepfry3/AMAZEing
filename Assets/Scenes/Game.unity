@@ -6239,6 +6239,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3df78d876a48dd5488d032b0fc8a73d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Colours:
+  - {r: 1, g: 0.9137255, b: 0.56078434, a: 1}
+  - {r: 0.38039216, g: 0.16078432, b: 0.8666667, a: 1}
+  - {r: 0.9254902, g: 0.8352941, b: 0.05882353, a: 1}
+  - {r: 0.1882353, g: 0.6156863, b: 0.23529412, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  m_Index: 4
 --- !u!1001 &3709348213185988711
 PrefabInstance:
   m_ObjectHideFlags: 0
