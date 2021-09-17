@@ -81,6 +81,11 @@ public class BallController : MonoBehaviour
 			GameController.Instance.AddGem();
 			other.gameObject.SetActive(false);
 		}
+
+		if (other.tag == "Flag")
+		{
+			SoundManager.Instance.PlayFlagCollected();
+		}
 	}
 	#endregion
 }
