@@ -4121,7 +4121,7 @@ MonoBehaviour:
   m_MazeLR: {fileID: 656763704}
   m_Board: {fileID: 656763704}
   m_Floor: {fileID: 136831563}
-  m_WallPrefab: {fileID: 3578675055094522216, guid: 8f80e70a4d2644449a545916f3644065, type: 3}
+  m_WallPrefab: {fileID: 3578675055094522216, guid: 5d8e8d29695d54f4b9dc983b36425289, type: 3}
   m_BallPrefab: {fileID: 3364666516046432939, guid: 74a3ab7a1c3eb4745aaf448ebd95465a, type: 3}
   m_FlagPrefab: {fileID: 8533913831792014013, guid: 23b909d4561ccd343bc0ff87efca1492, type: 3}
   m_GemPrefabs:

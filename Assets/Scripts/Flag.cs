@@ -5,7 +5,9 @@ using UnityEngine;
 public class Flag : MonoBehaviour
 {
     private GameObject m_Maze;
-    private GameController m_GameController;
+    private GameController m_GameController = null;
+    public AudioSource m_Sound = null;
+    public AudioClip m_CollectedSound = null;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +25,8 @@ public class Flag : MonoBehaviour
 
         if (other.tag == "Ball")
         {
+            m_Sound.clip = m_CollectedSound;
+            m_Sound.Play();
             m_GameController.OnFinish();
             gameObject.SetActive(false);
         }
