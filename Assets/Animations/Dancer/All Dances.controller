@@ -825,7 +825,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 3
+  - m_ConditionMode: 6
     m_ConditionEvent: Play Animation
     m_EventTreshold: 5
   m_DstStateMachine: {fileID: 5904979134486652471}
@@ -877,7 +877,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 3
+  - m_ConditionMode: 6
     m_ConditionEvent: Play Animation
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 264373062009460076}
@@ -1384,7 +1384,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 3
+  - m_ConditionMode: 6
     m_ConditionEvent: Play Animation
     m_EventTreshold: 7
   m_DstStateMachine: {fileID: -1913494115074573879}
@@ -1490,7 +1490,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 3
+  - m_ConditionMode: 6
     m_ConditionEvent: Play Animation
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: -7858319334090963735}
@@ -1793,7 +1793,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 3
+  - m_ConditionMode: 6
     m_ConditionEvent: Play Animation
     m_EventTreshold: 6
   m_DstStateMachine: {fileID: 977610323057878699}
@@ -2304,7 +2304,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 3
+  - m_ConditionMode: 6
     m_ConditionEvent: Play Animation
     m_EventTreshold: 4
   m_DstStateMachine: {fileID: -8139521712567927215}
@@ -2401,7 +2401,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 3
+  - m_ConditionMode: 6
     m_ConditionEvent: Play Animation
     m_EventTreshold: 1
   m_DstStateMachine: {fileID: -6985809207630871151}
@@ -2568,7 +2568,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dance Swich
+  m_Name: Dance Switch
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

@@ -9,12 +9,13 @@ public class DanceAnimation : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        m_Animator = GetComponent<Animator>();
     }
 
     public void PlayAnimation(int index)
 	{
-        m_Animator = GetComponent<Animator>();
+        Debug.Log("Playing animation: " + index);
         m_Animator.SetInteger("Play Animation", index);
-        m_Animator.Play("Base Layer.Entry");
+        m_Animator.Play("Base Layer.Dance Switch");
 	}
 }
