@@ -82,6 +82,7 @@ public class GameController : MonoBehaviour
 		// Cache components
 		m_Sound = GetComponent<SoundManager>();
 		m_MazeGen = GetComponent<MazeGeneration>();
+	//_Animator = ;
 
 		// Initialize variables
 		m_TimeCounter = 0.0f;
@@ -104,6 +105,11 @@ public class GameController : MonoBehaviour
 			float minutes = Mathf.FloorToInt(m_TimeCounter / 60.0f);
 			float seconds = Mathf.FloorToInt(m_TimeCounter % 60.0f);
 			m_LCDText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+			Time.timeScale = 1;
+
+		}
+		if (m_State == GameState.PAUSED)
+		{
 		}
 
 		if (Input.GetKeyDown(KeyCode.Escape) && InAnimation)
@@ -216,7 +222,7 @@ public class GameController : MonoBehaviour
 		// Reset variables
 		m_GemsCollected = 0;
 		m_TimeCounter = 0.0f;
-
+		int rand = Random.Range(0, 8);
 		// Pans camera to dancing guy
 		if(m_DanceGuy == null)
 		{
@@ -224,6 +230,7 @@ public class GameController : MonoBehaviour
 			Vector3 position = new Vector3(10.0f, -1.5f, -50.0f);
 			guy.transform.position = position;
 			m_DanceGuy = guy;
+			guy.GetComponent<DanceAnimation>().PlayAnimation(rand);
 		}
 
 		if(m_DanceGirl == null)
@@ -231,9 +238,9 @@ public class GameController : MonoBehaviour
 			GameObject girl = Instantiate(m_DanceGirlPrefab);
 			Vector3 position = new Vector3(-10.0f, -1.5f, -50.0f);
 			girl.transform.position = position;
+			girl.GetComponent<DanceAnimation>().PlayAnimation(rand);
 			m_DanceGirl = girl;
 		}
-
 		InAnimation = true;
 		CameraController.Instance.TransitionToAnimation();
 	}
@@ -283,6 +290,22 @@ public class GameController : MonoBehaviour
 
 		m_MazeGen.GenerateNewMaze();
 		m_MazeGen.SpawnGem(m_GemsCollected);
+	}
+
+	public void SetMenu()
+	{
+
+		SetState(GameState.PAUSED);
+		MenuController.Instance.ToggleMenu();
+		
+		//Open menu
+	}
+	
+	// Destroys the dancers
+	public void DestroyDancers()
+	{
+		Destroy(m_DanceGirl);
+		Destroy(m_DanceGuy);
 	}
 	#endregion
 }
