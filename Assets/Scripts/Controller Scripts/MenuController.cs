@@ -55,6 +55,7 @@ public class MenuController : MonoBehaviour
 	private Vector3 m_TargetPosition;                           // Current target position
 	private MenuState m_State;                                  // Current MenuState
 	private float m_InputDisabledTimer;                         // Timer between inputs (preventing accidental double-inputs)
+	private bool MazeChanged = false;
 
 	// -- Properties --
 	/// <summary>
@@ -195,6 +196,12 @@ public class MenuController : MonoBehaviour
 	/// </summary>
 	public void ToggleMenu()
 	{
+		if(IsMenuOpen && MazeChanged)
+		{
+			GameController.Instance.GenerateNewMaze();
+			MazeChanged = false;
+		}
+
 		SetState(IsMenuOpen ? MenuState.CLOSED : MenuState.MAIN);
 	}
 	#endregion
@@ -248,6 +255,7 @@ public class MenuController : MonoBehaviour
 				else
 					mazeGen.m_GemCount++;
 				m_MenuButtonsText[6].text = "Gems:\n" + mazeGen.m_GemCount;
+				MazeChanged = true;	
 				break;
 			case 7: // Maze Size button
 					// UNFINISHED - Replace this section when MazeGeneration is a Singleton
@@ -258,6 +266,7 @@ public class MenuController : MonoBehaviour
 					mazeGen2.GridSizeIndex++;
 				int ind = mazeGen2.GridSizeIndex;
 				m_MenuButtonsText[7].text = "Maze Size:\n" + mazeGen2.m_GridSizes[ind].x + "x" + mazeGen2.m_GridSizes[ind].y;
+				MazeChanged = true;
 				break;
 		}
 	}

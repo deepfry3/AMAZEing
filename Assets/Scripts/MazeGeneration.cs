@@ -307,6 +307,12 @@ public class MazeGeneration : MonoBehaviour
 			int x = Random.Range(0, (int)m_GridSize.x);
 			int y = Random.Range(0, (int)m_GridSize.y);
 
+			// The position can't be the starting position
+			while (x == m_StartNode.GridPosition.x && y == m_StartNode.GridPosition.y)
+			{
+				x = Random.Range(0, (int)m_GridSize.x);
+				y = Random.Range(0, (int)m_GridSize.y);
+			}
 
 			int rand = Random.Range(0, 2);
 			GameObject gem = Instantiate(m_GemPrefabs[rand]);
