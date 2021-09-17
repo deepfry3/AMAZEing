@@ -5,7 +5,7 @@ using UnityEngine;
 public class Flag : MonoBehaviour
 {
     private GameObject m_Maze;
-    private GameController m_GameController;
+    private GameController m_GameController = null;
 
     // Start is called before the first frame update
     void Start()

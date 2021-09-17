@@ -4069,6 +4069,7 @@ GameObject:
   - component: {fileID: 1634500785}
   - component: {fileID: 1634500784}
   - component: {fileID: 1634500786}
+  - component: {fileID: 1634500787}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Maze
@@ -4121,7 +4122,7 @@ MonoBehaviour:
   m_MazeLR: {fileID: 656763704}
   m_Board: {fileID: 656763704}
   m_Floor: {fileID: 136831563}
-  m_WallPrefab: {fileID: 3578675055094522216, guid: 8f80e70a4d2644449a545916f3644065, type: 3}
+  m_WallPrefab: {fileID: 3578675055094522216, guid: 5d8e8d29695d54f4b9dc983b36425289, type: 3}
   m_BallPrefab: {fileID: 3364666516046432939, guid: 74a3ab7a1c3eb4745aaf448ebd95465a, type: 3}
   m_FlagPrefab: {fileID: 8533913831792014013, guid: 23b909d4561ccd343bc0ff87efca1492, type: 3}
   m_GemPrefabs:
@@ -4256,6 +4257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GemCollected: {fileID: 1634500784}
   m_BackroundNoise: {fileID: 771528823}
+  m_FlagCollected: {fileID: 1634500787}
 --- !u!114 &1634500786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4274,6 +4276,102 @@ MonoBehaviour:
   - {fileID: 2116229829}
   - {fileID: 602820531}
   m_Sensitivity: 10
+--- !u!82 &1634500787
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634500780}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 720e37832b319e845a37a95f724da993, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.122
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1684989611
 GameObject:
   m_ObjectHideFlags: 0
@@ -6016,6 +6114,7 @@ GameObject:
   - component: {fileID: 2144782234}
   - component: {fileID: 2144782233}
   - component: {fileID: 2144782232}
+  - component: {fileID: 2144782236}
   m_Layer: 0
   m_Name: SkyBoxCam
   m_TagString: Untagged
@@ -6128,6 +6227,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 45.5, y: 0, z: 0}
+--- !u!114 &2144782236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144782231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3df78d876a48dd5488d032b0fc8a73d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3709348213185988711
 PrefabInstance:
   m_ObjectHideFlags: 0

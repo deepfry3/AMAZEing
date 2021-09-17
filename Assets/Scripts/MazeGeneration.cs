@@ -48,7 +48,7 @@ public class MazeGeneration : MonoBehaviour
 	public Vector2Int[] m_GridSizes;                        // Possible sizes for maze generation (amount of cells in maze horizontally/vertically)
 
 	[Header("Maze Creation Stuffs")]
-	public uint m_GemCount;									// Amount of gems to spawn in the maze
+	public uint m_GemCount;                                 // Amount of gems to spawn in the maze
 
 	// Private
 	private Stack<GameObject> m_Walls;
@@ -68,7 +68,7 @@ public class MazeGeneration : MonoBehaviour
 	private int m_GemAmount;                                // Index for the current gem/checkpoint
 	private int m_PreviousSkybox;                           // Index for the previous skybox
 	private int m_GridSizeIndex;                            // Current grid size (index of GridSizes array)
-	private Vector2Int m_GridSize;							// Current grid size (actual size)
+	private Vector2Int m_GridSize;                          // Current grid size (actual size)
 
 	// Properties
 	public int GridSizeIndex
@@ -335,8 +335,8 @@ public class MazeGeneration : MonoBehaviour
 		m_Flag = flag;
 		m_Flag.SetActive(false);
 
-		int r = Random.Range(0, 4);
-		r = 0;
+		int r = Random.Range(0, 5);
+		LightPosManager.Instance.SetLight(r);
 		RenderSettings.skybox = m_Skyboxs[r];
 		Debug.Log("Set Skybox: " + r);
 	}

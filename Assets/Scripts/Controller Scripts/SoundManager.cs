@@ -10,6 +10,7 @@ public class SoundManager : MonoBehaviour
 {
     public AudioSource m_GemCollected;
     public AudioSource m_BackroundNoise;
+    public AudioSource m_FlagCollected;
 
     private GameObject m_Camera;
 
@@ -18,6 +19,21 @@ public class SoundManager : MonoBehaviour
     private float m_GemVolume = 0.0f;
 
     private bool m_VolumeChange = false;
+    private static SoundManager m_Instance;
+    public static SoundManager Instance
+    {
+        get { return m_Instance; }
+    }
+
+    // Called when script is being loaded
+    void Awake()
+    {
+        // Initialize Singleton
+        if (m_Instance != null && m_Instance != this)
+            Destroy(this.gameObject);
+        else
+            m_Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -89,6 +105,13 @@ public class SoundManager : MonoBehaviour
     {
         Debug.Log("Playing: Gem Collected");
         m_GemCollected.Play();
+    }
+
+    // Plays when flag is collected
+    public void PlayFlagCollected()
+	{
+        Debug.Log("Playing: Flag Collected");
+        m_FlagCollected.Play();
     }
 }
 

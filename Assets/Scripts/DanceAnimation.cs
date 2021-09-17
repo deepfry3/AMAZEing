@@ -15,6 +15,6 @@ public class DanceAnimation : MonoBehaviour
 	{
         m_Animator = GetComponent<Animator>();
         m_Animator.SetInteger("Play Animation", index);
-        m_Animator.Play("Base Layer");
+        m_Animator.Play("Base Layer.Entry");
 	}
 }
