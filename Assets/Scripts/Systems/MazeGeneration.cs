@@ -401,35 +401,42 @@ public class MazeGeneration : MonoBehaviour
 		#endregion
 
 		#region Instantiate Ball and Collectibles
-		// Ball
+		// -- Ball --
 		m_Ball = Instantiate(m_BallPrefab);
 
-		// Gems
+		// -- Gems --
+		// Add start and end nodes as invalid spawn locations for gem
+		List<Vector2Int> invalidGemSpawns = new List<Vector2Int>();
+		invalidGemSpawns.Add(m_StartNode.GridPosition);
+		invalidGemSpawns.Add(m_EndNode.GridPosition);
+		// Instantiate Gems
 		for (int i = 0; i < GameController.m_GemCount; i++)
 		{
-			// Randomly generate gem position on the maze grid
-			int x = Random.Range(0, m_GridSize.x);
-			int y = Random.Range(0, m_GridSize.y);
+			// Randomly generate gem position on the maze grid until valid position is found
+			Vector2Int spawn = new Vector2Int();
+			do
+			{
+				spawn.x = Random.Range(0, m_GridSize.x);
+				spawn.y = Random.Range(0, m_GridSize.y);
+			} while (invalidGemSpawns.Contains(spawn));
 
-			int rand = Random.Range(0, 2);
-			GameObject gem = Instantiate(m_GemPrefabs[rand]);
-			rand = Random.Range(0, 4);
-			Renderer mat = gem.GetComponent<Renderer>();
-			mat.material = m_GemMaterials[rand];
+			// Add found position to invalid gem spawns
+			invalidGemSpawns.Add(spawn);
 
-			// Create gem and set position based on the node's position
-			// GameObject gem = Instantiate(m_GemPrefab);
+			// Instantiate gem with random material and color
+			GameObject gem = Instantiate(m_GemPrefabs[Random.Range(0, m_GemPrefabs.Length - 1)]);
+			Material gemMaterial = m_GemMaterials[Random.Range(0, m_GemMaterials.Length - 1)];
+			gem.GetComponent<Renderer>().material = gemMaterial;
+			gem.GetComponent<Gem>().SetLightColor(gemMaterial.GetColor("_Color"));
+
+			//Set local position based on position of randomly-selected grid position
 			Vector3 gemSpawnOffset = new Vector3(0.0f, 1.0f, 0.0f);
 			gem.transform.parent = m_Board.transform;
-			gem.transform.localPosition = m_MazeGrid[x, y].Position + gemSpawnOffset;
-
-			Color color = new Color();
-			color = m_GemMaterials[rand].GetColor("_Color");
-			gem.GetComponent<Gem>().SetLightColor(color);
+			gem.transform.localPosition = m_MazeGrid[spawn.x, spawn.y].Position + gemSpawnOffset;
 			m_Gems.Add(gem);
 		}
 
-		// Flag
+		// -- Flag --
 		GameObject flag = Instantiate(m_FlagPrefab);
 		Vector3 flagSpawnOffset = new Vector3(0.0f, -0.5f, 0.0f);
 		flag.transform.parent = m_Board.transform;
