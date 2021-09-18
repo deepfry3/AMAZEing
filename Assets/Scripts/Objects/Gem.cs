@@ -2,27 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Worked on by:
-//  Declan Doller
-//
+/* Author: Declan
+ * 
+ * Gem scrip is used on each gem object, handling it's events
+ */
 public class Gem : MonoBehaviour
 {
-    private GameObject m_Maze;
-    private Light m_Light;
-    private GameController m_GameController;
+	#region Variables/Properties
 
-    // Start is called before the first frame update
-    void Awake()
+	private Light m_Light = null;      // The light Attached to each Gem
+	#endregion
+
+	#region Unity Functions
+
+    /// <summary>
+    /// Runs on awake.
+    /// Caches Light component from child
+    /// </summary>
+	void Awake()
     {
-        m_Maze = GameObject.FindGameObjectWithTag("Maze");
-        if (m_Maze != null)
-        {
-            m_GameController = m_Maze.GetComponent<GameController>();
-        }
         m_Light = GetComponentInChildren<Light>();
     }
 
-
+    /// <summary>
+    /// Calls once collided with
+    /// Deactivates gem object
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.tag + " Collided with: " + this.tag);
@@ -32,10 +38,19 @@ public class Gem : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+	#endregion
 
-    // Sets the gems light colour
-    public void SetLightColor(Color color)
+	#region Public Functions
+
+    /// <summary>
+    /// Called after Gem is instantiated
+    ///  Changes the colour output of the gems light
+    /// </summary>
+    /// <param name="color"></param>
+	public void SetLightColor(Color color)
     {
         m_Light.color = color;
     }
+
+	#endregion
 }

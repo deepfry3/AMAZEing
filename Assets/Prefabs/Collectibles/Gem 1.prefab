@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4873245428104402515}
   - component: {fileID: 4873245428104402516}
   m_Layer: 0
-  m_Name: Gem_Type_2
+  m_Name: Gem 1
   m_TagString: Gem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,15 +113,15 @@ MonoBehaviour:
   isAnimated: 1
   isRotating: 1
   isFloating: 0
-  isScaling: 0
+  isScaling: 1
   rotationAngle: {x: 0, y: 1, z: 0}
   rotationSpeed: 75
-  floatSpeed: 5
-  floatRate: 0
-  startScale: {x: 0, y: 0, z: 0}
-  endScale: {x: 0, y: 0, z: 0}
-  scaleSpeed: 0
-  scaleRate: 0
+  floatSpeed: 0.5
+  floatRate: 1
+  startScale: {x: 1, y: 1, z: 1}
+  endScale: {x: 1.2, y: 1.2, z: 1.2}
+  scaleSpeed: 1
+  scaleRate: 0.5
 --- !u!114 &4873245428104402516
 MonoBehaviour:
   m_ObjectHideFlags: 0

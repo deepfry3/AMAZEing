@@ -70,10 +70,8 @@ public class GameController : MonoBehaviour
 	{
 		m_Skybox = Camera.main.GetComponent<Skybox>();
 
-
 		// Cache components
 		m_Sound = GetComponent<SoundManager>();
-	//_Animator = ;
 
 		// Initialize variables
 		m_TimeCounter = 0.0f;
@@ -97,12 +95,9 @@ public class GameController : MonoBehaviour
 			float seconds = Mathf.FloorToInt(m_TimeCounter % 60.0f);
 			m_LCDText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 			Time.timeScale = 1;
-
-		}
-		if (m_State == GameState.PAUSED)
-		{
 		}
 
+		// Ends animation if escape is pressed
 		if (Input.GetKeyDown(KeyCode.Escape) && InAnimation)
 		{
 			CameraController.Instance.TransitionToMenu();
@@ -110,18 +105,17 @@ public class GameController : MonoBehaviour
 			Destroy(m_DanceGirl);
 			Destroy(m_DanceGuy);
 			SetState(GameState.PAUSED);
-			// Open menu
-
 		}
 
+		// Unpauses game is escape is pressed in pause state
 		else if (Input.GetKeyDown(KeyCode.Escape) && m_State == GameState.PAUSED)
 		{
 			CameraController.Instance.TransitionToGame();
 			MenuController.Instance.ToggleMenu();
-			SetState(GameState.GAME);
-			
+			SetState(GameState.GAME);			
 		}
 
+		// Pauses game
 		else if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			CameraController.Instance.TransitionToMenu();
@@ -243,8 +237,6 @@ public class GameController : MonoBehaviour
 	public void StartGame()
 	{
 		// Initialize  music
-		m_Sound.SetMusicVolume(0.3f);
-		m_Sound.SetGemVolume(1.0f);
 		m_Sound.PlayBackroundMusic();
 
 		// Generate maze
@@ -285,6 +277,9 @@ public class GameController : MonoBehaviour
 		MazeGeneration.Instance.SetGemActive(m_GemsCollected);
 	}
 
+	/// <summary>
+	/// Sets the game state to pause
+	/// </summary>
 	public void SetMenu()
 	{
 
@@ -294,13 +289,18 @@ public class GameController : MonoBehaviour
 		//Open menu
 	}
 	
-	// Destroys the dancers
+	/// <summary>
+	/// Destroys the dancers
+	/// </summary>
 	public void DestroyDancers()
 	{
 		Destroy(m_DanceGirl);
 		Destroy(m_DanceGuy);
 	}
 
+	/// <summary>
+	/// Changes the s
+	/// </summary>
 	public void ChangeSkybox()
 	{
 		int r = Random.Range(0, 5);
