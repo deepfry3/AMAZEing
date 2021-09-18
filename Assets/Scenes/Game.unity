@@ -4079,6 +4079,12 @@ MonoBehaviour:
   m_DanceGuyPrefab: {fileID: 7229914105222680117, guid: 85651655a3ae8de4395a1b5a9ee3ab08, type: 3}
   m_DanceGirlPrefab: {fileID: 6745668075930225337, guid: e936ce474133ce74daca7df17a0ffe18, type: 3}
   m_LCDText: {fileID: 1397848281}
+  m_Skyboxes:
+  - {fileID: 2100000, guid: 0a98eaa61401f3c49a068e4fbd6c2e2a, type: 2}
+  - {fileID: 2100000, guid: 4fbf92cf634b10148b946a2378bfec52, type: 2}
+  - {fileID: 2100000, guid: 9e07b5f1ebeb2764ea80a163086f4ba7, type: 2}
+  - {fileID: 2100000, guid: bcd3417f7c4e30d40bdf0dc5002ae1fd, type: 2}
+  - {fileID: 2100000, guid: 583f0d117f7056948943f87366c0f77b, type: 2}
 --- !u!4 &1634500782
 Transform:
   m_ObjectHideFlags: 0
@@ -4105,8 +4111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e66bb9092e579c46831c66defb5602c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MazeUD: {fileID: 2135664608}
-  m_MazeLR: {fileID: 656763704}
   m_Board: {fileID: 656763704}
   m_Floor: {fileID: 136831563}
   m_WallPrefab: {fileID: 3578675055094522216, guid: 5d8e8d29695d54f4b9dc983b36425289, type: 3}
@@ -4116,24 +4120,22 @@ MonoBehaviour:
   - {fileID: 4067548609571587517, guid: 2a50e11f7b0a81841a93cb8799ba748a, type: 3}
   - {fileID: 4873245428931651114, guid: 84fdcd450899c88469b23b231bf41601, type: 3}
   - {fileID: 6053882645228620562, guid: 1876d196ced9631439760461f9d226a3, type: 3}
-  m_Colours:
+  m_GemMaterials:
   - {fileID: 2100000, guid: 606e293a48418e740a548825d1215b9b, type: 2}
   - {fileID: 2100000, guid: dd40cfbcc59397242b9926f94c131d3a, type: 2}
   - {fileID: 2100000, guid: 3356fa3e6fa0f0b4dbcfa51992edf244, type: 2}
   - {fileID: 2100000, guid: 32212696f18524e4caa4c6985515a9e9, type: 2}
   - {fileID: 2100000, guid: c5e007c12934c054caa53da74e7db452, type: 2}
-  m_Skyboxs:
-  - {fileID: 2100000, guid: 0a98eaa61401f3c49a068e4fbd6c2e2a, type: 2}
-  - {fileID: 2100000, guid: 4fbf92cf634b10148b946a2378bfec52, type: 2}
-  - {fileID: 2100000, guid: 9e07b5f1ebeb2764ea80a163086f4ba7, type: 2}
-  - {fileID: 2100000, guid: bcd3417f7c4e30d40bdf0dc5002ae1fd, type: 2}
-  - {fileID: 2100000, guid: 583f0d117f7056948943f87366c0f77b, type: 2}
   m_GridSizes:
   - {x: 5, y: 4}
   - {x: 8, y: 6}
   - {x: 10, y: 8}
   - {x: 15, y: 12}
-  m_GemCount: 2
+  m_WallThickness: 0.5
+  m_WallHeight: 1.5
+  m_WallYPosition: 0.75
+  m_MinGemCount: 1
+  m_MaxGemCount: 6
 --- !u!82 &1634500784
 AudioSource:
   m_ObjectHideFlags: 0

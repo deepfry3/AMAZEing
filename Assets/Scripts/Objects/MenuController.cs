@@ -101,12 +101,7 @@ public class MenuController : MonoBehaviour
 			DisableButton(5);
 
 		// Set all dynamic button text
-		// UNFINISHED - Edit this section MazeGeneration is a Singleton
-		MazeGeneration mazeGen = GameController.Instance.GetComponent<MazeGeneration>();
-		int ind = mazeGen.GridSizeIndex;
 		m_MenuButtonsText[5].text = "Input:\nMouse/Touch";
-		m_MenuButtonsText[6].text = "Gems:\n" + mazeGen.m_GemCount;
-		m_MenuButtonsText[7].text = "Maze Size:\n" + mazeGen.m_GridSizes[ind].x + "x" + mazeGen.m_GridSizes[ind].y;
 	}
 
 	/// <summary>
@@ -197,6 +192,22 @@ public class MenuController : MonoBehaviour
 	{
 		SetState(IsMenuOpen ? MenuState.CLOSED : MenuState.MAIN);
 	}
+
+	/// <summary>
+	/// Sets the label of the "Maze Size" button in the Options menu
+	/// </summary>
+	public void SetMazeSizeText(Vector2Int gridSize)
+	{
+		m_MenuButtonsText[7].text = "Maze Size:\n" + gridSize.x + "x" + gridSize.y;
+	}
+
+	/// <summary>
+	/// Sets the label of the "Gem Count" buttonin the Options menu
+	/// </summary>
+	public void SetGemCountText(int gemCount)
+	{
+		m_MenuButtonsText[6].text = "Gems:\n" + gemCount;
+	}
 	#endregion
 
 	#region Private Functions
@@ -241,23 +252,16 @@ public class MenuController : MonoBehaviour
 				}
 				break;
 			case 6: // Gem Count button
-					// UNFINISHED - Replace this section when MazeGeneration is a Singleton
-				MazeGeneration mazeGen = GameController.Instance.GetComponent<MazeGeneration>();
-				if (mazeGen.m_GemCount == 6)
-					mazeGen.m_GemCount = 1;
+				if (MazeGeneration.Instance.GemSpawnCount == MazeGeneration.Instance.MaxGemSpawnCount)
+					MazeGeneration.Instance.GemSpawnCount = MazeGeneration.Instance.MinGemSpawnCount;
 				else
-					mazeGen.m_GemCount++;
-				m_MenuButtonsText[6].text = "Gems:\n" + mazeGen.m_GemCount;
+					MazeGeneration.Instance.GemSpawnCount++;
 				break;
 			case 7: // Maze Size button
-					// UNFINISHED - Replace this section when MazeGeneration is a Singleton
-				MazeGeneration mazeGen2 = GameController.Instance.GetComponent<MazeGeneration>();
-				if (mazeGen2.GridSizeIndex == mazeGen2.m_GridSizes.Length - 1)
-					mazeGen2.GridSizeIndex = 0;
+				if (MazeGeneration.Instance.GridSizeIndex == MazeGeneration.Instance.GridSizesCount - 1)
+					MazeGeneration.Instance.GridSizeIndex = 0;
 				else
-					mazeGen2.GridSizeIndex++;
-				int ind = mazeGen2.GridSizeIndex;
-				m_MenuButtonsText[7].text = "Maze Size:\n" + mazeGen2.m_GridSizes[ind].x + "x" + mazeGen2.m_GridSizes[ind].y;
+					MazeGeneration.Instance.GridSizeIndex++;
 				break;
 		}
 	}

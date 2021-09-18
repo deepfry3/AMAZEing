@@ -2,75 +2,114 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/* Author: Declan and Cameron
+/* Author: Cameron, Declan
  * 
+ * MazeGeneration is a Singleton used to manage everything related to the generation of
+ * the maze, including instantiating prefabs on the board.
+ * 
+ * It can be accessed with MazeGeneration.Instance.
  */
 
+/// <summary>
+/// Used to store information about each position ("node") on a generated maze, including
+/// its size, position in the array and in world space, etc.
+/// </summary>
 public class GridNode
 {
-	#region Variables
-	// Public
-
-	// Private
-
-	// Properties
-	public Vector3 Position { get; set; } = Vector3.zero;   // Position on the maze floor
-	public Vector3 Scale { get; set; } = Vector3.zero;		// Scale on the maze floor
-	public Vector2 GridPosition { get; set; }				// Position in the grid array
-	public bool IsVisited { get; set; } = false;            // Whether or not node has been visited by maze generation
-	public bool[] IsConnectedNeighbour = new bool[]			// Whether or not each neighbour can be traversed to (is connected)
+	#region Variables/Properties
+	// -- Properties --
+	public Vector3 Position { get; set; } = Vector3.zero;       // Local position on the inner maze box
+	public Vector3 Scale { get; set; } = Vector3.zero;          // Local scale on the inner maze box
+	public Vector2Int GridPosition { get; set; }                // Position in the maze array
+	public bool IsVisited { get; set; } = false;                // Whether node has been visited during maze generation
+	public bool[] IsConnectedNeighbour = new bool[]				// Whether each neighbour can be traversed to (is connected)
 	{
 		false, false, false, false
 	};
 	#endregion
-
-	#region Functions
-	#endregion
 }
 
+/// <summary>
+/// Manages everything relating to maze generation.
+/// (Singleton, accessed with <c>MazeGeneration.Instance</c>.)
+/// </summary>
+[System.Serializable]
 public class MazeGeneration : MonoBehaviour
 {
-	#region Variables and Constants
-	// Public
-	[Header ("Board Stuffs")]
-	public GameObject m_MazeUD;
-	public GameObject m_MazeLR;
-	public GameObject m_Board;                              // Parent object that contains all walls/floor, used for transforms
-	public GameObject m_Floor;                              // Floor object, used solely for width and height dimensions
+	#region Variables/Properties
+	// -- Serialized --
+	[Header("Parent Objects")]
+	[SerializeField] GameObject m_Board = null;                 // Object to parent all walls to (Inner-most box)
+	[SerializeField] GameObject m_Floor = null;                 // Floor object, solely for width/height dimensions
+	[Header("Prefabs")]
+	[SerializeField] GameObject m_WallPrefab = null;            // Prefab used to instantiate walls
+	[SerializeField] GameObject m_BallPrefab = null;            // Prefab used to instantiate ball
+	[SerializeField] GameObject m_FlagPrefab = null;            // Prefab used to instantiate flag
+	[SerializeField] GameObject[] m_GemPrefabs = null;          // Prefabs used to instantiate gems (randomly selected from array)
+	[SerializeField] Material[] m_GemMaterials = null;          // Materials used to instantiate gems (randomly selected from array)
+	[Header("Maze Settings")]
+	[SerializeField] Vector2Int[] m_GridSizes = null;           // Possible maze sizes (cells in maze horizontally/vertically)
+	[SerializeField] float m_WallThickness = 0.5f;              // Thickness of walls instantiated in maze
+	[SerializeField] float m_WallHeight = 1.5f;                 // Height of walls instantiated in maze
+	[SerializeField] float m_WallYPosition = 0.75f;             // Position on Y axis of walls instantiated in maze
+	[SerializeField] int m_MinGemCount = 1;						// Minimum GemCount allowed in Options menu
+	[SerializeField] int m_MaxGemCount = 6;                     // Maximum Gem Count allowed in Options menu
 
-	[Header("Prefab Stuffs")]
-	public GameObject m_WallPrefab;                         // Prefab used to instantiate walls
-	public GameObject m_BallPrefab;                         // Prefab used to instantiate ball
-	public GameObject m_FlagPrefab;                         // Prefab used to instantiate the flag
-	public GameObject[] m_GemPrefabs = new GameObject[3];	// Prefab used to instantiate gems
-	public Material[] m_Colours = new Material[5];          // Colour materials used for the gems
-	public Material[] m_Skyboxs = new Material[5];          // Skyboxe materials used for theskybox
-	public Vector2Int[] m_GridSizes;                        // Possible sizes for maze generation (amount of cells in maze horizontally/vertically)
+	// -- Private --
+	private Stack<GridNode> m_Path = null;                      // Path used for maze generation
+	private GridNode m_StartNode = null;                        // Start node to spawn ball at
+	private GridNode m_EndNode = null;                          // End node to spawn flag at
+	private GridNode[,] m_MazeGrid = null;                      // The final stored maze (grid of nodes)
+	private Stack<GameObject> m_Walls = null;                   // Instantiated walls after generation
+	private List<GameObject> m_Gems = null;                     // Instantiated gems after generation
+	private GameObject m_Ball = null;                           // Instantiated ball after generation
+	private GameObject m_Flag = null;                           // Instantiated flag after generation
+	private bool m_IsGenerated = false;                         // Whether maze has completed generation
+	private int m_GridSizeIndex;                                // Current grid size (index of Grid Sizes array)
+	private Vector2Int m_GridSize;                              // Current grid size (actual size)
+	private int m_GemSpawnCount;								// Current gem count (to use upon regeneration)
 
-	[Header("Maze Creation Stuffs")]
-	public uint m_GemCount;                                 // Amount of gems to spawn in the maze
-
-	// Private
-	private Stack<GameObject> m_Walls;
-	private List<GameObject> m_Gems;
-	private GameObject m_Ball;
-	private GameObject m_Flag;
-	private GameObject m_Camera;
-	private Skybox m_Skybox;
-	private const float m_WallWidth = 0.5f;                 // Width of the walls to be placed in the maze
-	private const float m_WallHeight = 1.5f;                // Height of the walls to be placed in the maze
-	private const float m_WallYPos = (2.0f * 0.5f) - 0.25f; // Y position the walls will be placed at in the maze
-	private Stack<GridNode> m_Path;                         // Path used for maze generation
-	private GridNode[,] m_MazeGrid;		                    // Grid of nodes used to store the generated maze
-	private GridNode m_StartNode;                           // Node the ball will start at
-	private GridNode m_EndNode;                             // Destination node
-	private bool m_IsGenerated = false;                     // If the maze has been generated
-	private int m_GemAmount;                                // Index for the current gem/checkpoint
-	private int m_PreviousSkybox;                           // Index for the previous skybox
-	private int m_GridSizeIndex;                            // Current grid size (index of GridSizes array)
-	private Vector2Int m_GridSize;                          // Current grid size (actual size)
-
-	// Properties
+	// -- Properties --
+	/// <summary>
+	/// Gets or sets the count of gems to spawn in the maze upon regeneration.
+	/// </summary>
+	public int GemSpawnCount
+	{
+		get
+		{
+			return m_GemSpawnCount;
+		}
+		set
+		{
+			if (value < m_MinGemCount || value > m_MaxGemCount)
+			{
+				Debug.Log("Unable to set Gem Spawn Count: Value " + value + " was invalid.");
+			}
+			else
+			{
+				m_GemSpawnCount = value;
+				MenuController.Instance.SetGemCountText(value);
+			}
+		}
+	}
+	/// <summary>
+	/// Gets the minimum count of gems to spawn in the maze upon regeneration that can be set.
+	/// </summary>
+	public int MinGemSpawnCount
+	{
+		get	{ return m_MinGemCount;	}
+	}
+	/// <summary>
+	/// Gets the maximum count of gems to spawn in the maze upon regeneration that can be set.
+	/// </summary>
+	public int MaxGemSpawnCount
+	{
+		get { return m_MaxGemCount; }
+	}
+	/// <summary>
+	/// Gets or sets the index of the Grid Sizes array to use in the maze upon regeneration.
+	/// Error logged to Debug console upon invalid value.
+	/// </summary>
 	public int GridSizeIndex
 	{
 		get
@@ -83,46 +122,62 @@ public class MazeGeneration : MonoBehaviour
 			{
 				m_GridSize = m_GridSizes[value];
 				m_GridSizeIndex = value;
+				MenuController.Instance.SetMazeSizeText(m_GridSize);
 			}
 			catch { Debug.Log("Unable to set Grid Size: Index " + value + " was invalid."); }
 		}
 	}
-	#endregion
-
-	#region Functions
-	// Called on Start
-	private void Start()
+	/// <summary>
+	/// Gets the count of the Grid Sizes array to use in the maze upon regeneration.
+	/// </summary>
+	public int GridSizesCount
 	{
-		m_Camera = GameObject.FindGameObjectWithTag("MainCamera");
-		m_Skybox = m_Camera.GetComponent<Skybox>();
+		get { return m_GridSizes.Length; }
+	}
+	/// <summary>
+	/// Gets the current grid size to use in the maze upon regeneration.
+	/// </summary>
+	public Vector2Int GridSize
+	{
+		get { return m_GridSize; }
 	}
 
-	// Creates a new maze
-	public void GenerateNewMaze()
+	// -- Singleton --
+	public static MazeGeneration Instance { get; private set; }
+	#endregion
+
+	#region Unity Functions
+	/// <summary>
+	/// Called on Awake.
+	/// Initializes Singleton.
+	/// </summary>
+	void Awake()
 	{
+		Instance = this;
+	}
+	#endregion
 
-		if(m_IsGenerated)
-		{
-			DeleteCurrentMaze();
-		}
+	#region Public Functions
+	/// <summary>
+	/// Destroys any current maze, then regenerates and instantiates a new maze
+	/// </summary>
+	public void NewMaze()
+	{
+		// Destroy existing maze
+		DestroyMaze();
 
-		// Resets both inner boxes to have no rotation
-		m_MazeUD.transform.rotation = Quaternion.identity;
-		m_MazeLR.transform.rotation = Quaternion.identity;
-
+		// Initialize variables
 		m_Walls = new Stack<GameObject>();
 		m_Gems = new List<GameObject>();
-
-		// Create path and grid
 		m_Path = new Stack<GridNode>();
 		m_MazeGrid = new GridNode[m_GridSize.x, m_GridSize.y];
 
-		// Calculate floor and node size
+		// Calculate floor and node size using m_Floor transforms (-1 removed from scale due to walls lining the edge)
 		float floorW = m_Floor.transform.localScale.x - 1;
 		float floorH = m_Floor.transform.localScale.z - 1;
 		float nodeW = floorW / m_GridSize.x;
 		float nodeH = floorH / m_GridSize.y;
-		
+
 		// Create nodes at each element in the grid array to populate grid
 		for (int x = 0; x < m_GridSize.x; x++)
 		{
@@ -141,39 +196,95 @@ public class MazeGeneration : MonoBehaviour
 				m_MazeGrid[x, y].Scale = new Vector3(nodeW, m_WallHeight, nodeH);
 
 				// Parse grid position
-				m_MazeGrid[x, y].GridPosition = new Vector2((float)x, (float)y);
+				m_MazeGrid[x, y].GridPosition = new Vector2Int(x, y);
 			}
 		}
 
-		m_IsGenerated = true;
-
-		// Set random amount of gems to create, then create maze
-		GameController.m_GemCount = (int)m_GemCount;
+		// Generate and instantiate maze
 		GenerateMaze();
 		InstantiateMaze();
 	}
-	
-	// Deletes the current maze
-	public void DeleteCurrentMaze()
+
+	/// <summary>
+	/// Resets the maze by returning all prefabs to their default positions.
+	/// </summary>
+	public void ResetMaze()
 	{
-		while(m_Walls.Count > 0)
-		{
-			GameObject wall = m_Walls.Pop();
-			Destroy(wall);
-		}
+		// Reset inner boxes to default rotation
+		BoxController.Instance.ResetRotation();
 
-		int gemcount = m_Gems.Count;
-		for (int i = 0; i < gemcount; i ++)
-		{
-			GameObject gem = m_Gems[i];
-			Destroy(gem);
-		}
-		Destroy(m_Flag);
+		// Reset collectibles' active state
+		m_Flag.SetActive(false);
+		for (int i = 0; i < m_Gems.Count; i++)
+			m_Gems[i].SetActive(false);
 
-		Destroy(m_Ball);
+		// Return ball to default position
+		if (m_Ball != null)
+		{
+			Vector3 spawnOffset = new Vector3(0.0f, 4.0f, 0.0f);
+			m_Ball.transform.parent = m_Board.transform;
+			m_Ball.transform.localPosition = m_StartNode.Position + spawnOffset;
+		}
 	}
 
-	// Links all nodes together to create a unique maze
+	/// <summary>
+	/// Destroys any current maze by destroying all generated prefabs and restoring all defaults
+	/// </summary>
+	public void DestroyMaze()
+	{
+		// Destroy walls
+		if (m_Walls != null)
+		{
+			while (m_Walls.Count > 0)
+			{
+				GameObject wall = m_Walls.Pop();
+				if (wall != null) Destroy(wall);
+			}
+		}
+		
+		// Destroy ball and collectibles
+		if (m_Ball != null) Destroy(m_Ball);
+		if (m_Flag != null) Destroy(m_Flag);
+		if (m_Gems != null)
+		{
+			for (int i = m_Gems.Count - 1; i >= 0; i--)
+			{
+				if (m_Gems[i] != null) Destroy(m_Gems[i]);
+				m_Gems.RemoveAt(i);
+			}
+		}
+
+		// Reset box rotation and set generated state to false
+		BoxController.Instance.ResetRotation();
+		m_IsGenerated = false;
+	}
+
+	/// <summary>
+	/// Activates/Deactivates the specified Gem, based on the given true or false value.
+	/// Error logged to Debug console upon invalid value.
+	/// </summary>
+	/// <param name="index">The Gem to set (index of Gems array)</param>
+	/// <param name="value">The active state to set</param>
+	public void SetGemActive(int index, bool value = true)
+	{
+		try { m_Gems[index].SetActive(value); }
+		catch { Debug.Log("Unable to set Activate/Deactivate Gem: Index " + index + " was invalid."); }
+	}
+
+	/// <summary>
+	/// Activates/Deactivates the Flag, based on the given true or false value.
+	/// </summary>
+	/// <param name="value">The active state to set</param>
+	public void SetFlagActive(bool value = true)
+	{
+		m_Flag.SetActive(value);
+	}
+	#endregion
+
+	#region Private Functions
+	/// <summary>
+	/// Links all GridNodes in the Maze Grid array together to generate a new maze.
+	/// </summary>
 	private void GenerateMaze()
 	{
 		#region Generate start and end positions
@@ -181,22 +292,22 @@ public class MazeGeneration : MonoBehaviour
 		int xStart, yStart, xEnd, yEnd;
 		do
 		{
-			xStart = Random.Range(0, (int)m_GridSize.x);
-			yStart = Random.Range(0, (int)m_GridSize.y);
-			xEnd = Random.Range(0, (int)m_GridSize.x);
-			yEnd = Random.Range(0, (int)m_GridSize.y);
+			xStart = Random.Range(0, m_GridSize.x);
+			yStart = Random.Range(0, m_GridSize.y);
+			xEnd = Random.Range(0, m_GridSize.x);
+			yEnd = Random.Range(0, m_GridSize.y);
 		} while (xStart == xEnd && yStart == yEnd);
 
 		// Store results
 		m_StartNode = m_MazeGrid[xStart, yStart];
 		m_EndNode = m_MazeGrid[xEnd, yEnd];
 		#endregion
-	
+
+		#region Generate maze by connecting nodes to random neighbours
 		// Push start node onto path
 		m_Path.Push(m_StartNode);
 		GridNode node = m_StartNode;
 
-		// Generates maze by connecting nodes to random neighbours
 		while (m_Path.Count > 0)
 		{
 			// Initialize temp variables, set current node as visited, and read node from top of path stack
@@ -211,7 +322,7 @@ public class MazeGeneration : MonoBehaviour
 				if (GetNeighbour(node, i) == null || GetNeighbour(node, i).IsVisited)
 					neighbourInvalid[i] = true;
 			}
-			
+
 			while (true)
 			{
 				// If all neighbours are invalid, break the loop
@@ -236,12 +347,16 @@ public class MazeGeneration : MonoBehaviour
 				m_Path.Pop();
 		}
 
+		m_IsGenerated = true;
+		#endregion
 	}
 
-	// Spawns walls, gems and marble in the world to represent the maze
+	/// <summary>
+	/// Instantiates all prefabs in the world according to the generated maze.
+	/// </summary>
 	private void InstantiateMaze()
 	{
-		// Instantiate Maze
+		#region Instantiate walls/maze
 		for (int x = 0; x < m_GridSize.x; x++)
 		{
 			for (int y = 0; y < m_GridSize.y; y++)
@@ -264,16 +379,16 @@ public class MazeGeneration : MonoBehaviour
 						// Set position and scale according to if wall is running horizontally or vertically
 						Vector3 position = node.Position;
 						Vector3 scale = node.Scale;
-						if (n == 0 || n == 2)		// Vertical path blocked - create horizontal wall
+						if (n == 0 || n == 2)       // Vertical path blocked - create horizontal wall
 						{
 							position.z = (node.Position.z + neighbour.Position.z) * 0.5f;
-							scale.z = m_WallWidth;
+							scale.z = m_WallThickness;
 							scale.x += 0.5f;
 						}
 						else if (n == 1 || n == 3)  // Horizontal path blocked - create vertical wall
 						{
 							position.x = (node.Position.x + neighbour.Position.x) * 0.5f;
-							scale.x = m_WallWidth;
+							scale.x = m_WallThickness;
 							scale.z += 0.5f;
 						}
 						wall.transform.localPosition = position;
@@ -281,38 +396,26 @@ public class MazeGeneration : MonoBehaviour
 						m_Walls.Push(wall);
 					}
 				}
-
-				// For debugging purposes - create a block over the node if node was left unvisited
-				//if (!node.IsVisited)
-				//{
-				//	GameObject block = Instantiate(m_WallPrefab);
-				//	block.transform.parent = m_Board.transform;
-				//	block.transform.position = node.Position;
-				//	block.transform.localScale = node.Scale;
-				//}
 			}
 		}
+		#endregion
 
-		// Instantiate Ball
-		GameObject ball = Instantiate(m_BallPrefab);
-		Vector3 spawnOffset = new Vector3(0.0f, 4.0f, 0.0f);
-		ball.transform.parent = m_Board.transform;
-		ball.transform.localPosition = m_StartNode.Position + spawnOffset;
-		m_Ball = ball;
+		#region Instantiate Ball and Collectibles
+		// Ball
+		m_Ball = Instantiate(m_BallPrefab);
 
-		// Instantiate Gems
+		// Gems
 		for (int i = 0; i < GameController.m_GemCount; i++)
 		{
 			// Randomly generate gem position on the maze grid
-			int x = Random.Range(0, (int)m_GridSize.x);
-			int y = Random.Range(0, (int)m_GridSize.y);
-
+			int x = Random.Range(0, m_GridSize.x);
+			int y = Random.Range(0, m_GridSize.y);
 
 			int rand = Random.Range(0, 2);
 			GameObject gem = Instantiate(m_GemPrefabs[rand]);
 			rand = Random.Range(0, 4);
 			Renderer mat = gem.GetComponent<Renderer>();
-			mat.material = m_Colours[rand];
+			mat.material = m_GemMaterials[rand];
 
 			// Create gem and set position based on the node's position
 			// GameObject gem = Instantiate(m_GemPrefab);
@@ -321,30 +424,31 @@ public class MazeGeneration : MonoBehaviour
 			gem.transform.localPosition = m_MazeGrid[x, y].Position + gemSpawnOffset;
 
 			Color color = new Color();
-			color = m_Colours[rand].GetColor("_Color");
+			color = m_GemMaterials[rand].GetColor("_Color");
 			gem.GetComponent<Gem>().SetLightColor(color);
-			gem.SetActive(false);
 			m_Gems.Add(gem);
 		}
 
-		// Instantiate flag
+		// Flag
 		GameObject flag = Instantiate(m_FlagPrefab);
 		Vector3 flagSpawnOffset = new Vector3(0.0f, -0.5f, 0.0f);
 		flag.transform.parent = m_Board.transform;
 		flag.transform.localPosition = m_EndNode.Position + flagSpawnOffset;
 		m_Flag = flag;
-		m_Flag.SetActive(false);
+		#endregion
 
-		int r = Random.Range(0, 5);
-		LightPosManager.Instance.SetLight(r);
-		RenderSettings.skybox = m_Skyboxs[r];
-		Debug.Log("Set Skybox: " + r);
+		// Reset all positions based on their defaults
+		ResetMaze();
+
+		GameController.Instance.ChangeSkybox();
 	}
 
-	// Returns the node at the specified index:
-	// [#][0][#]
-	// [3][N][1]
-	// [#][2][#]
+	/// <summary>
+	/// Calculates and returns the resulting GridNode from the specified neighbour index of the specified GridNode.
+	/// </summary>
+	/// <param name="node">The node to get the neighbour of</param>
+	/// <param name="neighbourIndex">The index of the neighbour to get</param>
+	/// <returns>The specified neighbouring node</returns>
 	private GridNode GetNeighbour(GridNode node, int neighbourIndex)
 	{
 		// Early-exit if provided a null node or invalid neighbour index
@@ -356,10 +460,10 @@ public class MazeGeneration : MonoBehaviour
 		int y = (int)node.GridPosition.y;
 		switch (neighbourIndex)
 		{
-			case 0:		y--;	break;		// Top
-			case 1:		x++;	break;		// Right
-			case 2:		y++;	break;		// Bottom
-			case 3:		x--;	break;		// Left
+			case 0: y--; break;     // Top
+			case 1: x++; break;     // Right
+			case 2: y++; break;     // Bottom
+			case 3: x--; break;     // Left
 		}
 
 		// Return null if neighbour doesn't exist
@@ -371,39 +475,5 @@ public class MazeGeneration : MonoBehaviour
 		// Otherwise, return neighbour node
 		return m_MazeGrid[x, y];
 	}
-
-	// Respawns The items on the maze
-	public void RestartMaze()
-	{
-		// Resets both inner boxes to have 0 rotation
-		m_MazeUD.transform.rotation = Quaternion.identity;
-		m_MazeLR.transform.rotation = Quaternion.identity;
-		m_MazeUD.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-		m_MazeLR.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-
-		for (int i = 0; i < m_Gems.Count; i ++)
-		{
-			m_Gems[i].SetActive(false);
-		}
-
-		if(m_Ball != null)
-		{
-			Vector3 spawnOffset = new Vector3(0.0f, 10.0f, 0.0f);
-			m_Ball.transform.position = m_StartNode.Position + spawnOffset;	
-		}
-		m_Flag.SetActive(false);
-	}
-
-	// Activates Gem
-	public void SpawnGem(int index)
-	{
-		m_Gems[index].SetActive(true);
-	}
-
-	// Activates Flag
-	public void SpawnFlag()
-	{
-		m_Flag.SetActive(true);
-	} 
 	#endregion
 }

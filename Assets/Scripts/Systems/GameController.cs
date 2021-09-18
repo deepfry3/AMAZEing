@@ -35,28 +35,21 @@ public class GameController : MonoBehaviour
 	public GameObject m_DanceGuyPrefab;                 // Prefab for dancing man objects
 	public GameObject m_DanceGirlPrefab;
 	public TextMeshPro m_LCDText;                       // TMP that displays info to player
-	public static int m_GemCount = 0;					// ???
+	public static int m_GemCount = 2;					// ???
+	public Material[] m_Skyboxes = null;          // Skyboxe materials used for theskybox
 
 	// -- Private --
 	private GameState m_State;                          // Current GameController state
 	private GameObject m_DanceGirl = null;
 	private GameObject m_DanceGuy = null;
 	private SoundManager m_Sound;                       // Reference to SoundManager class
-	private MazeGeneration m_MazeGen;                   // Reference to MazeGeneration class
 	private float m_TimeCounter = 0.0f;                 // Time taken during gameplay
 	private int m_GemsCollected = 0;                    // ???
 	private bool InAnimation = false;
+	private Skybox m_Skybox = null;
 
-	// -- Properties --
-	// (currently blank)
-
-	#region Singleton
-	private static GameController m_Instance;
-	public static GameController Instance
-	{ 
-		get { return m_Instance; }
-	}
-	#endregion
+	// -- Singleton --
+	public static GameController Instance { get; private set; }
 	#endregion
 
 	#region Unity Functions
@@ -66,11 +59,7 @@ public class GameController : MonoBehaviour
 	/// </summary>
 	void Awake()
 	{
-		// Initialize Singleton
-		if (m_Instance != null && m_Instance != this)
-			Destroy(this.gameObject);
-		else
-			m_Instance = this;
+		Instance = this;
 	}
 
 	/// <summary>
@@ -79,9 +68,11 @@ public class GameController : MonoBehaviour
 	/// </summary>
 	void Start()
 	{
+		m_Skybox = Camera.main.GetComponent<Skybox>();
+
+
 		// Cache components
 		m_Sound = GetComponent<SoundManager>();
-		m_MazeGen = GetComponent<MazeGeneration>();
 	//_Animator = ;
 
 		// Initialize variables
@@ -178,11 +169,11 @@ public class GameController : MonoBehaviour
 
 		if (m_GemsCollected < m_GemCount)
 		{
-			m_MazeGen.SpawnGem(m_GemsCollected);
+			MazeGeneration.Instance.SetGemActive(m_GemsCollected);
 		}
 		else if(m_GemsCollected == m_GemCount)
 		{
-			m_MazeGen.SpawnFlag();
+			MazeGeneration.Instance.SetFlagActive();
 		}
 	}
 
@@ -201,7 +192,7 @@ public class GameController : MonoBehaviour
 	/// </summary>
 	public void OnAllGemsCollected()
 	{
-		m_MazeGen.GenerateNewMaze();
+		MazeGeneration.Instance.NewMaze();
 	}
 
 	/// <summary>
@@ -257,9 +248,11 @@ public class GameController : MonoBehaviour
 		m_Sound.PlayBackroundMusic();
 
 		// Generate maze
-		m_MazeGen.GridSizeIndex = (m_MazeGen.m_GridSizes.Length - 1) / 2;
-		m_MazeGen.GenerateNewMaze();
-		m_MazeGen.SpawnGem(m_GemsCollected);
+		MazeGeneration maze = MazeGeneration.Instance;
+		maze.GridSizeIndex = (maze.GridSizesCount - 1) / 2;
+		maze.GemSpawnCount = maze.MinGemSpawnCount + ((maze.MaxGemSpawnCount - maze.MinGemSpawnCount) / 2);
+		maze.NewMaze();
+		maze.SetGemActive(m_GemsCollected);
 
 		// Set camera to transition to game (if it isn't already)
 		CameraController.Instance.TransitionToGame();
@@ -275,8 +268,8 @@ public class GameController : MonoBehaviour
 		m_TimeCounter = 0.0f;
 
 		// Restart maze
-		m_MazeGen.RestartMaze();
-		m_MazeGen.SpawnGem(m_GemsCollected);
+		MazeGeneration.Instance.ResetMaze();
+		MazeGeneration.Instance.SetGemActive(m_GemsCollected);
 	}
 
 	/// <summary>
@@ -288,8 +281,8 @@ public class GameController : MonoBehaviour
 		m_GemsCollected = 0;
 		m_TimeCounter = 0.0f;
 
-		m_MazeGen.GenerateNewMaze();
-		m_MazeGen.SpawnGem(m_GemsCollected);
+		MazeGeneration.Instance.NewMaze();
+		MazeGeneration.Instance.SetGemActive(m_GemsCollected);
 	}
 
 	public void SetMenu()
@@ -306,6 +299,14 @@ public class GameController : MonoBehaviour
 	{
 		Destroy(m_DanceGirl);
 		Destroy(m_DanceGuy);
+	}
+
+	public void ChangeSkybox()
+	{
+		int r = Random.Range(0, 5);
+		LightPosManager.Instance.SetLight(r);
+		RenderSettings.skybox = m_Skyboxes[r];
+		Debug.Log("Set Skybox: " + r);
 	}
 	#endregion
 }
