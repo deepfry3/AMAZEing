@@ -3437,8 +3437,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2fe2b515a6b2eb4dadcd749ee576f35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MaxHRotation: 4
-  m_MaxVRotation: 4
+  m_MaxHRotation: 5
+  m_MaxVRotation: 5
   m_LRBox: {fileID: 656763704}
   m_UDBox: {fileID: 2135664608}
   m_LRHandle: {fileID: 1470002488}
