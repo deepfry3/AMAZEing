@@ -2,31 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//  Worked on by:
-//  Declan Doller
-//
+/* Author: Declan
+ * 
+ * Soundmanager is a singleton used to manage some of the sounds within the scene
+ */
 
 public class SoundManager : MonoBehaviour
 {
-    public AudioSource m_GemCollected;
-    public AudioSource m_BackroundNoise;
-    public AudioSource m_FlagCollected;
+    #region Variables/Propeties
 
-    private GameObject m_Camera;
+    // -- Private -- 
+    private GameObject m_Camera = null;             // The Camera object which holds some Audio sources
 
-    // From 0.0f - 1.0f
-    private float m_MusicVolume = 0.0f;
-    private float m_GemVolume = 0.0f;
+    // -- Public --
+    public AudioSource m_GemCollected = null;       // The Audiosource for the gem collected sound
+    public AudioSource m_BackroundNoise = null;     // The Audiosource for the background noise sound
+    public AudioSource m_FlagCollected = null;      // The Audiosource for the Flag collection sound
 
-    private bool m_VolumeChange = false;
+    // -- Singleton Instances --
     private static SoundManager m_Instance;
     public static SoundManager Instance
     {
         get { return m_Instance; }
     }
+	#endregion
 
-    // Called when script is being loaded
-    void Awake()
+	#region Unity Functions
+
+    /// <summary>
+    /// RUns on awake.
+    /// Makes sure there is only one instance of SoundManager
+    /// </summary>
+	void Awake()
     {
         // Initialize Singleton
         if (m_Instance != null && m_Instance != this)
@@ -35,7 +42,10 @@ public class SoundManager : MonoBehaviour
             m_Instance = this;
     }
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Runs on first frame.
+    /// Caches needed components
+    /// </summary>
     void Start()
     {
         m_Camera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -46,73 +56,40 @@ public class SoundManager : MonoBehaviour
 
         m_GemCollected = GetComponent<AudioSource>();
     }
+	#endregion
 
-	void update()
-	{
-		if(m_VolumeChange)
-		{
-            m_BackroundNoise.volume = m_MusicVolume;
-            m_GemCollected.volume = m_GemVolume;
-        }
-	}
+	#region Public Functions
 
-	// Sets the  Gem collection volume from 0.0f - 1.0f
-	public void SetGemVolume(float volume)
-	{
-        m_VolumeChange = true;
-
-        if(volume > 1)
-		{
-            volume = 1.0f;
-		}
-
-        else if(volume < 0)
-		{
-            volume = 0;
-		}
-
-        m_GemVolume = volume;
-	}
-
-    // Sets the volume from 0.0f - 1.0f
-    public void SetMusicVolume(float volume)
-    {
-        m_VolumeChange = true;
-
-        if (volume > 1)
-        {
-            volume = 1.0f;
-        }
-
-        else if (volume < 0)
-        {
-            volume = 0;
-        }
-
-        m_MusicVolume = volume;
-    }
-
-
-    // Plays the Backround music
-    public void PlayBackroundMusic()
+    /// <summary>
+    /// Called when game starts
+    /// Plays the background music
+    /// </summary>
+	public void PlayBackroundMusic()
     {
         Debug.Log("Playing: Backround Music");
         m_BackroundNoise.Play();
     }
 
-    // Plays the Gem collected sound
+    /// <summary>
+    /// Called when gem is collected
+    /// Plays the gem collection sound
+    /// </summary>
     public void PlayGemCollected()
     {
         Debug.Log("Playing: Gem Collected");
         m_GemCollected.Play();
     }
 
-    // Plays when flag is collected
+    /// <summary>
+    /// Called when flag is collected
+    /// Plays the flag collection sound
+    /// </summary>
     public void PlayFlagCollected()
 	{
         Debug.Log("Playing: Flag Collected");
         m_FlagCollected.Play();
     }
+	#endregion
 }
 
 

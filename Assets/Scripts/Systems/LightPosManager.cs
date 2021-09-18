@@ -2,21 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Author: Declan
+ * 
+ *  This scrip is a singleton and controls the light position and colour for each sky box
+ */
+
 public class LightPosManager : MonoBehaviour
 {
-    private Vector3[] m_Positions = new Vector3[5];
-    private Vector3[] m_Rotations = new Vector3[5];
-    public Color[] m_Colours = new Color[5];
-    public int m_Index;
-    private Light m_Light = null;
-    private static LightPosManager m_Instance;
-    public static LightPosManager Instance
+	#region Variables/Properties
+
+    // -- Private --
+	private Vector3[] m_Positions = new Vector3[5];     // Array of Positions for the light source
+    private Vector3[] m_Rotations = new Vector3[5];     // Array of rotations for the light source
+    private Light m_Light = null;                       // THe Light component
+
+    // -- Public -- 
+    public Color[] m_Colours = new Color[5];            // Array of colours for the light source
+    public int m_Index;                                 // 
+
+    // -- Singleton --
+    private static LightPosManager m_Instance;          // The current instance
+    public static LightPosManager Instance              // The public Instance
     {
         get { return m_Instance; }
     }
 
-    // Called when script is being loaded
-    void Awake()
+	#endregion
+
+	#region Unity Functions
+
+	/// <summary>
+    /// Runs on awake.
+    /// Caches components and ensures only a single instance is used
+    /// </summary>
+	void Awake()
     {
         m_Light = GetComponentInChildren<Light>();
 
@@ -27,41 +46,42 @@ public class LightPosManager : MonoBehaviour
             m_Instance = this;
     }
 
-    // On start
+    /// <summary>
+    /// Runs on first frame
+    /// sets all the hardcoded positions and rotations of the light
+    /// </summary>
 	private void Start()
 	{
-
         m_Positions[0] = new Vector3(30, 50, 30);
         m_Rotations[0] = new Vector3(51, -84, 73);
-      //  m_Colours[0] = new Color(255, 233, 143, 255);
 
         m_Positions[1] = new Vector3(30, 30, 23);
         m_Rotations[1] = new Vector3(60, -73, 77);
-       // m_Colours[1] = new Color(97, 41, 221, 255);
 
         m_Positions[2] = new Vector3(37, 50, -26);
         m_Rotations[2] = new Vector3(31, -50, 118);
-       // m_Colours[2] = new Color(236, 213, 151, 255);
 
         m_Positions[3] = new Vector3(-5, 53, 76);
         m_Rotations[3] = new Vector3(4, -184, -36);
-      //  m_Colours[3] = new Color(48, 157, 60, 255);
 
         m_Positions[4] = new Vector3(-9, -12, 1);
         m_Rotations[4] = new Vector3(-29, 18, 101);
-       // m_Colours[4] = new Color(255, 255, 255, 255);
     }
+	#endregion
 
-    public void SetLight(int index)
+	#region Public Functions
+
+    /// <summary>
+    /// Called when the skybox changes
+    /// Sets the position and rotation
+    /// </summary>
+    /// <param name="index"></param>
+	public void SetLight(int index)
 	{
-        //Color colour = new Color();
-        //colour.r = 255 / m_Colours[index].x;
-        //colour.g = 255 / m_Colours[index].y;
-        //colour.b = 255 / m_Colours[index].z;
-        //colour.a = 255 / m_Colours[index].w;
         m_Index = index;
         m_Light.transform.position = m_Positions[index];
         m_Light.transform.rotation = Quaternion.Euler(m_Rotations[index]);
         m_Light.color = m_Colours[index];
 	}
+	#endregion
 }

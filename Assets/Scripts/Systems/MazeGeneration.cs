@@ -51,7 +51,6 @@ public class MazeGeneration : MonoBehaviour
 	[SerializeField] Vector2Int[] m_GridSizes = null;           // Possible maze sizes (cells in maze horizontally/vertically)
 	[SerializeField] float m_WallThickness = 0.5f;              // Thickness of walls instantiated in maze
 	[SerializeField] float m_WallHeight = 1.5f;                 // Height of walls instantiated in maze
-	[SerializeField] float m_WallYPosition = 0.75f;             // Position on Y axis of walls instantiated in maze
 	[SerializeField] int m_MinGemCount = 1;						// Minimum GemCount allowed in Options menu
 	[SerializeField] int m_MaxGemCount = 6;                     // Maximum Gem Count allowed in Options menu
 
@@ -64,7 +63,6 @@ public class MazeGeneration : MonoBehaviour
 	private List<GameObject> m_Gems = null;                     // Instantiated gems after generation
 	private GameObject m_Ball = null;                           // Instantiated ball after generation
 	private GameObject m_Flag = null;                           // Instantiated flag after generation
-	private bool m_IsGenerated = false;                         // Whether maze has completed generation
 	private int m_GridSizeIndex;                                // Current grid size (index of Grid Sizes array)
 	private Vector2Int m_GridSize;                              // Current grid size (actual size)
 	private int m_GemSpawnCount;								// Current gem count (to use upon regeneration)
@@ -92,6 +90,7 @@ public class MazeGeneration : MonoBehaviour
 			}
 		}
 	}
+
 	/// <summary>
 	/// Gets the minimum count of gems to spawn in the maze upon regeneration that can be set.
 	/// </summary>
@@ -99,6 +98,7 @@ public class MazeGeneration : MonoBehaviour
 	{
 		get	{ return m_MinGemCount;	}
 	}
+
 	/// <summary>
 	/// Gets the maximum count of gems to spawn in the maze upon regeneration that can be set.
 	/// </summary>
@@ -106,6 +106,7 @@ public class MazeGeneration : MonoBehaviour
 	{
 		get { return m_MaxGemCount; }
 	}
+
 	/// <summary>
 	/// Gets or sets the index of the Grid Sizes array to use in the maze upon regeneration.
 	/// Error logged to Debug console upon invalid value.
@@ -127,6 +128,7 @@ public class MazeGeneration : MonoBehaviour
 			catch { Debug.Log("Unable to set Grid Size: Index " + value + " was invalid."); }
 		}
 	}
+
 	/// <summary>
 	/// Gets the count of the Grid Sizes array to use in the maze upon regeneration.
 	/// </summary>
@@ -134,6 +136,7 @@ public class MazeGeneration : MonoBehaviour
 	{
 		get { return m_GridSizes.Length; }
 	}
+
 	/// <summary>
 	/// Gets the current grid size to use in the maze upon regeneration.
 	/// </summary>
@@ -256,7 +259,6 @@ public class MazeGeneration : MonoBehaviour
 
 		// Reset box rotation and set generated state to false
 		BoxController.Instance.ResetRotation();
-		m_IsGenerated = false;
 	}
 
 	/// <summary>
@@ -347,7 +349,6 @@ public class MazeGeneration : MonoBehaviour
 				m_Path.Pop();
 		}
 
-		m_IsGenerated = true;
 		#endregion
 	}
 

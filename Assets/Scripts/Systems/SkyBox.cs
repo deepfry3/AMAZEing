@@ -9,14 +9,19 @@ using UnityEngine;
 
 public class SkyBox : MonoBehaviour
 {
+	#region Variables/Properties
 
+	// -- Public -- 
 	public float RotateX = 0.01f;
 	public float RotateY = 0.01f;
 	public float RotateZ = 0.01f;
+	#endregion
 
-	// Update is called once per frame
-	void Update()
+	#region Unity Functions
+	private void Update()
     {
         transform.Rotate(RotateX, RotateY, RotateZ);
     }
+
+	#endregion
 }
