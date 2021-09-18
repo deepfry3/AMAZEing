@@ -55,6 +55,7 @@ public class MenuController : MonoBehaviour
 	private Vector3 m_TargetPosition;                           // Current target position
 	private MenuState m_State;                                  // Current MenuState
 	private float m_InputDisabledTimer;                         // Timer between inputs (preventing accidental double-inputs)
+	private bool m_MazeUpdated = false;							// Whether maze needs to be regenerated automatically after changing options
 
 	// -- Properties --
 	/// <summary>
@@ -175,6 +176,9 @@ public class MenuController : MonoBehaviour
 			CameraController.Instance.TransitionToMenu();
 			GameController.Instance.SetState(GameState.PAUSED);
 			m_MenuButtonsText[3].text = state == MenuState.MAIN ? "▲ Options ▲" : "▼ Back ▼";
+			if (m_MazeUpdated)
+				GameController.Instance.GenerateNewMaze();
+			m_MazeUpdated = false;
 		}
 		else
 		{
@@ -256,12 +260,14 @@ public class MenuController : MonoBehaviour
 					MazeGeneration.Instance.GemSpawnCount = MazeGeneration.Instance.MinGemSpawnCount;
 				else
 					MazeGeneration.Instance.GemSpawnCount++;
+				m_MazeUpdated = true;
 				break;
 			case 7: // Maze Size button
 				if (MazeGeneration.Instance.GridSizeIndex == MazeGeneration.Instance.GridSizesCount - 1)
 					MazeGeneration.Instance.GridSizeIndex = 0;
 				else
 					MazeGeneration.Instance.GridSizeIndex++;
+				m_MazeUpdated = true;
 				break;
 		}
 	}
