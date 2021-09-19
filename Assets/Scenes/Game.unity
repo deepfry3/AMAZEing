@@ -15,12 +15,12 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0.65080994, g: 0.666729, b: 0.7075472, a: 1}
+  m_FogColor: {r: 0.09741012, g: 0.09790998, b: 0.103773594, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.16656284, g: 0.16656284, b: 0.1792453, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -2058,9 +2058,9 @@ MonoBehaviour:
     rotation: {x: 0.0784591, y: 0, z: 0, w: 0.9969173}
     fieldOfView: 47
   m_GameSettings:
-    position: {x: 0, y: 25, z: -25}
-    rotation: {x: 0.38268346, y: 0, z: 0, w: 0.9238795}
-    fieldOfView: 50
+    position: {x: 0, y: 24, z: -25}
+    rotation: {x: 0.37460658, y: 0, z: 0, w: 0.92718387}
+    fieldOfView: 47
   m_MenuSettings:
     position: {x: -7.5, y: 18, z: -27.5}
     rotation: {x: 0.4617486, y: 0, z: 0, w: 0.8870108}
@@ -4736,7 +4736,7 @@ GameObject:
   - component: {fileID: 1870787690}
   - component: {fileID: 1870787691}
   m_Layer: 0
-  m_Name: SkyBoxSunlight
+  m_Name: Skybox Sunlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4750,7 +4750,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1870787689}
   m_LocalRotation: {x: -0.0061243777, y: -0.65335256, z: 0.66612667, w: 0.35967806}
-  m_LocalPosition: {x: 30, y: 30, z: 23}
+  m_LocalPosition: {x: 10, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2144782235}
@@ -5483,7 +5483,7 @@ GameObject:
   - component: {fileID: 2106381576}
   - component: {fileID: 2106381575}
   m_Layer: 0
-  m_Name: Sunlight
+  m_Name: Bounce Sunlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5496,12 +5496,12 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106381574}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 0.4
+  m_Intensity: 0.05
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -5857,7 +5857,6 @@ GameObject:
   - component: {fileID: 2144782234}
   - component: {fileID: 2144782233}
   - component: {fileID: 2144782232}
-  - component: {fileID: 2144782236}
   m_Layer: 0
   m_Name: SkyboxCamera
   m_TagString: Untagged
@@ -5877,9 +5876,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e92cf3000e7ddd4180b1bdb4390e3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotateX: 0.05
-  RotateY: 0.05
-  RotateZ: 0.05
+  m_SkyboxRotation: {x: 0.005, y: 0.005, z: 0.005}
+  m_Rotations:
+  - {x: 51, y: -84, z: 73}
+  - {x: 60, y: -73, z: 77}
+  - {x: 15, y: -70, z: 50}
+  - {x: 4, y: -184, z: -36}
+  - {x: -25, y: 15, z: -10}
+  m_Colors:
+  - {r: 1, g: 1, b: 0.8235295, a: 1}
+  - {r: 0.75294125, g: 0.627451, b: 1, a: 1}
+  - {r: 1, g: 0.81568635, b: 0.5058824, a: 1}
+  - {r: 0.7019608, g: 1, b: 0.7960785, a: 0.8627451}
+  - {r: 1, g: 1, b: 0.90196085, a: 1}
 --- !u!114 &2144782233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5970,25 +5979,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 45.5, y: 0, z: 0}
---- !u!114 &2144782236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2144782231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3df78d876a48dd5488d032b0fc8a73d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Colours:
-  - {r: 1, g: 1, b: 0.8235294, a: 1}
-  - {r: 0.75190854, g: 0.627451, b: 1, a: 1}
-  - {r: 1, g: 0.8148512, b: 0.504, a: 1}
-  - {r: 0.701, g: 1, b: 0.79428804, a: 0.8509804}
-  - {r: 1, g: 1, b: 0.901, a: 1}
-  m_Index: 4
 --- !u!1001 &3709348213185988711
 PrefabInstance:
   m_ObjectHideFlags: 0

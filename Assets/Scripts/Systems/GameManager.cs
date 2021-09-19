@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
 				{
 					case GameState.START:
 						m_LCDText.text = "WELCOME";
-						ChangeSkybox(1);
+						ChangeSkybox(4);
 						break;
 					case GameState.PAUSED:
 						m_LCDText.text = "PAUSED";
@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour
 		{
 			// Change skybox
 			RenderSettings.skybox = m_Skyboxes[index];
-			LightPosManager.Instance.SetLight(index);
+			SkyboxController.Instance.LightIndex = index;
 
 			// Log new skybox to console
 			Debug.Log("Skybox set to index: " + index);
