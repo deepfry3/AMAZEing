@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 5989613493025756841}
   - component: {fileID: 1490631369318379273}
   m_Layer: 0
-  m_Name: EndFlag
+  m_Name: Flag
   m_TagString: Flag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -256,8 +256,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd2f16beca5a5e542a3a8040320389ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Sound: {fileID: 1490631369318379273}
-  m_CollectedSound: {fileID: 8300000, guid: 720e37832b319e845a37a95f724da993, type: 3}
 --- !u!82 &1490631369318379273
 AudioSource:
   m_ObjectHideFlags: 0
@@ -499,7 +497,7 @@ Cloth:
   m_GameObject: {fileID: 8533913835716871407}
   m_Enabled: 1
   m_StretchingStiffness: 1
-  m_BendingStiffness: 0.2
+  m_BendingStiffness: 1
   m_UseTethers: 1
   m_UseGravity: 0
   m_Damping: 0
@@ -753,6 +751,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.00012436509, y: 0.21470135, z: 0.014955499}
-    m_Extent: {x: 0.49989346, y: 0.84904784, z: 0.014955527}
+    m_Center: {x: 0, y: 0.21441758, z: -0.000025025576}
+    m_Extent: {x: 0.5000001, y: 0.84939325, z: 0.000025125959}
   m_DirtyAABB: 0
