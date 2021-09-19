@@ -15,7 +15,8 @@ public class BallController : MonoBehaviour
 {
 	#region Variables/Properties
 	// -- Public --
-	public AudioSource m_HitSound = null;						// Sound to play when ball collides with wall
+	public AudioSource m_HitSound = null;                       // Sound to play when ball collides with wall
+	public AudioSource m_GemSound = null;
 	public AudioSource m_RollSound = null;						// Sound to play as ball increases in speed
 	public AudioClip[] m_HitSoundClips = null;                  // Array of audio clips to choose from when ball collides with wall
 
@@ -68,6 +69,12 @@ public class BallController : MonoBehaviour
 		m_VelocityPrev = velocityCurrent;
 	}
 
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Space))
+			m_Rigidbody.isKinematic = !m_Rigidbody.isKinematic;
+	}
+
 	/// <summary>
 	/// Called on TriggerEnter.
 	/// Increments Gem counter and plays sound.
@@ -80,6 +87,7 @@ public class BallController : MonoBehaviour
 		{
 			GameController.Instance.AddGem();
 			other.gameObject.SetActive(false);
+			m_GemSound.Play();
 		}
 
 		if (other.tag == "Flag")

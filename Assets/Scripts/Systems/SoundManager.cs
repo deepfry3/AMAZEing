@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour
     private GameObject m_Camera = null;             // The Camera object which holds some Audio sources
 
     // -- Public --
-    public AudioSource m_GemCollected = null;       // The Audiosource for the gem collected sound
+    //public AudioSource m_GemCollected = null;       // The Audiosource for the gem collected sound
     public AudioSource m_BackroundNoise = null;     // The Audiosource for the background noise sound
     public AudioSource m_FlagCollected = null;      // The Audiosource for the Flag collection sound
 
@@ -49,12 +49,12 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         m_Camera = GameObject.FindGameObjectWithTag("MainCamera");
-        if(m_Camera != null)
-		{
-           m_BackroundNoise = m_Camera.GetComponent<AudioSource>();
-		}
+  //      if(m_Camera != null)
+		//{
+  //         m_BackroundNoise = m_Camera.GetComponent<AudioSource>();
+		//}
 
-        m_GemCollected = GetComponent<AudioSource>();
+        //m_GemCollected = GetComponent<AudioSource>();
     }
 	#endregion
 
@@ -74,11 +74,11 @@ public class SoundManager : MonoBehaviour
     /// Called when gem is collected
     /// Plays the gem collection sound
     /// </summary>
-    public void PlayGemCollected()
-    {
-        Debug.Log("Playing: Gem Collected");
-        m_GemCollected.Play();
-    }
+    //public void PlayGemCollected()
+    //{
+    //    Debug.Log("Playing: Gem Collected");
+    //    m_GemCollected.Play();
+    //}
 
     /// <summary>
     /// Called when flag is collected

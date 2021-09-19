@@ -71,7 +71,7 @@ public class GameController : MonoBehaviour
 		m_Skybox = Camera.main.GetComponent<Skybox>();
 
 		// Cache components
-		m_Sound = GetComponent<SoundManager>();
+		m_Sound = SoundManager.Instance;
 
 		// Initialize variables
 		m_TimeCounter = 0.0f;
@@ -159,7 +159,7 @@ public class GameController : MonoBehaviour
 	public void AddGem()
 	{
 		m_GemsCollected++;
-		m_Sound.PlayGemCollected();
+		//m_Sound.PlayGemCollected();
 
 		if (m_GemsCollected < m_GemCount)
 		{
