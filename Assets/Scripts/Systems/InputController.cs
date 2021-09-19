@@ -23,7 +23,7 @@ public class InputController : MonoBehaviour
 	// -- Private --
 	private Transform[] m_ButtonsTransforms = new Transform[4];	// Transform components of on-screen button objects (U, D, L, R)
 	private Vector3 m_GyroOffset = Vector3.zero;				// Offset for calibrating device rotation
-	private float m_GyroMaxTilt = 0.5f;                         // Device rotation (between 0 and 90 degrees) required to reach maximum input
+	private float m_GyroMaxTilt = 0.35f;                         // Device rotation (between 0 and 90 degrees) required to reach maximum input
 	private float m_HAxis = 0.0f;                               // Value of the virtual horizontal input axis	(-1 to 1: Left to Right)
 	private float m_VAxis = 0.0f;                               // Value of the virtual vertical input axis		(-1 to 1: Down to Up)
 
