@@ -4,8 +4,8 @@ using UnityEngine;
 
 /* Author: Cameron, Declan
  * 
- * BallController manages everything relating to the maze ball.
- * Currently, this is limited to playing audio based on velocity.
+ * BallController manages everything relating to the maze ball,
+ * including playing audio and gem collisions.
  */
 
 /// <summary>
@@ -83,20 +83,12 @@ public class BallController : MonoBehaviour
 		m_VelocityPrev = velocityCurrent;
 	}
 
-	void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Space))
-			m_Rigidbody.isKinematic = !m_Rigidbody.isKinematic;
-	}
-
 	/// <summary>
 	/// Called on TriggerEnter.
 	/// Increments Gem counter and plays sound.
 	/// </summary>
 	private void OnTriggerEnter(Collider other)
 	{
-		Debug.Log("Ball collided with: " + other.tag);
-
 		if (other.tag == "Gem")
 		{
 			m_GemCount++;
