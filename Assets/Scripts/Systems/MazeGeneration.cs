@@ -431,10 +431,10 @@ public class MazeGeneration : MonoBehaviour
 			GameObject gem = Instantiate(m_GemPrefabs[Random.Range(0, m_GemPrefabs.Length)]);
 			Material gemMaterial = m_GemMaterials[Random.Range(0, m_GemMaterials.Length)];
 			gem.GetComponent<Renderer>().material = gemMaterial;
-			gem.GetComponent<Gem>().SetLightColor(gemMaterial.GetColor("_Color"));
+			gem.GetComponent<GemController>().SetLightColor(gemMaterial.GetColor("_Color"));
 
 			//Set local position based on position of randomly-selected grid position
-			Vector3 gemSpawnOffset = new Vector3(0.0f, 1.0f, 0.0f);
+			Vector3 gemSpawnOffset = new Vector3(0.0f, 0.6f, 0.0f);
 			gem.transform.parent = m_Board.transform;
 			gem.transform.localPosition = m_MazeGrid[spawn.x, spawn.y].Position + gemSpawnOffset;
 			m_Gems.Add(gem);

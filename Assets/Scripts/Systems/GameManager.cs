@@ -43,7 +43,6 @@ public class GameManager : MonoBehaviour
 
 	// -- Private --
 	private GameState m_State;                                  // Active Game State
-	private GameState m_PreviousState;                          // Previous Game State
 	private GameObject m_DancerMale = null;                     // Instantiated Dancer Male
 	private GameObject m_DancerFemale = null;                   // Instantiated Dancer Female
 	private float m_TimeCounter = 0.0f;                         // Counter for time taken during gameplay
@@ -113,7 +112,6 @@ public class GameManager : MonoBehaviour
 		// Initialize variables
 		ResetTimer();
 		State = GameState.START;
-		m_PreviousState = GameState.START;
 
 		// Initialize game
 		SoundManager.Instance.PlayBackgroundMusic();
