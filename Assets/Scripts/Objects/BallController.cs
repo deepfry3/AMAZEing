@@ -105,6 +105,9 @@ public class BallController : MonoBehaviour
 		{
 			SoundManager.Instance.PlayWinSound();
 			m_GemCount = 0;
+
+			GameManager.Instance.OnFinish();
+			other.gameObject.SetActive(false);
 		}
 	}
 	#endregion
