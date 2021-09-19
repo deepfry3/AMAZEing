@@ -1934,9 +1934,9 @@ GameObject:
   m_Component:
   - component: {fileID: 771528822}
   - component: {fileID: 771528821}
+  - component: {fileID: 771528824}
   - component: {fileID: 771528820}
   - component: {fileID: 771528819}
-  - component: {fileID: 771528824}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -2061,10 +2061,10 @@ MonoBehaviour:
     position: {x: -7.5, y: 18, z: -27.5}
     rotation: {x: 0.4617486, y: 0, z: 0, w: 0.8870108}
     fieldOfView: 33
-  m_AnimationSettings:
+  m_WinSettings:
     position: {x: 0, y: 25, z: -25}
-    rotation: {x: 0, y: -1, z: 0, w: -0.00000004371139}
-    fieldOfView: 50
+    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    fieldOfView: 60
 --- !u!1 &785414079 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3709348213615687650, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
@@ -4028,8 +4028,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1634500782}
   - component: {fileID: 1634500781}
-  - component: {fileID: 1634500783}
   - component: {fileID: 1634500786}
+  - component: {fileID: 1634500783}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Maze
@@ -4120,12 +4120,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d707d7b53480d994ba4dcc9fa1b1b1fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Buttons:
+  m_OnScreenButtons:
   - {fileID: 521104160}
   - {fileID: 919087421}
   - {fileID: 2116229829}
   - {fileID: 602820531}
   m_Sensitivity: 10
+  m_GyroRangeH: 30
+  m_GyroRangeV: 30
 --- !u!1 &1684989611
 GameObject:
   m_ObjectHideFlags: 0

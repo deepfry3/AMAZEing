@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour
 		m_DancerMale.GetComponent<DanceAnimation>().PlayAnimation(index);
 		m_DancerFemale.GetComponent<DanceAnimation>().PlayAnimation(index);
 
-		CameraController.Instance.TransitionToAnimation();
+		CameraController.Instance.TransitionToWin();
 	}
 
 	/// <summary>

@@ -4,19 +4,18 @@ using UnityEngine;
 
 /* Author: Cameron
  * 
- * CameraController is a Singleton used to manage everything related to the Camera, meaning references to
- * it do not need to be stored, and its public properties can be accessed via CameraController.Instance.
+ * CameraController is a Singleton used to manage everything related to the main Camera.
  * 
- * This class manages the main and only camera in the game.
+ * It can be accessed via CameraController.Instance.
  */
 
 /// <summary>
-/// Stores the 
+/// Stores settings that the CameraController can tween between.
 /// </summary>
 [System.Serializable]
 public class CameraSettings
 {
-	// Constructor
+	// -- Constructor --
 	public CameraSettings(Vector3 position, Quaternion rotation, float fieldOfView)
 	{
 		this.position = position;
@@ -24,70 +23,50 @@ public class CameraSettings
 		this.fieldOfView = fieldOfView;
 	}
 
-	// Transform settings
-	public Vector3 position;								// Camera transform's position
-	public Quaternion rotation;                             // Camera transform's rotation
-
-	// Camera settings
-	[Range(0.00001f, 179.0f)]
-	public float fieldOfView;								// Camera's FOV
+	// -- Data --
+	public Vector3 position;                                    // Camera transform's position
+	public Quaternion rotation;                                 // Camera transform's rotation
+	[Range(0.00001f, 179.0f)] public float fieldOfView;         // Camera's FOV
 }
 
 /// <summary>
 /// Manages everything relating to the main Camera.
-/// (Properties accessed with <c>CameraController.Instance</c>.)
+/// (Singleton, accessed with <c>CameraController.Instance</c>.)
 /// </summary>
 public class CameraController : MonoBehaviour
 {
 	#region Variables/Properties
-	// -- Public --
-	public float m_TransitionSpeed = 1.0f;                  // Transition speed between two camera settings
-	public CameraSettings m_GameSettings;                   // Target camera settings during gameplay
-	public CameraSettings m_MenuSettings;                   // Target camera settings while accessing menu
-	public CameraSettings m_AnimationSettings;
+	// -- Serialized --
+	[SerializeField] float m_TransitionSpeed = 1.0f;        // Speed to transition/tween between two camera settings
+	[SerializeField] CameraSettings m_StartSettings = null;	// Target settings upon game start
+	[SerializeField] CameraSettings m_GameSettings = null;  // Target settings during gameplay
+	[SerializeField] CameraSettings m_MenuSettings = null;  // Target settings from within menu
+	[SerializeField] CameraSettings m_WinSettings = null;   // Target settings during Win fanfare
 
 	// -- Private --
-	private Transform m_Transform;							// Camera's transform component
+	private Transform m_Transform;                          // Camera's transform component
 	private Camera m_Camera;                                // Camera's Camera component
 	private CameraSettings m_TargetSettings;                // Camera settings currently targeted
 
-	// -- Properties --
-	// (currently blank)
-
-	#region Singleton
-	private static CameraController m_Instance;
-	public static CameraController Instance
-	{
-		get { return m_Instance; }
-	}
-	#endregion
+	// -- Singleton --
+	public static CameraController Instance { get; private set; }
 	#endregion
 
 	#region Unity Functions
 	/// <summary>
 	/// Called on Awake.
-	/// Initializes Singleton.
+	/// Initializes Singleton, caches components and initializes variables.
 	/// </summary>
 	void Awake()
 	{
 		// Initialize Singleton
-		if (m_Instance != null && m_Instance != this)
-			Destroy(this.gameObject);
-		else
-			m_Instance = this;
-	}
+		Instance = this;
 
-	/// <summary>
-	/// Called on Start.
-	/// Caches components and initializes target settings to current.
-	/// </summary>
-	void Start()
-	{
 		// Cache components
 		m_Transform = GetComponent<Transform>();
 		m_Camera = GetComponent<Camera>();
 
-		// Initialize target settings to current
+		// Initialize variables
 		m_TargetSettings = new CameraSettings(m_Transform.position, m_Transform.rotation, m_Camera.fieldOfView);
 	}
 
@@ -98,7 +77,7 @@ public class CameraController : MonoBehaviour
 	void Update()
 	{
 		// If target settings does not match current, lerp towards target
-		if (m_Transform.position != m_TargetSettings.position || m_Transform.rotation != m_TargetSettings.rotation)
+		if (m_Transform.position != m_TargetSettings.position || m_Transform.rotation != m_TargetSettings.rotation || m_Camera.fieldOfView != m_TargetSettings.fieldOfView)
 		{
 			m_Transform.position = Vector3.Lerp(m_Transform.position, m_TargetSettings.position, Time.deltaTime * m_TransitionSpeed);
 			m_Transform.rotation = Quaternion.Lerp(m_Transform.rotation, m_TargetSettings.rotation, Time.deltaTime * m_TransitionSpeed);
@@ -107,8 +86,15 @@ public class CameraController : MonoBehaviour
 	}
 	#endregion
 
-	#region Functions
-	// -- Public --
+	#region Public Functions
+	/// <summary>
+	/// Initiates the camera transition towards the 'start' settings
+	/// </summary>
+	public void TransitionToStart()
+	{
+		m_TargetSettings = m_StartSettings;
+	}
+
 	/// <summary>
 	/// Initiates the camera transition towards the 'game' settings
 	/// </summary>
@@ -126,11 +112,11 @@ public class CameraController : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Initiates the camera transition towards the 'animation'
+	/// Initiates the camera transition towards the 'win' settings
 	/// </summary>
-	public void TransitionToAnimation()
+	public void TransitionToWin()
 	{
-		m_TargetSettings = m_AnimationSettings;
+		m_TargetSettings = m_WinSettings;
 	}
 	#endregion
 }

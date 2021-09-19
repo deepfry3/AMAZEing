@@ -14,7 +14,7 @@ using TMPro;
 /// Manages inputs, providing an interface to access multiple input sources.
 /// (Singleton, accessed with <c>InputManager.Instance</c>.)
 /// </summary>
-/// [System.Serializable]
+[System.Serializable]
 public class InputManager : MonoBehaviour
 {
 	#region Variables/Properties
