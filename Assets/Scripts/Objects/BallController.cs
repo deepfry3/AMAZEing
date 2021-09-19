@@ -23,6 +23,7 @@ public class BallController : MonoBehaviour
 	// -- Public --
 	private Rigidbody m_Rigidbody = null;						// Rigidbody of the ball
 	private float m_VelocityPrev = 0.0f;                        // Ball's velocity from the previous update frame
+	private int m_GemCount = 0;
 	#endregion
 
 	#region Unity Functions
@@ -85,7 +86,12 @@ public class BallController : MonoBehaviour
 
 		if (other.tag == "Gem")
 		{
-			GameController.Instance.AddGem();
+			m_GemCount++;
+			if (m_GemCount < MazeGeneration.Instance.GemSpawnCount)
+				MazeGeneration.Instance.SetGemActive(m_GemCount);
+			else
+				MazeGeneration.Instance.SetFlagActive();
+
 			other.gameObject.SetActive(false);
 			m_GemSound.Play();
 		}
@@ -93,6 +99,7 @@ public class BallController : MonoBehaviour
 		if (other.tag == "Flag")
 		{
 			SoundManager.Instance.PlayFlagCollected();
+			m_GemCount = 0;
 		}
 	}
 	#endregion

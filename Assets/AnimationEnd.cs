@@ -20,7 +20,7 @@ public class AnimationEnd : StateMachineBehaviour
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
 		MenuController.Instance.ToggleMenu();
-		GameController.Instance.DestroyDancers();
+		GameManager.Instance.DestroyDancers();
 	}
 
 	// OnStateMove is called right after Animator.OnAnimatorMove()

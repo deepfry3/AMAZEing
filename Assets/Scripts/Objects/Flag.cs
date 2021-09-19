@@ -22,7 +22,7 @@ public class Flag : MonoBehaviour
 
         if (other.tag == "Ball")
         {
-            GameController.Instance.OnFinish();
+            GameManager.Instance.OnFinish();
             gameObject.SetActive(false);
         }
     }

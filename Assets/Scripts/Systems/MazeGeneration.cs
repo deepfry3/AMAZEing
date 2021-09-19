@@ -206,6 +206,7 @@ public class MazeGeneration : MonoBehaviour
 		// Generate and instantiate maze
 		GenerateMaze();
 		InstantiateMaze();
+		GameManager.Instance.ResetTimer();
 	}
 
 	/// <summary>
@@ -220,6 +221,7 @@ public class MazeGeneration : MonoBehaviour
 		m_Flag.SetActive(false);
 		for (int i = 0; i < m_Gems.Count; i++)
 			m_Gems[i].SetActive(false);
+		m_Gems[0].SetActive(true);
 
 		// Return ball to default position
 		if (m_Ball != null)
@@ -228,6 +230,8 @@ public class MazeGeneration : MonoBehaviour
 			m_Ball.transform.parent = m_Board.transform;
 			m_Ball.transform.localPosition = m_StartNode.Position + spawnOffset;
 		}
+
+		GameManager.Instance.ResetTimer();
 	}
 
 	/// <summary>
@@ -333,7 +337,7 @@ public class MazeGeneration : MonoBehaviour
 
 				// Otherwise, choose a random valid neighbour and connect this node to is
 				int n;
-				do { n = Random.Range(0, 4); } while (neighbourInvalid[n]);
+				do { n = Random.Range(0, neighbourInvalid.Length); } while (neighbourInvalid[n]);
 				node.IsConnectedNeighbour[n] = true;
 
 				// Connect the neighbour to this node as well, then push neighbour onto path
@@ -411,7 +415,7 @@ public class MazeGeneration : MonoBehaviour
 		invalidGemSpawns.Add(m_StartNode.GridPosition);
 		invalidGemSpawns.Add(m_EndNode.GridPosition);
 		// Instantiate Gems
-		for (int i = 0; i < GameController.m_GemCount; i++)
+		for (int i = 0; i < GemSpawnCount; i++)
 		{
 			// Randomly generate gem position on the maze grid until valid position is found
 			Vector2Int spawn = new Vector2Int();
@@ -425,8 +429,8 @@ public class MazeGeneration : MonoBehaviour
 			invalidGemSpawns.Add(spawn);
 
 			// Instantiate gem with random material and color
-			GameObject gem = Instantiate(m_GemPrefabs[Random.Range(0, m_GemPrefabs.Length - 1)]);
-			Material gemMaterial = m_GemMaterials[Random.Range(0, m_GemMaterials.Length - 1)];
+			GameObject gem = Instantiate(m_GemPrefabs[Random.Range(0, m_GemPrefabs.Length)]);
+			Material gemMaterial = m_GemMaterials[Random.Range(0, m_GemMaterials.Length)];
 			gem.GetComponent<Renderer>().material = gemMaterial;
 			gem.GetComponent<Gem>().SetLightColor(gemMaterial.GetColor("_Color"));
 
@@ -448,7 +452,7 @@ public class MazeGeneration : MonoBehaviour
 		// Reset all positions based on their defaults
 		ResetMaze();
 
-		GameController.Instance.ChangeSkybox();
+		GameManager.Instance.ChangeSkybox();
 	}
 
 	/// <summary>

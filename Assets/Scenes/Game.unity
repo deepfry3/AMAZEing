@@ -4046,8 +4046,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4fdda14870631438d10c4c2cf5d9c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DanceGuyPrefab: {fileID: 7229914105222680117, guid: 85651655a3ae8de4395a1b5a9ee3ab08, type: 3}
-  m_DanceGirlPrefab: {fileID: 6745668075930225337, guid: e936ce474133ce74daca7df17a0ffe18, type: 3}
+  m_DancerMalePrefab: {fileID: 7229914105222680117, guid: 85651655a3ae8de4395a1b5a9ee3ab08, type: 3}
+  m_DancerFemalePrefab: {fileID: 6745668075930225337, guid: e936ce474133ce74daca7df17a0ffe18, type: 3}
   m_LCDText: {fileID: 1397848281}
   m_Skyboxes:
   - {fileID: 2100000, guid: 0a98eaa61401f3c49a068e4fbd6c2e2a, type: 2}

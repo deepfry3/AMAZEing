@@ -121,7 +121,7 @@ public class MenuController : MonoBehaviour
 		if (mouseHit.transform != null)
 		{
 			// Tray input
-			if (mouseHit.transform.gameObject == m_TrayTrigger && Input.GetMouseButtonDown(0))
+			if (Input.GetKeyDown(KeyCode.Escape) || (mouseHit.transform.gameObject == m_TrayTrigger && Input.GetMouseButtonDown(0)))
 				ToggleMenu();
 
 			// Menu Button input
@@ -174,17 +174,17 @@ public class MenuController : MonoBehaviour
 		{
 			SetTargetZ(state == MenuState.MAIN ? -12.5f : -20.5f);
 			CameraController.Instance.TransitionToMenu();
-			GameController.Instance.SetState(GameState.PAUSED);
+			GameManager.Instance.State = GameState.PAUSED;
 			m_MenuButtonsText[3].text = state == MenuState.MAIN ? "▲ Options ▲" : "▼ Back ▼";
 			if (m_MazeUpdated)
-				GameController.Instance.GenerateNewMaze();
+				MazeGeneration.Instance.NewMaze();
 			m_MazeUpdated = false;
 		}
 		else
 		{
 			SetTargetZ(-4.5f);
 			CameraController.Instance.TransitionToGame();
-			GameController.Instance.SetState(GameState.GAME);
+			GameManager.Instance.State = GameState.GAME;
 			m_MenuButtonsText[3].text = "▲ Options ▲";
 		}
 	}
@@ -225,11 +225,11 @@ public class MenuController : MonoBehaviour
 		switch (index)
 		{
 			case 0: // New Maze Button
-				GameController.Instance.GenerateNewMaze();
+				MazeGeneration.Instance.NewMaze();
 				ToggleMenu();
 				break;
 			case 1: // Retry Button
-				GameController.Instance.RestartMaze();
+				MazeGeneration.Instance.ResetMaze();
 				ToggleMenu();
 				break;
 			case 2: // Quit Button
