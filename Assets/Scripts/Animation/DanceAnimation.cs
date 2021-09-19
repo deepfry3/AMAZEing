@@ -4,21 +4,20 @@ using UnityEngine;
 
 /* Author: Declan
  * 
- * DanceAnimation is a script used to play an animation on A dancing model
+ * Used to play Dancer animations.
  */
 
 public class DanceAnimation : MonoBehaviour
 {
 	#region Variables/Properties
-
 	// -- Private --
-	private Animator m_Animator = null;         // The animator of the dancing model
+	private Animator m_Animator = null;							// The animator of the dancing model
 	#endregion
 
 	#region Unity Functions
 	/// <summary>
 	/// Called on Awake.
-	/// Caches components
+	/// Caches components.
 	/// </summary>
 	void Awake()
     {
@@ -28,15 +27,14 @@ public class DanceAnimation : MonoBehaviour
 
 	#region Public Functions
 	/// <summary>
-	/// Using the animator plays a animation from an integer
-	/// Logs the index of the animation
+	/// Plays the specified animation.
 	/// </summary>
-	/// <param name="index"></param>
+	/// <param name="index"> The animation index to play </param>
 	public void PlayAnimation(int index)
 	{
         m_Animator.SetInteger("Play Animation", index);
         m_Animator.Play("Base Layer.Dance Switch");
-        Debug.Log("Playing animation: " + index);
+        Debug.Log("Playing Dancer animation: " + index);
 	}
 	#endregion
 }
