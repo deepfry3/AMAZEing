@@ -70,10 +70,12 @@ public class GameManager : MonoBehaviour
 						break;
 					case GameState.PAUSED:
 						m_LCDText.text = "PAUSED";
+						BallController.Instance.IsPaused = true;
 						DestroyDancers();
 						break;
 					case GameState.GAME:
 						m_LCDText.text = "00:00";
+						BallController.Instance.IsPaused = false;
 						break;
 					case GameState.FINISH:
 						m_LCDText.text = m_LCDText.text + " - FIN";

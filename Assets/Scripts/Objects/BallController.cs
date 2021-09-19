@@ -17,23 +17,36 @@ public class BallController : MonoBehaviour
 	// -- Public --
 	public AudioSource m_HitSound = null;                       // Sound to play when ball collides with wall
 	public AudioSource m_GemSound = null;
-	public AudioSource m_RollSound = null;						// Sound to play as ball increases in speed
+	public AudioSource m_RollSound = null;                      // Sound to play as ball increases in speed
 	public AudioClip[] m_HitSoundClips = null;                  // Array of audio clips to choose from when ball collides with wall
 
 	// -- Public --
-	private Rigidbody m_Rigidbody = null;						// Rigidbody of the ball
+	private Rigidbody m_Rigidbody = null;                       // Rigidbody of the ball
 	private float m_VelocityPrev = 0.0f;                        // Ball's velocity from the previous update frame
 	private int m_GemCount = 0;
+
+	// -- Properties --
+	public bool IsPaused                                        // Whether ball automatically moves or not
+	{
+		get { return m_Rigidbody.isKinematic; }
+		set { m_Rigidbody.isKinematic = value; }
+	}
+
+	// -- Singleton --
+	public static BallController Instance { get; private set; }
 	#endregion
 
 	#region Unity Functions
 	/// <summary>
-	/// Called on Start.
-	/// Caches components.
+	/// Called on Awake.
+	/// Initializes Singleton and caches components.
 	/// </summary>
-	void Start()
+	void Awake()
 	{
-		// Get and cache the Rigidbody component
+		// Initialize Singleton
+		Instance = this;
+
+		// Cache components
 		m_Rigidbody = GetComponent<Rigidbody>();
 	}
 
