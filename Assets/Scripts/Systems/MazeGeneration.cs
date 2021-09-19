@@ -352,7 +352,6 @@ public class MazeGeneration : MonoBehaviour
 			if (!connectionCreated)
 				m_Path.Pop();
 		}
-
 		#endregion
 	}
 

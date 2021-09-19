@@ -193,7 +193,8 @@ public class MenuController : MonoBehaviour
 
 			// Update other systems
 			CameraController.Instance.TransitionToMenu();
-			GameManager.Instance.State = GameState.PAUSED;
+			if (GameManager.Instance.State == GameState.GAME)
+				GameManager.Instance.State = GameState.PAUSED;
 			if (m_MazeUpdated)
 				MazeGeneration.Instance.NewMaze();
 			m_MazeUpdated = false;
@@ -205,8 +206,20 @@ public class MenuController : MonoBehaviour
 			m_MenuButtonsText[3].text = "▲ Options ▲";
 
 			// Update other systems
-			CameraController.Instance.TransitionToGame();
-			GameManager.Instance.State = GameState.GAME;
+			switch (GameManager.Instance.State)
+			{
+				case GameState.GAME:
+				case GameState.FINISH:
+					CameraController.Instance.TransitionToGame();
+					break;
+				case GameState.PAUSED:
+					CameraController.Instance.TransitionToGame();
+					GameManager.Instance.State = GameState.GAME;
+					break;
+				case GameState.START:
+					CameraController.Instance.TransitionToStart();
+					break;
+			}
 		}
 	}
 
@@ -247,10 +260,12 @@ public class MenuController : MonoBehaviour
 		{
 			case 0: // New Maze Button
 				MazeGeneration.Instance.NewMaze();
+				GameManager.Instance.State = GameState.GAME;
 				ToggleMenu();
 				break;
 			case 1: // Retry Button
 				MazeGeneration.Instance.ResetMaze();
+				GameManager.Instance.State = GameState.GAME;
 				ToggleMenu();
 				break;
 			case 2: // Quit Button

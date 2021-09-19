@@ -42,7 +42,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] Material[] m_Skyboxes = null;              // Materials used to select and display Skybox
 
 	// -- Private --
-	private GameState m_State;									// Active Game State
+	private GameState m_State;                                  // Active Game State
+	private GameState m_PreviousState;                          // Previous Game State
 	private GameObject m_DancerMale = null;                     // Instantiated Dancer Male
 	private GameObject m_DancerFemale = null;                   // Instantiated Dancer Female
 	private float m_TimeCounter = 0.0f;                         // Counter for time taken during gameplay
@@ -75,7 +76,7 @@ public class GameManager : MonoBehaviour
 						m_LCDText.text = "00:00";
 						break;
 					case GameState.FINISH:
-						m_LCDText.text = "YOU WIN";
+						m_LCDText.text = m_LCDText.text + " - FIN";
 						ResetTimer();
 						break;
 				}
@@ -109,7 +110,8 @@ public class GameManager : MonoBehaviour
 	{
 		// Initialize variables
 		ResetTimer();
-		State = GameState.GAME;
+		State = GameState.START;
+		m_PreviousState = GameState.START;
 
 		// Initialize game
 		SoundManager.Instance.PlayBackgroundMusic();
@@ -118,10 +120,9 @@ public class GameManager : MonoBehaviour
 		MazeGeneration maze = MazeGeneration.Instance;
 		maze.GridSizeIndex = (maze.GridSizesCount - 1) / 2;
 		maze.GemSpawnCount = maze.MinGemSpawnCount + ((maze.MaxGemSpawnCount - maze.MinGemSpawnCount) / 2);
-		maze.NewMaze();
 
 		// Set camera to transition to game (if it isn't already)
-		CameraController.Instance.TransitionToGame();
+		CameraController.Instance.TransitionToStart();
 	}
 
 	/// <summary>
