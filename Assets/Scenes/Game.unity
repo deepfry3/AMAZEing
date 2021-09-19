@@ -1129,8 +1129,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c0488d7ea7532648b3a45dc3178598d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BackroundNoise: {fileID: 336993966}
-  m_FlagCollected: {fileID: 336993965}
+  m_BackgroundMusic: {fileID: 336993966}
+  m_WinSound: {fileID: 336993965}
+  m_WinSoundClips:
+  - {fileID: 8300000, guid: 22b7f68699a01d64d81addf4390621e0, type: 3}
+  - {fileID: 8300000, guid: c74f7c4c8bbac014e8fb7408d418d13a, type: 3}
 --- !u!4 &336993968
 Transform:
   m_ObjectHideFlags: 0
@@ -2409,7 +2412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2429,7 +2432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3333,7 +3336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -3353,7 +3356,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3627,7 +3630,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -3647,7 +3650,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4594,7 +4597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4614,7 +4617,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3709348213615687662, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5772,10 +5775,10 @@ Transform:
   - {fileID: 347458582}
   - {fileID: 894207646}
   - {fileID: 900353222}
-  - {fileID: 1859839190}
-  - {fileID: 1833073007}
   - {fileID: 307725131}
   - {fileID: 79188370}
+  - {fileID: 1859839190}
+  - {fileID: 1833073007}
   m_Father: {fileID: 116533116}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5798,10 +5801,10 @@ MonoBehaviour:
   - {fileID: 61402630}
   - {fileID: 1396047934}
   - {fileID: 1150311410}
-  - {fileID: 1231587869}
-  - {fileID: 1833073006}
   - {fileID: 307725130}
   - {fileID: 79188369}
+  - {fileID: 1231587869}
+  - {fileID: 1833073006}
 --- !u!1 &2135664608
 GameObject:
   m_ObjectHideFlags: 0

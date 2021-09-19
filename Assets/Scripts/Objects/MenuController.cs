@@ -15,10 +15,10 @@ using TMPro;
  * [1] - Retry
  * [2] - Quit
  * [3] - Options
- * [4] - Calibrate Gyro
- * [5] - Input
- * [6] - Gem Count
- * [7] - Maze Size
+ * [4] - Gem Count
+ * [5] - Maze Size
+ * [6] - Calibrate Gyro
+ * [7] - Input
  */
 
 /// <summary>
@@ -55,7 +55,8 @@ public class MenuController : MonoBehaviour
 	private Vector3 m_TargetPosition;                           // Current target position
 	private MenuState m_State;                                  // Current MenuState
 	private float m_InputDisabledTimer;                         // Timer between inputs (preventing accidental double-inputs)
-	private bool m_MazeUpdated = false;							// Whether maze needs to be regenerated automatically after changing options
+	private bool m_MazeUpdated = false;                         // Whether maze needs to be regenerated automatically after changing options
+	private bool m_ShowInputOptions = false;					// Whether options menu includes Input buttons
 
 	// -- Properties --
 	/// <summary>
@@ -93,16 +94,20 @@ public class MenuController : MonoBehaviour
 
 		// Set all buttons to be enabled by default
 		m_MenuButtonsEnabled = new bool[m_MenuButtons.Length];
+		m_ShowInputOptions = true;
 		for (int i = 0; i < m_MenuButtons.Length; i++)
 			EnableButton(i);
 
-		// Disable Calibrate Gyro button, and Input button if gyro not supported
-		DisableButton(4);
+		// Disable Calibrate Gyro button (until Gyro is enabled later), and Input button if gyro not supported
+		DisableButton(6);
 		if (!SystemInfo.supportsAccelerometer)
-			DisableButton(5);
+		{
+			DisableButton(7);
+			m_ShowInputOptions = false;
+		}
 
 		// Set all dynamic button text
-		m_MenuButtonsText[5].text = "Input:\nMouse/Touch";
+		m_MenuButtonsText[7].text = "Input:\nMouse/Touch";
 	}
 
 	/// <summary>
@@ -172,20 +177,36 @@ public class MenuController : MonoBehaviour
 		// Update target position and game state accordingly
 		if (IsMenuOpen)
 		{
-			SetTargetZ(state == MenuState.MAIN ? -12.5f : -20.5f);
+			// Update menu buttons
+			if (state == MenuState.MAIN)
+			{
+				SetTargetZ(-12.5f);
+				m_MenuButtonsText[3].text = "▲ Options ▲";
+				EnableButton(0, 1, 2);
+			}
+			else
+			{
+				SetTargetZ(m_ShowInputOptions ? -20.5f : -16.5f);
+				m_MenuButtonsText[3].text = "▼ Back ▼";
+				DisableButton(0, 1, 2);
+			}
+
+			// Update other systems
 			CameraController.Instance.TransitionToMenu();
 			GameManager.Instance.State = GameState.PAUSED;
-			m_MenuButtonsText[3].text = state == MenuState.MAIN ? "▲ Options ▲" : "▼ Back ▼";
 			if (m_MazeUpdated)
 				MazeGeneration.Instance.NewMaze();
 			m_MazeUpdated = false;
 		}
 		else
 		{
+			// Update menu buttons
 			SetTargetZ(-4.5f);
+			m_MenuButtonsText[3].text = "▲ Options ▲";
+
+			// Update other systems
 			CameraController.Instance.TransitionToGame();
 			GameManager.Instance.State = GameState.GAME;
-			m_MenuButtonsText[3].text = "▲ Options ▲";
 		}
 	}
 
@@ -202,7 +223,7 @@ public class MenuController : MonoBehaviour
 	/// </summary>
 	public void SetMazeSizeText(Vector2Int gridSize)
 	{
-		m_MenuButtonsText[7].text = "Maze Size:\n" + gridSize.x + "x" + gridSize.y;
+		m_MenuButtonsText[5].text = "Maze Size:\n" + gridSize.x + "x" + gridSize.y;
 	}
 
 	/// <summary>
@@ -210,7 +231,7 @@ public class MenuController : MonoBehaviour
 	/// </summary>
 	public void SetGemCountText(int gemCount)
 	{
-		m_MenuButtonsText[6].text = "Gems:\n" + gemCount;
+		m_MenuButtonsText[4].text = "Gems:\n" + gemCount;
 	}
 	#endregion
 
@@ -238,36 +259,36 @@ public class MenuController : MonoBehaviour
 			case 3: // Options Button
 				SetState(m_State == MenuState.MAIN ? MenuState.OPTIONS : MenuState.MAIN);
 				break;
-			case 4: // Calibrate Gyro Button
-				InputController.Instance.CalibrateGyro();
-				ToggleMenu();
-				break;
-			case 5: // Input Button
-				InputController.Instance.ToggleGyro();
-				if (InputController.Instance.IsGyroActive)
-				{
-					m_MenuButtonsText[5].text = "Input\nGyro";
-					EnableButton(4);
-				}
-				else
-				{
-					m_MenuButtonsText[5].text = "Input\nMouse/Touch";
-					DisableButton(4);
-				}
-				break;
-			case 6: // Gem Count button
+			case 4: // Gem Count button
 				if (MazeGeneration.Instance.GemSpawnCount == MazeGeneration.Instance.MaxGemSpawnCount)
 					MazeGeneration.Instance.GemSpawnCount = MazeGeneration.Instance.MinGemSpawnCount;
 				else
 					MazeGeneration.Instance.GemSpawnCount++;
 				m_MazeUpdated = true;
 				break;
-			case 7: // Maze Size button
+			case 5: // Maze Size button
 				if (MazeGeneration.Instance.GridSizeIndex == MazeGeneration.Instance.GridSizesCount - 1)
 					MazeGeneration.Instance.GridSizeIndex = 0;
 				else
 					MazeGeneration.Instance.GridSizeIndex++;
 				m_MazeUpdated = true;
+				break;
+			case 6: // Calibrate Gyro Button
+				InputController.Instance.CalibrateGyro();
+				ToggleMenu();
+				break;
+			case 7: // Input Button
+				InputController.Instance.ToggleGyro();
+				if (InputController.Instance.IsGyroActive)
+				{
+					m_MenuButtonsText[7].text = "Input\nGyro";
+					EnableButton(6);
+				}
+				else
+				{
+					m_MenuButtonsText[7].text = "Input\nMouse/Touch";
+					DisableButton(6);
+				}
 				break;
 		}
 	}
@@ -277,18 +298,21 @@ public class MenuController : MonoBehaviour
 	/// If disabled, Menu Buttons are greyed out and cannot be pressed.
 	/// </summary>
 	/// <param name="index">The index of the Menu Button to disable</param>
-	private void DisableButton(int index)
+	private void DisableButton(params int[] index)
 	{
-		// Set color to be greyed out, and store button as disabled
-		try
+		foreach (int button in index)
 		{
-			m_MenuButtonsText[index].color = new Color(0.75f, 0.75f, 0.75f, 0.25f);
-			m_MenuButtonsEnabled[index] = false;
-		}
-		// Throw error if index is invalid
-		catch
-		{
-			Debug.Log("MenuController.cs - Unable to disable button: " + index);
+			// Set color to be greyed out, and store button as disabled
+			try
+			{
+				m_MenuButtonsText[button].color = new Color(0.75f, 0.75f, 0.75f, 0.25f);
+				m_MenuButtonsEnabled[button] = false;
+			}
+			// Throw error if index is invalid
+			catch
+			{
+				Debug.Log("MenuController.cs - Unable to disable button: " + button);
+			}
 		}
 	}
 
@@ -297,18 +321,21 @@ public class MenuController : MonoBehaviour
 	/// If disabled, Menu Buttons are greyed out and cannot be pressed.
 	/// </summary>
 	/// <param name="index">The index of the Menu Button to enable</param>
-	private void EnableButton(int index)
+	private void EnableButton(params int[] index)
 	{
-		// Set color to be greyed out, and store button as disabled
-		try
+		foreach (int button in index)
 		{
-			m_MenuButtonsText[index].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-			m_MenuButtonsEnabled[index] = true;
-		}
-		// Throw error if index is invalid
-		catch
-		{
-			Debug.Log("MenuController.cs - Unable to enable button: " + index);
+			// Set color to be greyed out, and store button as disabled
+			try
+			{
+				m_MenuButtonsText[button].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+				m_MenuButtonsEnabled[button] = true;
+			}
+			// Throw error if index is invalid
+			catch
+			{
+				Debug.Log("MenuController.cs - Unable to enable button: " + button);
+			}
 		}
 	}
 
