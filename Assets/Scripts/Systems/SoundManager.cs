@@ -4,91 +4,65 @@ using UnityEngine;
 
 /* Author: Declan
  * 
- * Soundmanager is a singleton used to manage some of the sounds within the scene
+ * SoundManager is a Singleton used to play non-diegetic sounds in the scene.
+ * 
+ *  It can be accessed with SoundManager.Instance.
+ * 
+ * This class manages everything relating to managing the game state.
  */
 
+/// <summary>
+/// Manages non-diegetic sounds in the scene.
+/// (Singleton, accessed with <c>SoundManager.Instance</c>.)
+/// </summary>
+[System.Serializable]
 public class SoundManager : MonoBehaviour
 {
-    #region Variables/Propeties
+	#region Variables/Properties
+	// -- Serialized --
+	[Header("Audio Sources/Clips")]
+	[SerializeField] AudioSource m_BackgroundMusic = null;      // Background Music AudioSource
+	[SerializeField] AudioSource m_WinSound = null;             // Win Sound AudioSource
+	[SerializeField] AudioClip[] m_WinSoundClips = null;        // Possible Win Sound AudioClips
 
-    // -- Private -- 
-    private GameObject m_Camera = null;             // The Camera object which holds some Audio sources
-
-    // -- Public --
-    //public AudioSource m_GemCollected = null;       // The Audiosource for the gem collected sound
-    public AudioSource m_BackroundNoise = null;     // The Audiosource for the background noise sound
-    public AudioSource m_FlagCollected = null;      // The Audiosource for the Flag collection sound
-
-    // -- Singleton Instances --
-    private static SoundManager m_Instance;
-    public static SoundManager Instance
-    {
-        get { return m_Instance; }
-    }
+	// -- Singleton --
+	public static SoundManager Instance { get; private set; }
 	#endregion
 
 	#region Unity Functions
-
-    /// <summary>
-    /// RUns on awake.
-    /// Makes sure there is only one instance of SoundManager
-    /// </summary>
+	/// <summary>
+	/// Called on Awake.
+	/// Initializes Singleton.
+	/// </summary>
 	void Awake()
-    {
-        // Initialize Singleton
-        if (m_Instance != null && m_Instance != this)
-            Destroy(this.gameObject);
-        else
-            m_Instance = this;
-    }
-
-    /// <summary>
-    /// Runs on first frame.
-    /// Caches needed components
-    /// </summary>
-    void Start()
-    {
-        m_Camera = GameObject.FindGameObjectWithTag("MainCamera");
-  //      if(m_Camera != null)
-		//{
-  //         m_BackroundNoise = m_Camera.GetComponent<AudioSource>();
-		//}
-
-        //m_GemCollected = GetComponent<AudioSource>();
-    }
+	{
+		Instance = this;
+	}
 	#endregion
 
 	#region Public Functions
-
-    /// <summary>
-    /// Called when game starts
-    /// Plays the background music
-    /// </summary>
-	public void PlayBackroundMusic()
-    {
-        Debug.Log("Playing: Backround Music");
-        m_BackroundNoise.Play();
-    }
-
-    /// <summary>
-    /// Called when gem is collected
-    /// Plays the gem collection sound
-    /// </summary>
-    //public void PlayGemCollected()
-    //{
-    //    Debug.Log("Playing: Gem Collected");
-    //    m_GemCollected.Play();
-    //}
-
-    /// <summary>
-    /// Called when flag is collected
-    /// Plays the flag collection sound
-    /// </summary>
-    public void PlayFlagCollected()
+	/// <summary>
+	/// Plays the Background Music audio.
+	/// </summary>
+	public void PlayBackgroundMusic()
 	{
-        Debug.Log("Playing: Flag Collected");
-        m_FlagCollected.Play();
-    }
+		Debug.Log("Playing Audio: Background Music");
+		m_BackgroundMusic.Play();
+	}
+
+	/// <summary>
+	/// Plays the Win Sound audio using a randomly-chosen clip.
+	/// </summary>
+	public void PlayWinSound()
+	{
+		// Randomly choose win sound
+		int index = Random.Range(0, m_WinSoundClips.Length);
+		m_WinSound.clip = m_WinSoundClips[index];
+
+		// Play sound
+		Debug.Log("Playing Audio: Win Sound " + index);
+		m_WinSound.Play();
+	}
 	#endregion
 }
 

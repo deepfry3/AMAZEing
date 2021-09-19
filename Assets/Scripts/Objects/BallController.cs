@@ -98,7 +98,7 @@ public class BallController : MonoBehaviour
 
 		if (other.tag == "Flag")
 		{
-			SoundManager.Instance.PlayFlagCollected();
+			SoundManager.Instance.PlayWinSound();
 			m_GemCount = 0;
 		}
 	}

@@ -9,8 +9,6 @@ using TMPro;
  * counting timer, keeping track of game states, etc.
  * 
  *  It can be accessed with GameManager.Instance.
- * 
- * This class manages everything relating to managing the game state.
  */
 
 /// <summary>
@@ -114,7 +112,7 @@ public class GameManager : MonoBehaviour
 		State = GameState.GAME;
 
 		// Initialize game
-		SoundManager.Instance.PlayBackroundMusic();
+		SoundManager.Instance.PlayBackgroundMusic();
 
 		// Generate maze
 		MazeGeneration maze = MazeGeneration.Instance;
