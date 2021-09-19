@@ -5496,7 +5496,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106381574}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
@@ -5877,9 +5877,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e92cf3000e7ddd4180b1bdb4390e3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotateX: 0.005
-  RotateY: 0.005
-  RotateZ: 0.005
+  RotateX: 0.05
+  RotateY: 0.05
+  RotateZ: 0.05
 --- !u!114 &2144782233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5983,11 +5983,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Colours:
-  - {r: 1, g: 0.9137255, b: 0.56078434, a: 1}
-  - {r: 0.38039216, g: 0.16078432, b: 0.8666667, a: 1}
-  - {r: 0.9254902, g: 0.8352941, b: 0.05882353, a: 1}
-  - {r: 0.1882353, g: 0.6156863, b: 0.23529412, a: 1}
-  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 0.8235294, a: 1}
+  - {r: 0.75190854, g: 0.627451, b: 1, a: 1}
+  - {r: 1, g: 0.8148512, b: 0.504, a: 1}
+  - {r: 0.701, g: 1, b: 0.79428804, a: 0.8509804}
+  - {r: 1, g: 1, b: 0.901, a: 1}
   m_Index: 4
 --- !u!1001 &3709348213185988711
 PrefabInstance:
