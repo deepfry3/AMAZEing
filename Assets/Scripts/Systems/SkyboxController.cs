@@ -76,7 +76,8 @@ public class SkyboxController : MonoBehaviour
 	/// </summary>
 	void Update()
 	{
-		transform.Rotate(m_SkyboxRotation.x, m_SkyboxRotation.y, m_SkyboxRotation.z);
+		Vector3 changeAmount = m_SkyboxRotation * Time.deltaTime;
+		transform.Rotate(changeAmount.x, changeAmount.y, changeAmount.z);
 	}
 	#endregion
 }

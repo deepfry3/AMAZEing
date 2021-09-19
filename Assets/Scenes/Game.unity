@@ -5876,7 +5876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e92cf3000e7ddd4180b1bdb4390e3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SkyboxRotation: {x: 0.005, y: 0.005, z: 0.005}
+  m_SkyboxRotation: {x: 1, y: 1, z: 1}
   m_Rotations:
   - {x: 51, y: -84, z: 73}
   - {x: 60, y: -73, z: 77}

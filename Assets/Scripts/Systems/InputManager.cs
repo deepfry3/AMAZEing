@@ -26,7 +26,7 @@ public class InputManager : MonoBehaviour
 	[SerializeField] [Range(5.0f, 90.0f)]
 	float m_GyroRangeH = 30.0f;                                 // Degrees of horizontal rotation accepted in either direction (e.g., -30° to 30°)
 	[SerializeField] [Range(5.0f, 90.0f)]
-	float m_GyroRangeV = 30.0f;									// Degrees of vertical rotation accepted in either direction (e.g., -30° to 30°)
+	float m_GyroRangeV = 30.0f;                                 // Degrees of vertical rotation accepted in either direction (e.g., -30° to 30°)
 
 	// -- Private --
 	private Transform[] m_ButtonsTransforms = new Transform[4];	// Transform components of on-screen button objects (U, D, L, R)

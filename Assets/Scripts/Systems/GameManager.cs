@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] GameObject m_DancerMalePrefab = null;      // Prefab for Dancer Male
 	[SerializeField] GameObject m_DancerFemalePrefab = null;    // Prefab for Dancer Female
 	[SerializeField] TextMeshPro m_LCDText = null;              // Text that displays info to player
+	[Header("Scene Settings")]
 	[SerializeField] Material[] m_Skyboxes = null;              // Materials used to select and display Skybox
 
 	// -- Private --
