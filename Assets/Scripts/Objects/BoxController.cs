@@ -58,8 +58,8 @@ public class BoxController : MonoBehaviour
 	void Update()
 	{
 		// Calculate target angle based on input
-		float xEuler = m_MaxVRotation * InputController.Instance.VAxis;
-		float zEuler = m_MaxHRotation * -InputController.Instance.HAxis;
+		float xEuler = m_MaxVRotation * InputManager.Instance.VAxis;
+		float zEuler = m_MaxHRotation * -InputManager.Instance.HAxis;
 
 		// Apply rotation to Inner Boxes' transforms
 		m_LRBoxTransform.rotation = Quaternion.Euler(xEuler, 0.0f, zEuler);

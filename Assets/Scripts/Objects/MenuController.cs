@@ -274,12 +274,12 @@ public class MenuController : MonoBehaviour
 				m_MazeUpdated = true;
 				break;
 			case 6: // Calibrate Gyro Button
-				InputController.Instance.CalibrateGyro();
+				InputManager.Instance.CalibrateGyro();
 				ToggleMenu();
 				break;
 			case 7: // Input Button
-				InputController.Instance.ToggleGyro();
-				if (InputController.Instance.IsGyroActive)
+				InputManager.Instance.ToggleGyro();
+				if (InputManager.Instance.IsGyroActive)
 				{
 					m_MenuButtonsText[7].text = "Input\nGyro";
 					EnableButton(6);

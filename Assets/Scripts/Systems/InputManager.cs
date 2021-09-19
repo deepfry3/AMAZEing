@@ -5,25 +5,34 @@ using TMPro;
 
 /* Author: Cameron
  * 
- * InputController is a Singleton used to detect and manage inputs from multiple sources.
- * It can be accessed via InputController.Instance.
+ * InputManager is a Singleton used to detect and manage player inputs from multiple sources.
+ * 
+ * It can be accessed via InputManager.Instance.
  */
 
 /// <summary>
 /// Manages inputs, providing an interface to access multiple input sources.
-/// (Properties accessed with <c>InputController.Instance</c>.)
+/// (Singleton, accessed with <c>InputManager.Instance</c>.)
 /// </summary>
-public class InputController : MonoBehaviour
+/// [System.Serializable]
+public class InputManager : MonoBehaviour
 {
 	#region Variables/Properties
-	// -- Public --
-	public GameObject[] m_Buttons = null;                       // Array of on-screen button objects (U, D, L, R)
-	public float m_Sensitivity;									// Sensitivity/speed to lerp to target input values
+	// -- Serialized --
+	[Header("Prefabs/GameObjects")]
+	[SerializeField] GameObject[] m_OnScreenButtons = null;     // Array of on-screen buttons (U, D, L, R);
+	[Header("Input Settings")]
+	[SerializeField] float m_Sensitivity = 10.0f;               // Sensitivity/speed to lerp to target input values
+	[SerializeField] [Range(5.0f, 90.0f)]
+	float m_GyroRangeH = 30.0f;                                 // Degrees of horizontal rotation accepted in either direction (e.g., -30° to 30°)
+	[SerializeField] [Range(5.0f, 90.0f)]
+	float m_GyroRangeV = 30.0f;									// Degrees of vertical rotation accepted in either direction (e.g., -30° to 30°)
 
 	// -- Private --
 	private Transform[] m_ButtonsTransforms = new Transform[4];	// Transform components of on-screen button objects (U, D, L, R)
-	private Vector3 m_GyroOffset = Vector3.zero;				// Offset for calibrating device rotation
-	private float m_GyroMaxTilt = 0.35f;                         // Device rotation (between 0 and 90 degrees) required to reach maximum input
+	private Vector3 m_GyroOffset = Vector3.zero;                // Offset for calibrating device rotation
+	private float m_GyroMultiplierH = 1.0f;                     // Horizontal multiplier for gyro input (calculated from Gyro Range variable)
+	private float m_GyroMultiplierV = 1.0f;						// Vertical multiplier for gyro input (calculated from Gyro Range variable)
 	private float m_HAxis = 0.0f;                               // Value of the virtual horizontal input axis	(-1 to 1: Left to Right)
 	private float m_VAxis = 0.0f;                               // Value of the virtual vertical input axis		(-1 to 1: Down to Up)
 
@@ -39,29 +48,26 @@ public class InputController : MonoBehaviour
 	}
 
 	// -- Singleton --
-	public static InputController Instance { get; private set; }
+	public static InputManager Instance { get; private set; }
 	#endregion
 
 	#region Unity Functions
 	/// <summary>
 	/// Called on Awake.
-	/// Initializes Singleton.
+	/// Initializes Singleton, caches components and initializes variables.
 	/// </summary>
 	void Awake()
 	{
 		// Initialize Singleton
 		Instance = this;
-	}
 
-	/// <summary>
-	/// Called on Start.
-	/// Caches components.
-	/// </summary>
-	void Start()
-	{
 		// Cache components
-		for (int i = 0; i < m_Buttons.Length; i++)
-			m_ButtonsTransforms[i] = m_Buttons[i].GetComponent<Transform>();
+		for (int i = 0; i < m_OnScreenButtons.Length; i++)
+			m_ButtonsTransforms[i] = m_OnScreenButtons[i].GetComponent<Transform>();
+
+		// Initialize variables
+		m_GyroMultiplierH = 1 / (m_GyroRangeH / 90.0f);
+		m_GyroMultiplierV = 1 / (m_GyroRangeV / 90.0f);
 	}
 
 	/// <summary>
@@ -84,10 +90,10 @@ public class InputController : MonoBehaviour
 			if (mouseHit.transform != null)
 			{
 				GameObject buttonHit = mouseHit.transform.gameObject;
-				if (buttonHit == m_Buttons[0]) touchVAxis += 1;
-				if (buttonHit == m_Buttons[1]) touchVAxis -= 1;
-				if (buttonHit == m_Buttons[2]) touchHAxis -= 1;
-				if (buttonHit == m_Buttons[3]) touchHAxis += 1;
+				if (buttonHit == m_OnScreenButtons[0]) touchVAxis += 1;
+				if (buttonHit == m_OnScreenButtons[1]) touchVAxis -= 1;
+				if (buttonHit == m_OnScreenButtons[2]) touchHAxis -= 1;
+				if (buttonHit == m_OnScreenButtons[3]) touchHAxis += 1;
 			}
 		}
 
@@ -95,8 +101,8 @@ public class InputController : MonoBehaviour
 		float HAxisTarget, VAxisTarget;
 		if (IsGyroActive)
 		{
-			HAxisTarget = (Input.acceleration.x - m_GyroOffset.x) * (1 / m_GyroMaxTilt);
-			VAxisTarget = (Input.acceleration.y - m_GyroOffset.y) * (1 / m_GyroMaxTilt);
+			HAxisTarget = (Input.acceleration.x - m_GyroOffset.x) * m_GyroMultiplierH;
+			VAxisTarget = (Input.acceleration.y - m_GyroOffset.y) * m_GyroMultiplierV;
 		}
 		else
 		{
@@ -121,8 +127,7 @@ public class InputController : MonoBehaviour
 	}
 	#endregion
 
-	#region Functions
-	// -- Public --
+	#region Public Functions
 	/// <summary>
 	/// Toggles device rotation controls on or off if supported.
 	/// Enabling device rotation disables other input methods.
@@ -141,8 +146,9 @@ public class InputController : MonoBehaviour
 		if (SystemInfo.supportsGyroscope)
 			m_GyroOffset = Input.acceleration;
 	}
+	#endregion
 
-	// -- Private --
+	#region Private Functions
 	/// <summary>
 	/// Sets the Z position of the specified on-screen Button.
 	/// </summary>
