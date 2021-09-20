@@ -2071,7 +2071,7 @@ MonoBehaviour:
     fieldOfView: 33
   m_WinSettings:
     position: {x: 0, y: 28, z: -20}
-    rotation: {x: 0.9945219, y: -0.00000003890285, z: -0.00000003890285, w: 0.104528464}
+    rotation: {x: 0.104528464, y: 0, z: 0, w: 0.9945219}
     fieldOfView: 50
 --- !u!1 &785414079 stripped
 GameObject:
