@@ -89,7 +89,7 @@ public class MenuController : MonoBehaviour
 
 		// Initialize variables
 		m_TargetPosition = m_Transform.position;
-		m_InputDisabledTimer = 0.0f;
+		m_InputDisabledTimer = 0.5f;
 		m_State = MenuState.CLOSED;
 
 		// Set all buttons to be enabled by default
@@ -172,7 +172,7 @@ public class MenuController : MonoBehaviour
 	{
 		// Set state as specified, and temporarily disable input
 		m_State = state;
-		m_InputDisabledTimer = 0.5f;
+		m_InputDisabledTimer = 0.35f;
 
 		// Update target position and game state accordingly
 		if (IsMenuOpen)
