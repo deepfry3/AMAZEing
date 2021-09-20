@@ -568,7 +568,7 @@ GameObject:
   - component: {fileID: 7229914105232178293}
   - component: {fileID: 1812292039009419541}
   m_Layer: 0
-  m_Name: DanceMale
+  m_Name: Dancer Male
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

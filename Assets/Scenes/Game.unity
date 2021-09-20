@@ -2070,9 +2070,9 @@ MonoBehaviour:
     rotation: {x: 0.4617486, y: 0, z: 0, w: 0.8870108}
     fieldOfView: 33
   m_WinSettings:
-    position: {x: 0, y: 25, z: -25}
-    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-    fieldOfView: 60
+    position: {x: 0, y: 28, z: -20}
+    rotation: {x: 0.9945219, y: -0.00000003890285, z: -0.00000003890285, w: 0.104528464}
+    fieldOfView: 50
 --- !u!1 &785414079 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3709348213615687650, guid: c713d30d5c08cb14284d8b77ae61f73f, type: 3}

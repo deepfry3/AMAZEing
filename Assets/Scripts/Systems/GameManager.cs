@@ -159,8 +159,8 @@ public class GameManager : MonoBehaviour
 		int index = Random.Range(0, 8);
 		m_DancerMale = Instantiate(m_DancerMalePrefab);
 		m_DancerFemale = Instantiate(m_DancerFemalePrefab);
-		m_DancerMale.transform.position = new Vector3(10.0f, -1.5f, -50.0f);
-		m_DancerFemale.transform.position = new Vector3(-10.0f, -1.5f, -50.0f);
+		m_DancerMale.transform.position = new Vector3(10.0f, -1.5f, 50.0f);
+		m_DancerFemale.transform.position = new Vector3(-10.0f, -1.5f, 50.0f);
 		m_DancerMale.GetComponent<DanceAnimation>().PlayAnimation(index);
 		m_DancerFemale.GetComponent<DanceAnimation>().PlayAnimation(index);
 
